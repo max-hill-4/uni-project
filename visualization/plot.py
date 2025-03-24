@@ -1,6 +1,6 @@
-
+import numpy as np
 from mne.io import RawArray 
 def raw_plot(data):
-    spectrum = data.compute_psd()
-    spectrum.plot(average=True, picks="data", exclude="bads", amplitude=False)
-    data.plot_sensors(block=True)
+    data.plot(block=True, scalings='auto')
+def raw_sensors(data):
+    data.plot_sensors(block=True, show_names=True)
