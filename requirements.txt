@@ -3,3 +3,4 @@ scipy
 mne
 mne-connectivity
 torch
+pandas

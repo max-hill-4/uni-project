@@ -12,7 +12,7 @@ class EEGCNN(nn.Module):
         
         # Convolutional layer with square filter
         self.conv = nn.Sequential(
-            nn.Conv2d(1, 1, kernel_size=filter_size, padding=filter_size//2),
+            nn.Conv2d(3, 1, kernel_size=filter_size, padding=filter_size//2),
             nn.ReLU(inplace=True)  # ReLU activation
         )
         
