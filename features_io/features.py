@@ -14,15 +14,19 @@ class Coherance(Feature):
         events = mne.make_fixed_length_events(data, duration=10, overlap=0.0)
         epochs = mne.Epochs(data, events, tmin=0, tmax = 10, baseline=None, preload=True )
         con = sp(method = 'coh', data=epochs, fmin=8, fmax=12, faverage=True) # This is only for the alpha band !  
+
+
+        # this is going to return a single 19x19 matrix 
+        print(f'shape of feature matrix is {con.get_data(output='dense').shape}') 
+        return(con.get_data(output='dense'))
+    def plot():
+        pass # this wont work at the momeny becuase the class needs to be instatiated to use con.
         '''
         plot_connectivity_circle(
             con.get_data(output='dense')[:, :, 0],  # Shape: (19, 19)
-            node_names=epochs.info['ch_names'],
+            node_names= epochs.info['ch_names'],
             title='wPLI in Alpha Band',
             facecolor='white',
             colormap='viridis',
             show=True)
         '''
-        # this is going to return a single 19x19 matrix 
-        print(f'shape of feature matrix is {con.get_data(output='dense').shape}') 
-        return(con.get_data(output='dense'))

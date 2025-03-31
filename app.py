@@ -21,10 +21,28 @@ if __name__ == '__main__':
         print(data.shape, labels.shape)
     
     m = analysis.models.EEGCNN(filter_size=3)
-    m(data)
+    # m(data)
+
+# so i need to work out why dataloader 
+
 #tensor = torch.from_numpy(coh).float()
 #m(tensor.unsqueeze(0).unsqueeze(0).squeeze(-1)) # [1, 1, 19, 19])
 # how bad would it be to pilot the main program with a numpy array, and when using 
 # feature selection or visualsation
 #visualization.plot.raw_plot(testEpoch)
 #visualization.plot.raw_sensors(testEpoch)
+'''
+load epoch idx
+-> compute features [ 1, 19, 15000] => [ 1, 19, 19 ]
+-> THEN to tensor 
+- > THEN to cnn 
+
+! - what happens if I want to use ! 2d cnn ? hm. 
+! - is joining 4 s stages okay generalisation ? 
+
+I feel like its nice to have a 'features' class
+compute_features('coh', 'f2', 'f3') == [ 1, 19, 19 ]
+
+
+
+'''
