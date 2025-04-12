@@ -7,14 +7,12 @@ class model():
         self.test_data = test_data
         self.iterations = iterations
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.m.to(self.device)
 
     def train(self):
-        self.m.to(self.device)
         optimizer = torch.optim.Adam(self.m.parameters(), lr=0.01)
-        all_predictions = []
         self.m.train()
         for epoch in range(self.iterations):
-            print(epoch)
             for batch in self.train_data:
                 data, labels = batch['data'].to(self.device), batch['label'].to(self.device)
                 optimizer.zero_grad()

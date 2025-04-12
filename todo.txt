@@ -1,5 +1,4 @@
 store all data on cloud 
-refact main to train and predict classes
 add more features
 optimise loss function 
 store model on cloud
