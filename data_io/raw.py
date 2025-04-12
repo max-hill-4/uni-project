@@ -3,8 +3,7 @@ from mne import create_info
 from mne.channels import make_standard_montage
 from scipy.io import loadmat
 import numpy as np
-def epochtoRawArray(filepath) :
-    mat_data = loadmat(filepath)
+def epochtoRawArray(data:dict) :
     info = create_info(
         ch_names=['Fp1', 'Fp2', 'F3', 'F4', 'F7', 'F8', 'Fz',
             'C3', 'C4', 'Cz',
@@ -14,7 +13,7 @@ def epochtoRawArray(filepath) :
         sfreq=500,
         ch_types='eeg'
     )
-    raw = RawArray(mat_data['current_epoch'], info)
+    raw = RawArray(data['current_epoch'], info)
     montage = make_standard_montage('standard_1020') # Or another montage
     raw.set_montage(montage)
     print(type(raw))

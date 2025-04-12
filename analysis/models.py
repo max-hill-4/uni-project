@@ -12,18 +12,23 @@ class EEGCNN(nn.Module):
         
         # Convolutional layer with square filter
         self.conv = nn.Sequential(
-            nn.Conv2d(3, 1, kernel_size=filter_size, padding=filter_size//2),
-            nn.ReLU(inplace=True)  # ReLU activation
+            nn.Conv2d(1, 16, kernel_size=filter_size, padding=filter_size // 2),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(16, 32, kernel_size=filter_size, padding=filter_size // 2),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(2)  # Downsample to reduce spatial dimensions
         )
         
-        # Fully Connected Classifier
+        # Fully Connected Layers for regression
         self.classifier = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(19 * 19, num_classes)  # Output = num_classes
+            nn.Linear(32 * 9 * 9, 256),  # Flattened size after pooling = 32 * 9 * 9
+            nn.ReLU(inplace=True),
+            nn.Linear(256, num_classes)  # Final output size matches the labels
         )
+
     def forward(self, x):
         # Input shape: (batch, 1, 19, 19)
         x = self.conv(x)            # Still (batch, 1, 19, 19)
-        x = x.view(x.size(0), -1)   # Flatten to (batch, 361)
         x = self.classifier(x)              # Output: (batch, 4)
         return x
