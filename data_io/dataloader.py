@@ -39,15 +39,13 @@ class RawDataset(Dataset):
         label_data = (df[df['Participant']=='A']).to_numpy()
         label_data = label_data[0][2:]
         label_data = np.asarray(label_data, dtype=np.float64)
-
         sample = {
             'data': eeg_data,  # this is a numpy array of epoch idx.
             'label': label_data  
         }
         # Convert to torch tensors
         sample['data'] = torch.from_numpy(sample['data']).float()
-        sample['label'] = torch.from_numpy(sample['label']) # or .float() for regression
-
+        sample['label'] = torch.from_numpy(sample['label']).float() # or .float() for regression
         if self.transform:
             sample = self.transform(sample)
         

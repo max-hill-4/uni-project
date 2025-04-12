@@ -25,11 +25,24 @@ if __name__ == '__main__':
     # Move the model and data to the same device (CPU/GPU)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     m.to(device)
-    
+    optimizer = torch.optim.Adam(m.parameters(), lr=0.01)
     # Predict on unseen data
     all_predictions = []
     all_labels = []
+    total_loss = 0
+    m.train()
+    for epoch in range(200):
+        print(epoch)
+        for batch in dataloader:
+            data, labels = batch['data'].to(device), batch['label'].to(device)
+            optimizer.zero_grad()
+            predictions = m(data)
+            loss = torch.nn.functional.mse_loss(predictions, labels)
+            loss.backward()
+            optimizer.step()
+            total_loss += loss.item()
 
+    m.eval()        
     with torch.no_grad():  # Disable gradient calculations for inference
         for batch in dataloader:
             data, labels = batch['data'].to(device), batch['label'].to(device)  # Move data and labels to the device
@@ -44,7 +57,10 @@ if __name__ == '__main__':
     # After collecting predictions and labels
     all_predictions = torch.cat(all_predictions, dim=0)  # Ensure proper concatenation along the batch dimension
     all_labels = torch.cat(all_labels, dim=0)
-
+    for batch in range(3):
+        print(f"THIS IS BATCH N.{batch}")
+        for i in range(108):
+            print(f"predicted val = {all_predictions[batch][i]} Truth Val = {all_labels[batch][i]}")
     from torch.nn.functional import mse_loss
 
     # Calculate MSE

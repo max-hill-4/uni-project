@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 class EEGCNN(nn.Module):
-    def __init__(self, filter_size: int = 3, num_classes: int = 4):
+    def __init__(self, filter_size: int = 3, num_classes: int = 108):
         """
         Args:
             filter_size: 3 (C3), 6 (C6), or 8 (C8)

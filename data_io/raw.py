@@ -13,8 +13,7 @@ def epochtoRawArray(data:dict) :
         sfreq=500,
         ch_types='eeg'
     )
-    raw = RawArray(data['current_epoch'], info)
+    raw = RawArray(data['current_epoch'], info, verbose=False)
     montage = make_standard_montage('standard_1020') # Or another montage
     raw.set_montage(montage)
-    print(type(raw))
     return raw
