@@ -3,4 +3,4 @@ add more features
 optimise loss function 
 store model on cloud
 make frontend
-lock in.... ; 😎😎😎😎😎😎😎😎😎😎
+lock in.... ; 😎😎😎😎😎😎😎😎😎😎e  

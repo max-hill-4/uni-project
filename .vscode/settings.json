@@ -1,0 +1,19 @@
+{
+    "workbench.startupEditor": "none",
+    "window.restoreWindows": "none",
+    "cmake.options.statusBarVisibility": "visible",
+    "makefile.configureOnOpen": true,
+    "git.enableSmartCommit": true,
+    "vim.statusBarColors.insert": [
+        "#FFB3B3", // Pastel red background
+        "#ffffff"  // White text
+    ],
+    "vim.statusBarColors.normal": [
+        "#B3FFFF", // Pastel teal background
+        "#ffffff"  // White text
+    ],
+    "vim.statusBarColors.visual": [
+        "#C9B3FF", // Pastel purple background
+        "#ffffff"  // White text
+    ]
+}

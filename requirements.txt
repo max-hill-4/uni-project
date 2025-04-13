@@ -4,3 +4,4 @@ mne
 mne-connectivity
 torch
 pandas
+oci
