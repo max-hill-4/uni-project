@@ -11,7 +11,7 @@ if __name__ == '__main__':
 
     m = analysis.models.EEGCNN(filter_size=3, num_classes=108)
 
-    a = analysis.train.model(m, train_data, test_data, iterations=20)
+    a = analysis.train.model(m, train_data, test_data, iterations=1)
 
     a.train()
     p = a.predict()

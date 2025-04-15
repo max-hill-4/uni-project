@@ -1,5 +1,6 @@
 import torch
 from torch.nn.functional import mse_loss
+import numpy as np
 class model():
     def __init__(self, m, train_data, test_data, iterations=200):
         self.m = m
@@ -40,11 +41,27 @@ class model():
                 all_labels.append(labels.cpu())  # Store labels on the CPU
 
         # After collecting predictions and labels
+        from sklearn.metrics import confusion_matrix
+        cf_matrix = confusion_matrix(all_labels, all_predictions)
         all_predictions = torch.cat(all_predictions, dim=0)  # Ensure proper concatenation along the batch dimension
         all_labels = torch.cat(all_labels, dim=0)
         return all_predictions, all_labels
     
-    def mse(self, predict, truth, class_labels):
-        for i 
+    def mse(self, predict, truth):
         mse = mse_loss(predict, truth)
-        return mse 
+        print(mse)
+        
+        mse_by_class = {}
+        unique_classes = torch.unique(truth)
+
+        for cls in unique_classes:
+            # Mask to filter predictions and labels for the current class
+            class_mask = (truth == cls)
+            class_predictions = predict[class_mask]
+            class_truth = truth[class_mask]
+            
+            # Compute MSE for the current class
+            mse = torch.nn.functional.mse_loss(class_predictions, class_truth, reduction='mean')
+            mse_by_class[cls.item()] = mse.item()
+
+        return mse_by_class

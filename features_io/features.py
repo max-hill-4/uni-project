@@ -14,7 +14,7 @@ class Feature():
         pass
 
 class Coherance(Feature):
-    def coh(data_input: dict) -> ndarray:
+    def coh(data_input: dict, ) -> ndarray:
         # Compute coherence
         
         data = raw.epochtoRawArray(data_input)
@@ -37,35 +37,6 @@ class Coherance(Feature):
             colormap='viridis',
             show=True)
         '''
-class SyncLikelyhood(Feature):
-    def synchronization_likelihood(c1, c2, m, l, w1, w2, pRef, epsilonIterations=10):
-        """
-        Compute the Synchronization Likelihood (SL) between two channels.
-        """
-        # Time-delay embedding
-        X1 = np.array([c1[i:i + m * l:l] for i in range(len(c1) - (m - 1) * l)])
-        X2 = np.array([c2[i:i + m * l:l] for i in range(len(c2) - (m - 1) * l)])
-
-        # Calculate pairwise distance matrices
-        D1 = cdist(X1, X1)
-        D2 = cdist(X2, X2)
-
-        # Compute epsilon thresholds
-        E1 = np.array([np.percentile(np.sort(D1[i]), pRef) for i in range(len(X1))])
-        E2 = np.array([np.percentile(np.sort(D2[i]), pRef) for i in range(len(X2))])
-
-        # Synchronization Likelihood calculation
-        SL, SLMax = 0, 0
-        for i in range(len(X1)):
-            Sij, SijMax = 0, 0
-            for j in range(len(X1)):
-                if w1 < abs(j - i) < w2:
-                    if D1[i, j] < E1[i] and D2[i, j] < E2[i]:
-                        Sij += 1
-                    SijMax += 1
-            SL += Sij
-            SLMax += SijMax
-        return SL / SLMax if SLMax > 0 else 0
 class RWE(Feature): 
     import numpy as np
 
