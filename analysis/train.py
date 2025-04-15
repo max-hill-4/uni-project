@@ -7,12 +7,14 @@ class model():
         self.test_data = test_data
         self.iterations = iterations
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        print(self.device)
         self.m.to(self.device)
 
     def train(self):
         optimizer = torch.optim.Adam(self.m.parameters(), lr=0.01)
         self.m.train()
         for epoch in range(self.iterations):
+            print(epoch)
             for batch in self.train_data:
                 data, labels = batch['data'].to(self.device), batch['label'].to(self.device)
                 optimizer.zero_grad()
@@ -24,7 +26,6 @@ class model():
     def predict(self):
         all_predictions = []
         all_labels = []
-         
         self.m.eval()        
         with torch.no_grad():  # Disable gradient calculations for inference
             for batch in self.test_data:

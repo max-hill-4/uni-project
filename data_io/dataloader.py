@@ -28,15 +28,17 @@ class RawDataset(Dataset):
         if torch.is_tensor(idx):
             idx = idx.tolist()
         
-        eeg_data = loadmat(self.mat_files[idx])
+        file = self.mat_files[idx]
+        participant = str(file)[15]
+        eeg_data = loadmat(file)
         df = pandas.read_csv(r'./raw_data/biomarkers.csv')
         
         if self.feature == 'coh':
             eeg_data = features.Coherance.coh(eeg_data)
-        
+
         # df -> feature 19 x 19 ? 
         
-        label_data = (df[df['Participant']=='A']).to_numpy()
+        label_data = (df[df['Participant']==participant]).to_numpy()
         label_data = label_data[0][2:]
         label_data = np.asarray(label_data, dtype=np.float64)
         sample = {
