@@ -12,9 +12,10 @@ class model():
 
     def train(self):
         optimizer = torch.optim.Adam(self.m.parameters(), lr=0.01)
+        loss = 0
         self.m.train()
         for epoch in range(self.iterations):
-            print(epoch)
+            print(epoch, loss)
             for batch in self.train_data:
                 data, labels = batch['data'].to(self.device), batch['label'].to(self.device)
                 optimizer.zero_grad()
@@ -43,6 +44,7 @@ class model():
         all_labels = torch.cat(all_labels, dim=0)
         return all_predictions, all_labels
     
-    def mse(self, predict, truth):
+    def mse(self, predict, truth, class_labels):
+        for i 
         mse = mse_loss(predict, truth)
         return mse 

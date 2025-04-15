@@ -3,6 +3,11 @@ from mne_connectivity import spectral_connectivity_epochs as sp
 from mne_connectivity.viz import plot_connectivity_circle 
 from numpy import ndarray, transpose
 from data_io import raw
+import numpy as np
+from scipy.io import loadmat
+from scipy.spatial.distance import cdist
+import pywt
+
 # This wull for sure cook later, as will enable a design pattern to select different / multiple features 
 class Feature():
     def __init__(self):
@@ -15,7 +20,7 @@ class Coherance(Feature):
         data = raw.epochtoRawArray(data_input)
         events = mne.make_fixed_length_events(data, duration=10, overlap=0.0)
         epochs = mne.Epochs(data, events, tmin=0, tmax = 10, baseline=None, preload=True, verbose=False)
-        con = sp(method = 'coh', data=epochs, fmin=8, fmax=12, faverage=True, verbose=False) # This is only for the alpha band !  
+        con = sp(method = 'coh', data=epochs, fmin=30, fmax=100, faverage=True, verbose=False) # This is only for the alpha band !  
 
         # this is going to return a single 19x19 matrix of a single channel.  
         data = con.get_data(output='dense')
@@ -32,3 +37,79 @@ class Coherance(Feature):
             colormap='viridis',
             show=True)
         '''
+class SyncLikelyhood(Feature):
+    def synchronization_likelihood(c1, c2, m, l, w1, w2, pRef, epsilonIterations=10):
+        """
+        Compute the Synchronization Likelihood (SL) between two channels.
+        """
+        # Time-delay embedding
+        X1 = np.array([c1[i:i + m * l:l] for i in range(len(c1) - (m - 1) * l)])
+        X2 = np.array([c2[i:i + m * l:l] for i in range(len(c2) - (m - 1) * l)])
+
+        # Calculate pairwise distance matrices
+        D1 = cdist(X1, X1)
+        D2 = cdist(X2, X2)
+
+        # Compute epsilon thresholds
+        E1 = np.array([np.percentile(np.sort(D1[i]), pRef) for i in range(len(X1))])
+        E2 = np.array([np.percentile(np.sort(D2[i]), pRef) for i in range(len(X2))])
+
+        # Synchronization Likelihood calculation
+        SL, SLMax = 0, 0
+        for i in range(len(X1)):
+            Sij, SijMax = 0, 0
+            for j in range(len(X1)):
+                if w1 < abs(j - i) < w2:
+                    if D1[i, j] < E1[i] and D2[i, j] < E2[i]:
+                        Sij += 1
+                    SijMax += 1
+            SL += Sij
+            SLMax += SijMax
+        return SL / SLMax if SLMax > 0 else 0
+class RWE(Feature): 
+    import numpy as np
+
+def relative_wavelet_entropy(signal, wavelet='db4', level=4):
+    """
+    Compute the Relative Wavelet Entropy (RWE) of a signal.
+
+    Parameters:
+    - signal: The input 1D signal (array-like).
+    - wavelet: Wavelet name (default: 'db4').
+    - level: Decomposition level (default: 4).
+
+    Returns:
+    - RWE: The Relative Wavelet Entropy of the signal.
+    """
+    # Perform wavelet decomposition
+    coeffs = pywt.wavedec(signal, wavelet, level=level)
+    
+    # Calculate the energy of each coefficient
+    energies = np.array([np.sum(c**2) for c in coeffs])
+    
+    # Normalize to get probabilities
+    probabilities = energies / np.sum(energies)
+    
+    # Compute Shannon entropy of probabilities
+    shannon_entropy = -np.sum(probabilities * np.log2(probabilities + 1e-12))  # Adding a small term to avoid log(0)
+    
+    # Compute maximum possible entropy
+    max_entropy = np.log2(len(probabilities))
+    
+    # Calculate Relative Wavelet Entropy
+    RWE = shannon_entropy / max_entropy
+
+    return RWE
+# Example Usage
+signal = np.sin(np.linspace(0, 2 * np.pi, 100))  # Example: a sine wave signal
+
+
+if __name__ == '__main__':
+    c1 = loadmat(r'/home/student/Documents/uni-project/raw_data/bdc14_C4_0090.mat')['current_epoch'][1]
+    c2 = loadmat(r'/home/student/Documents/uni-project/raw_data/bdc14_B4_0087.mat')['current_epoch'][1]
+    m, l, w1, w2, pRef = 2, 5, 10, 50, 10
+    rwe_value = relative_wavelet_entropy(c1)
+    print("Relative Wavelet Entropy:", rwe_value)
+    # Compute SL
+    sl_value = SyncLikelyhood.synchronization_likelihood(c1, c2, m, l, w1, w2, pRef)
+    print("Synchronization Likelihood (SL):", sl_value)

@@ -4,13 +4,14 @@ import analysis
 from torch.utils.data import DataLoader
 if __name__ == '__main__':
 
-    dataset = data_io.dataloader.RawDataset(root_dir='./raw_data') # could pass params like, hormone type, feature type etc etc. 
-    
-    train_data = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
-    
+    train_dataset = data_io.dataloader.RawDataset(root_dir='./raw_data', feature='coh') # could pass params like, hormone type, feature type etc etc. 
+    test_dataset = data_io.dataloader.RawDataset(root_dir='./raw_data/test', feature='sl')
+    train_data = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=4)
+    test_data = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=4)
+
     m = analysis.models.EEGCNN(filter_size=3, num_classes=108)
 
-    a = analysis.train.model(m, train_data, train_data, iterations=10)
+    a = analysis.train.model(m, train_data, test_data, iterations=20)
 
     a.train()
     p = a.predict()

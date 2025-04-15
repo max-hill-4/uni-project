@@ -35,7 +35,9 @@ class RawDataset(Dataset):
         
         if self.feature == 'coh':
             eeg_data = features.Coherance.coh(eeg_data)
-
+            
+        if self.feature == 'sl':
+            eeg_data = features.SynchronizationLikelihood.compute_synchronization_likelihood(eeg_data)
         # df -> feature 19 x 19 ? 
         
         label_data = (df[df['Participant']==participant]).to_numpy()
