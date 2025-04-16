@@ -4,7 +4,7 @@ import analysis
 from torch.utils.data import DataLoader
 if __name__ == '__main__':
 
-    train_dataset = data_io.dataloader.RawDataset(root_dir='./raw_data', feature='coh') # could pass params like, hormone type, feature type etc etc. 
+    train_dataset = data_io.dataloader.RawDataset(root_dir='/mnt/block/eeg/raw_data', feature='coh') # could pass params like, hormone type, feature type etc etc. 
     test_dataset = data_io.dataloader.RawDataset(root_dir='./raw_data/test', feature='sl')
     train_data = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=4)
     test_data = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=4)
