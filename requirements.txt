@@ -5,3 +5,4 @@ mne-connectivity
 torch
 pandas
 oci
+scikit-learn

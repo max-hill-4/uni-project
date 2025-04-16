@@ -6,7 +6,7 @@ from data_io import raw
 import numpy as np
 from scipy.io import loadmat
 from scipy.spatial.distance import cdist
-import pywt
+# import pywt
 
 # This wull for sure cook later, as will enable a design pattern to select different / multiple features 
 class Feature():
