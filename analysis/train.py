@@ -42,7 +42,6 @@ class model():
                 all_labels.append(labels.cpu())  # Store labels on the CPU
 
         # After collecting predictions and labels
-
         cf_matrix = confusion_matrix(all_labels, all_predictions)
         all_predictions = torch.cat(all_predictions, dim=0)  # Ensure proper concatenation along the batch dimension
         all_labels = torch.cat(all_labels, dim=0)

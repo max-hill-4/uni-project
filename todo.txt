@@ -1,6 +1,6 @@
-store all data on cloud 
-add more features
+add more features - add multi channel coh for different freq bands.
+is it possible to evaluate channel by channel ? 
+add option to trian on all stages of sleep data.
 optimise loss function 
-store model on cloud
 make frontend
-lock in.... ; 😎😎😎😎😎😎😎😎😎😎e  
+try to optimise sl ? 

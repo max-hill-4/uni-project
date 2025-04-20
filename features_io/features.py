@@ -20,7 +20,7 @@ class Coherance(Feature):
         data = raw.epochtoRawArray(data_input)
         events = mne.make_fixed_length_events(data, duration=10, overlap=0.0)
         epochs = mne.Epochs(data, events, tmin=0, tmax = 10, baseline=None, preload=True, verbose=False)
-        con = sp(method = 'coh', data=epochs, fmin=30, fmax=100, faverage=True, verbose=False) # This is only for the alpha band !  
+        con = sp(method = 'coh', data=epochs, fmin=4, fmax=8, faverage=True, verbose=False) # This is only for the alpha band !  
 
         # this is going to return a single 19x19 matrix of a single channel.  
         data = con.get_data(output='dense')
