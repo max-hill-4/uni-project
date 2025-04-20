@@ -1,6 +1,9 @@
 add more features - add multi channel coh for different freq bands.
-is it possible to evaluate channel by channel ? 
-add option to trian on all stages of sleep data.
+
+evaluate channel by channel (evaluate different features) 
+evaluate metrics per class label.
+hyper par training, write results to file?
+
 optimise loss function 
 make frontend
 try to optimise sl ? 

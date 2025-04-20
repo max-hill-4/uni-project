@@ -6,18 +6,15 @@ from pathlib import Path
 import pandas 
 from features_io import features
 class RawDataset(Dataset):
-    """
-    Custom Dataset for loading .mat files
-    
-    Args:
-        root_dir (str): Directory containing .mat files
-        transform (callable, optional): Optional transform to be applied
-    """
-    def __init__(self, root_dir, transform=None, feature='coh'):
 
-        self.root_dir = Path(root_dir)
-        
-        self.mat_files = list(self.root_dir.glob('*.mat'))  # Get all .mat files
+    def __init__(self, sleep_stages, transform=None, feature='coh'):
+        self.root_dir = Path(r'/mnt/block/eeg')
+        self.mat_files = [
+            mat_file
+            for stage in sleep_stages
+            for mat_file in (self.root_dir / stage).glob('*.mat')
+        ]
+        print(self.mat_files)
         self.transform = transform
         self.feature = feature
         self.df = pandas.read_csv(r'./raw_data/biomarkers.csv')

@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader, random_split
 if __name__ == '__main__':
 
  
-    dataset = data_io.dataloader.RawDataset(stages=("N1"), feature='coh') # could pass params like, hormone type, feature type etc etc. 
+    dataset = data_io.dataloader.RawDataset(sleep_stages=["N1"], feature='coh') 
     
     train_size = int(0.8 * len(dataset))
     test_size = len(dataset) - train_size
@@ -22,4 +22,5 @@ if __name__ == '__main__':
     a.train()
     p = a.predict()
     e = a.mse(*p)
+
     print(f"MSE: {e.item():.4f}")
