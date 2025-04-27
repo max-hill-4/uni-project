@@ -67,21 +67,12 @@ class model():
         return {i: mse_per_class[i].item() for i in range(num_classes)}
     
     def r2_per_class(self, predictions: torch.Tensor, labels: torch.Tensor) -> dict:
-        """Compute R² per class using torchmetrics r2_score.
-        
-        Args:
-            predictions: Tensor of shape [N, C] with predicted values.
-            labels: Tensor of shape [N, C] with true values.
-        
-        Returns:
-            Dictionary mapping class index (0 to C-1) to R² value.
-        
-        Raises:
-            AssertionError: If inputs are not 2D tensors of same shape.
-        """
+
         assert predictions.shape == labels.shape and len(predictions.shape) == 2, \
             "Inputs must be 2D tensors of same shape"
         
+        variances = torch.var(labels, dim=0)
+        print("Label variances per class:", variances)
         num_classes = predictions.shape[1]
         r2_values = r2_score(predictions, labels, multioutput='raw_values')
         

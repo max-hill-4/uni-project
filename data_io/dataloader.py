@@ -16,7 +16,8 @@ class RawDataset(Dataset):
         ]
         self.transform = transform
         self.feature = feature
-        self.df = pandas.read_csv(r'./raw_data/biomarkers.csv')
+        self.df = pandas.read_csv(r'./raw_data/biomarkers.csv').bfill()
+        self.bdc_columns = ['BDC1'] + [f'BDC1.{i}' for i in range(1, 12)]
 
         
     def __len__(self):
@@ -26,7 +27,7 @@ class RawDataset(Dataset):
         if torch.is_tensor(idx):
             idx = idx.tolist()
         file = self.mat_files[idx]
-        participant = str(file)[15]
+        participant = str(file)[24]
         eeg_data = loadmat(file)
         
         if self.feature == 'coh':
@@ -35,8 +36,8 @@ class RawDataset(Dataset):
         if self.feature == 'sl':
             eeg_data = features.SynchronizationLikelihood.compute_synchronization_likelihood(eeg_data)
         
-        bdc_columns = ['BDC1', 'BDC1.1', 'BDC1.2', 'BDC1.3', 'BDC1.4', 'BDC1.5', 'BDC1.6', 'BDC1.7', 'BDC1.8', 'BDC1.9', 'BDC1.10', 'BDC1.11']
-        label_data = self.df.loc[self.df['Participant'] == participant, bdc_columns].to_numpy()
+
+        label_data = self.df.loc[self.df['Participant'] == participant, self.bdc_columns].to_numpy()
         label_data = np.asarray(label_data, dtype=np.float64).squeeze()
         sample = {
             'data': torch.tensor(eeg_data, dtype=torch.float32),
