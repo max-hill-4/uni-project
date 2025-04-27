@@ -32,7 +32,7 @@ if __name__ == '__main__':
     print("finished loading data!")
     m = analysis.models.EEGCNN(filter_size=3, num_classes=1)
 
-    a = analysis.train.model(m, train_data, test_data, iterations=5)
+    a = analysis.train.model(m, train_data, test_data, iterations=15)
 
     a.train()
     p = a.predict()

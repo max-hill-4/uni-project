@@ -13,7 +13,7 @@ class model():
         self.m.to(self.device)
 
     def train(self):
-        optimizer = torch.optim.Adam(self.m.parameters(), lr=0.00001)
+        optimizer = torch.optim.Adam(self.m.parameters(), lr=0.001)
         loss = 0
         self.m.train()
         for epoch in range(self.iterations):

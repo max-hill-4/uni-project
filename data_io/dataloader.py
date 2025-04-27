@@ -17,7 +17,6 @@ class RawDataset(Dataset):
         self.transform = transform
         self.feature = feature
         self.df = pandas.read_csv(r'./raw_data/biomarkers.csv').dropna()
-        print(self.df.columns)
         self.bdc_columns = hormones
 
 
