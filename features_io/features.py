@@ -11,7 +11,7 @@ class Feature():
         pass
 
 class Coherance(Feature):
-    def coh(data_input: dict,freq='alpha') -> tensor: 
+    def coh(data_input: dict,freq='alpha'): 
         
         data = raw.epochtoRawArray(data_input)
         events = mne.make_fixed_length_events(data, duration=10, overlap=0.0)

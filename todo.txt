@@ -1,18 +1,5 @@
-add more features - add multi channel coh for different freq bands.
+add more features - ideally modular. :3 
 
-evaluate channel by channel (evaluate different features) 
-evaluate metrics per class label.
-hyper par training, write results to file?
+add comufusion matrix and r^2
 
-features / ccn model doesnt have expected 
-data sizes? can i make my cnn variable channel sizes ?
-should i pass as a param or create another cnn class?
-i want it to work, feature takes epoch, returns ( single channel?) 
-square tensor.
 
-would be cool to visualise sizes of features over different
-frequencies / stages. 
-
-i dont like how atm raw is in data_io ? it should be in features.
-maybe in parent class to inherit from ? 
-i would enjoy to remove it but it stays for the time being...

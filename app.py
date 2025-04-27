@@ -15,12 +15,11 @@ if __name__ == '__main__':
     train_data = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=4)
     test_data = DataLoader(test_dataset, batch_size=32, shuffle=True, num_workers=4)
 
-    m = analysis.models.EEGCNN(filter_size=3, num_classes=108)
+    m = analysis.models.EEGCNN(filter_size=3, num_classes=12)
 
     a = analysis.train.model(m, train_data, test_data, iterations=5)
 
     a.train()
     p = a.predict()
-    e = a.mse(*p)
-
-    print(f"MSE: {e.item():.4f}")
+    e = a.r2_per_class(*p)
+    print(e)

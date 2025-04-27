@@ -14,7 +14,6 @@ class RawDataset(Dataset):
             for stage in sleep_stages
             for mat_file in (self.root_dir / stage).glob('*.mat')
         ]
-        print(self.mat_files)
         self.transform = transform
         self.feature = feature
         self.df = pandas.read_csv(r'./raw_data/biomarkers.csv')
@@ -36,16 +35,14 @@ class RawDataset(Dataset):
         if self.feature == 'sl':
             eeg_data = features.SynchronizationLikelihood.compute_synchronization_likelihood(eeg_data)
         
-        label_data = (self.df[self.df['Participant']==participant]).to_numpy()
-        label_data = label_data[0][2:]
-        label_data = np.asarray(label_data, dtype=np.float64)
+        bdc_columns = ['BDC1', 'BDC1.1', 'BDC1.2', 'BDC1.3', 'BDC1.4', 'BDC1.5', 'BDC1.6', 'BDC1.7', 'BDC1.8', 'BDC1.9', 'BDC1.10', 'BDC1.11']
+        label_data = self.df.loc[self.df['Participant'] == participant, bdc_columns].to_numpy()
+        label_data = np.asarray(label_data, dtype=np.float64).squeeze()
         sample = {
-            'data': eeg_data,  # this is a numpy array of epoch idx.
-            'label': label_data  
+            'data': torch.tensor(eeg_data, dtype=torch.float32),
+            'label': torch.tensor(label_data, dtype=torch.float32)  # Directly convert
         }
-        # Convert to torch tensors
-        sample['data'] = torch.from_numpy(sample['data']).float()
-        sample['label'] = torch.from_numpy(sample['label']).float() # or .float() for regression
+
         if self.transform:
             sample = self.transform(sample)
         
