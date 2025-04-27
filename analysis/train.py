@@ -71,8 +71,6 @@ class model():
         assert predictions.shape == labels.shape and len(predictions.shape) == 2, \
             "Inputs must be 2D tensors of same shape"
         
-        variances = torch.var(labels, dim=0)
-        print("Label variances per class:", variances)
         num_classes = predictions.shape[1]
         r2_values = r2_score(predictions, labels, multioutput='raw_values')
         

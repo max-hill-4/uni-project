@@ -16,7 +16,7 @@ class RawDataset(Dataset):
         ]
         self.transform = transform
         self.feature = feature
-        self.df = pandas.read_csv(r'./raw_data/biomarkers.csv').bfill()
+        self.df = pandas.read_csv(r'./raw_data/biomarkers.csv').dropna()
         self.bdc_columns = ['BDC1'] + [f'BDC1.{i}' for i in range(1, 12)]
 
         
@@ -39,6 +39,9 @@ class RawDataset(Dataset):
 
         label_data = self.df.loc[self.df['Participant'] == participant, self.bdc_columns].to_numpy()
         label_data = np.asarray(label_data, dtype=np.float64).squeeze()
+        if label_data.size == 0:
+            print(f'WARNING: {participant} has no labels!')
+            return None
         sample = {
             'data': torch.tensor(eeg_data, dtype=torch.float32),
             'label': torch.tensor(label_data, dtype=torch.float32)  # Directly convert
