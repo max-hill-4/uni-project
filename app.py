@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
  
 
-    dataset = data_io.dataloader.RawDataset(sleep_stages=["N1"], feature='coh') 
+    dataset = data_io.dataloader.RawDataset(sleep_stages=["N1"], feature='coh', hormones=['BDC1.1']) 
     
     train_size = int(0.8 * len(dataset))
     test_size = len(dataset) - train_size
@@ -30,7 +30,7 @@ if __name__ == '__main__':
     train_data = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=4, collate_fn=collate_fn)
     test_data = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=4, collate_fn=collate_fn)
     print("finished loading data!")
-    m = analysis.models.EEGCNN(filter_size=3, num_classes=12)
+    m = analysis.models.EEGCNN(filter_size=3, num_classes=1)
 
     a = analysis.train.model(m, train_data, test_data, iterations=5)
 

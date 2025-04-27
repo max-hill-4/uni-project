@@ -7,7 +7,7 @@ import pandas
 from features_io import features
 class RawDataset(Dataset):
 
-    def __init__(self, sleep_stages, transform=None, feature='coh'):
+    def __init__(self, sleep_stages, transform=None, feature='coh',hormones = ['BDC1']):
         self.root_dir = Path(r'/mnt/block/eeg')
         self.mat_files = [
             mat_file
@@ -17,7 +17,9 @@ class RawDataset(Dataset):
         self.transform = transform
         self.feature = feature
         self.df = pandas.read_csv(r'./raw_data/biomarkers.csv').dropna()
-        self.bdc_columns = ['BDC1'] + [f'BDC1.{i}' for i in range(1, 12)]
+        print(self.df.columns)
+        self.bdc_columns = hormones
+
 
         
     def __len__(self):
@@ -38,7 +40,7 @@ class RawDataset(Dataset):
         
 
         label_data = self.df.loc[self.df['Participant'] == participant, self.bdc_columns].to_numpy()
-        label_data = np.asarray(label_data, dtype=np.float64).squeeze()
+        label_data = np.asarray(label_data, dtype=np.float64).reshape(-1)
         if label_data.size == 0:
             #print(f'WARNING: {participant} has no labels!')
             return None
@@ -49,7 +51,6 @@ class RawDataset(Dataset):
 
         if self.transform:
             sample = self.transform(sample)
-        
         return sample
 
 # Example usage:

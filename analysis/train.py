@@ -13,16 +13,22 @@ class model():
         self.m.to(self.device)
 
     def train(self):
-        optimizer = torch.optim.Adam(self.m.parameters(), lr=0.01)
+        optimizer = torch.optim.Adam(self.m.parameters(), lr=0.00001)
         loss = 0
         self.m.train()
         for epoch in range(self.iterations):
             print(epoch, loss)
             for batch in self.train_data:
                 data, labels = batch['data'].to(self.device), batch['label'].to(self.device)
+                
                 optimizer.zero_grad()
+                
                 predictions = self.m(data)
-                loss = torch.nn.functional.mse_loss(predictions, labels)
+                
+                # Replace MSE loss with Huber Loss (SmoothL1Loss)
+                loss_fn = torch.nn.SmoothL1Loss()  # Huber Loss
+                loss = loss_fn(predictions, labels)
+    
                 loss.backward()
                 optimizer.step()
         

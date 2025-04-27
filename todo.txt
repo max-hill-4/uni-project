@@ -3,3 +3,5 @@ add more features - ideally modular. :3
 add comufusion matrix and r^2
 
 
+i want a script that lets me specify, features, sleep stage, hormone type
+possibly also ? -> loss function and optimiser ?
