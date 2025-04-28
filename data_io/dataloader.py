@@ -5,6 +5,7 @@ from scipy.io import loadmat
 import numpy as np
 from pathlib import Path
 import pandas 
+from torch.utils.data import Subset
 from features_io import features
 class RawDataset(Dataset):
 
@@ -38,7 +39,8 @@ class RawDataset(Dataset):
         
         sample = {
             'data': torch.tensor(eeg_data, dtype=torch.float32),
-            'label': torch.tensor(label_data, dtype=torch.float32)  # Directly convert
+            'label': torch.tensor(label_data, dtype=torch.float32),
+            'parp': participant
         }
 
         return sample
@@ -66,3 +68,36 @@ class RawDataset(Dataset):
             labels[participant] = values
             
         return labels
+
+def participant_split(dataset, train_proportion):
+
+
+    # Get unique participants with valid labels
+    participants = list(dataset.labels.keys())
+    num_participants = len(participants)
+    
+    # Use torch.randperm to shuffle participant indices
+    indices = torch.randperm(num_participants)
+    
+    # Calculate number of training participants
+    num_train = int(train_proportion * num_participants)
+    
+    # Split participants
+    train_indices = indices[:num_train]
+    test_indices = indices[num_train:]
+
+    train_participants = [participants[i] for i in train_indices]
+    test_participants = [participants[i] for i in test_indices]
+    print(f'Traning Parps{train_participants}, Testing Parps {test_participants}')
+    train_sample_indices = [
+        idx for idx, participant in enumerate(dataset.mat_files)
+        if str(participant)[24] in train_participants
+    ]
+    test_sample_indices = [
+        idx for idx, participant in enumerate(dataset.mat_files)
+        if str(participant)[24] in test_participants
+    ]
+    train_subset = Subset(dataset, train_sample_indices)
+    test_subset = Subset(dataset, test_sample_indices)
+
+    return train_subset, test_subset

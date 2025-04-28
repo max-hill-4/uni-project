@@ -18,14 +18,10 @@ if __name__ == '__main__':
         labels = torch.stack(filtered_batch['label'])
         return {'data': data, 'label': labels}
 
-# Usage
+    dataset = data_io.dataloader.RawDataset(sleep_stages=["N1", "N2"], feature='coh', hormones=['BDC1', 'BDC1.1', 'BDC1.2', 'BDC1.3']) 
 
-    dataset = data_io.dataloader.RawDataset(sleep_stages=["N1"], feature='coh', hormones=['BDC1', 'BDC1.1', 'BDC1.2', 'BDC1.3']) 
-    
-    train_size = int(0.8 * len(dataset))
-    test_size = len(dataset) - train_size
+    train_dataset, test_dataset = data_io.dataloader.participant_split(dataset, 0.8) 
 
-    train_dataset, test_dataset = random_split(dataset, [train_size, test_size]) 
     
     train_data = DataLoader(train_dataset, batch_size=4, shuffle=True, num_workers=4, collate_fn=collate_fn)    
     test_data = DataLoader(train_dataset, batch_size=4, shuffle=True, num_workers=4, collate_fn=collate_fn)

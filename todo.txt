@@ -2,5 +2,13 @@ add more features - ideally modular. :3
 
 i want a script that lets me specify, features, sleep stage, hormone type
 possibly also ? -> loss function and optimiser ?
+ 
+get data for christpos ?! 
 
-change random splitting to group splitting
+Traning Parps['Q', 'B'], Testing Parps ['R', 'V', 'X', 'E', 'M', 'H', 'Y', 'A', 'G', 'N', 'U', 'L', 'F', 'W', 'J', 'D', 'P', 'Z', 'C', 'K']
+636 5908
+cpu
+tensor(0.0006, grad_fn=<MseLossBackward0>)
+tensor(0.0019, grad_fn=<MseLossBackward0>)
+tensor(0.0008, grad_fn=<MseLossBackward0>)
+{0: 0.9811050891876221, 1: 0.9491047263145447, 2: 0.9647483825683594, 3: 0.7223336696624756}
