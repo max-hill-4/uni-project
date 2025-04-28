@@ -41,7 +41,6 @@ class RawDataset(Dataset):
         label_data = self.df.loc[self.df['Participant'] == participant, self.bdc_columns].to_numpy()
         label_data = np.asarray(label_data, dtype=np.float64).reshape(-1)
         if label_data.size == 0:
-            #print(f'WARNING: {participant} has no labels!')
             return None
         sample = {
             'data': torch.tensor(eeg_data, dtype=torch.float32),

@@ -3,6 +3,6 @@ scipy
 mne
 mne-connectivity
 torch
+torchmetrics
 pandas
-oci
 scikit-learn

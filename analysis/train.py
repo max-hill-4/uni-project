@@ -3,7 +3,7 @@ from torch.nn.functional import mse_loss
 from torchmetrics.functional import r2_score
 import numpy as np
 class model():
-    def __init__(self, m, train_data, test_data, iterations=200):
+    def __init__(self, m, train_data, test_data, iterations=10):
         self.m = m
         self.train_data = train_data
         self.test_data = test_data
