@@ -1,5 +1,6 @@
 import torch
 from torch.utils.data import Dataset, DataLoader
+from sklearn.preprocessing import MinMaxScaler
 from scipy.io import loadmat
 import numpy as np
 from pathlib import Path
@@ -7,56 +8,61 @@ import pandas
 from features_io import features
 class RawDataset(Dataset):
 
-    def __init__(self, sleep_stages, transform=None, feature='coh',hormones = ['BDC1']):
+    def __init__(self, sleep_stages, feature='coh',hormones = ['BDC1']):
         self.root_dir = Path(r'/mnt/block/eeg')
         self.mat_files = [
             mat_file
             for stage in sleep_stages
             for mat_file in (self.root_dir / stage).glob('*.mat')
         ]
-        self.transform = transform
         self.feature = feature
-        self.df = pandas.read_csv(r'./raw_data/biomarkers.csv').dropna()
         self.bdc_columns = hormones
-
-
-        
+        self.labels = self._load_labels()
     def __len__(self):
         return len(self.mat_files)
     
     def __getitem__(self, idx):
-        if torch.is_tensor(idx):
-            idx = idx.tolist()
+
         file = self.mat_files[idx]
-        participant = str(file)[24]
         eeg_data = loadmat(file)
         
         if self.feature == 'coh':
             eeg_data = features.Coherance.coh(eeg_data)
-            
-        if self.feature == 'sl':
-            eeg_data = features.SynchronizationLikelihood.compute_synchronization_likelihood(eeg_data)
         
-
-        label_data = self.df.loc[self.df['Participant'] == participant, self.bdc_columns].to_numpy()
-        label_data = np.asarray(label_data, dtype=np.float64).reshape(-1)
-        if label_data.size == 0:
+        participant = str(file)[24]
+        if participant in self.labels:
+            label_data = self.labels[participant]
+        else:
             return None
+        
         sample = {
             'data': torch.tensor(eeg_data, dtype=torch.float32),
             'label': torch.tensor(label_data, dtype=torch.float32)  # Directly convert
         }
 
-        if self.transform:
-            sample = self.transform(sample)
         return sample
 
-# Example usage:
-if __name__ == '__main__':
+    def _load_labels(self, filepath = (r'./raw_data/biomarkers.csv'), scaler = 'minmax'):
+        "Needs to return dictionary of shape {particpant: {BDC : [nparray of shape [12]], ...}, ...}"   
+        labels = {}
+        df = pandas.read_csv(r'./raw_data/biomarkers.csv').dropna()
 
-    dataset = RawDataset(root_dir='./raw_data')
-    
-    dataloader = DataLoader(dataset, batch_size=32, shuffle=True, num_workers=4)
-    for batch in dataloader:
-        data, labels = batch['data'], batch['label']
-        print(data.shape, labels.shape)
+        scaler = MinMaxScaler()
+        # Might be a good idea to not scale to complete 0 and 1 ?
+        # feature_range=(-1, 1)
+
+        # Scale the hormone columns in the DataFrame
+        df[self.bdc_columns] = scaler.fit_transform(df[self.bdc_columns])
+
+        labels = {}
+        participants = df['Participant'].unique()
+        print(participants)
+        for participant in participants:
+            values = []
+            participant_df = df[df['Participant'] == participant]
+            for hormone in self.bdc_columns:
+                hormone_value = participant_df[hormone].to_numpy().flatten()[0]
+                values.append(hormone_value)
+            labels[participant] = values
+            
+        return labels
