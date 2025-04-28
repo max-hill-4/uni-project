@@ -56,7 +56,6 @@ class RawDataset(Dataset):
 
         labels = {}
         participants = df['Participant'].unique()
-        print(participants)
         for participant in participants:
             values = []
             participant_df = df[df['Participant'] == participant]

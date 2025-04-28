@@ -3,6 +3,4 @@ add more features - ideally modular. :3
 i want a script that lets me specify, features, sleep stage, hormone type
 possibly also ? -> loss function and optimiser ?
 
-implement seperate loss class, can be used for training + evaluation.
-
-need to normalise all my labels so i can do multi reggresion ! 
+change random splitting to group splitting
