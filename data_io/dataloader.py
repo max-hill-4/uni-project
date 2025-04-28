@@ -18,6 +18,7 @@ class RawDataset(Dataset):
         self.feature = feature
         self.bdc_columns = hormones
         self.labels = self._load_labels()
+
     def __len__(self):
         return len(self.mat_files)
     
