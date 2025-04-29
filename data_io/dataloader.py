@@ -9,7 +9,7 @@ from features_io import FeatureExtractor
 
 class RawDataset(Dataset):
 
-    def __init__(self, sleep_stages, feature_name='coh',hormones = ['BDC1']):
+    def __init__(self, sleep_stages, feature_name=['coh'], hormones = ['BDC1']):
         self.root_dir = Path(r'/mnt/block/eeg')
         self.mat_files = [
             mat_file
@@ -75,6 +75,7 @@ def participant_split(dataset, train_proportion):
     num_participants = len(participants)
     
     # Use torch.randperm to shuffle participant indices
+    torch.manual_seed(42)
     indices = torch.randperm(num_participants)
     
     # Calculate number of training participants

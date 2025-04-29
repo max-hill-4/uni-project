@@ -1,5 +1,16 @@
 add more features - ideally modular. :3 
 
+do alphacoh
+do [alphacoh, betapdc]
+do [alphapdc, betacoh, deltacoh]
+
+differnet sleep stages want differnet features ?
+i think best is to first implement fckn all of them
+then later on dynamically choose depending on what ss it is 
+to reduce training time ? / reduce model complexity.
+
+
+
 i want a script that lets me specify, features, sleep stage, hormone type
 possibly also ? -> loss function and optimiser ?
  

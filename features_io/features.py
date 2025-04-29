@@ -1,17 +1,30 @@
 import mne
 from mne_connectivity import spectral_connectivity_epochs as sp
-from numpy import transpose
+from numpy import transpose, ceil, zeros, triu_indices,tril_indices
 from mne import create_info
 from mne.io import RawArray
 from mne.channels import make_standard_montage
 
-class FeatureExtractor:
-    def __init__(self, feature='coh'):
-        self.feature = feature
 
+class FeatureExtractor:
+    def __init__(self, feature=['coh','coh'], freqs = ['alpha', 'beta']): #could change to dict ? kley:value pariut tehcincally!
+        self.features = feature
+        self.freqs = freqs
+        print(self.features, self.freqs)
+        
     def get(self, data):
-        if self.feature == 'coh':
-            return self._coh(data)
+        
+        matrices = []
+        
+        for feature in self.features:
+            if feature.startswith('coh'):
+                matrices.append(self._coh(data, self.freqs[len(matrices)]))
+            else:
+                raise ValueError(f"Unsupported feature: {feature}")
+        
+        # Stack results spatially
+
+        return FeatureExtractor._stack_matrices(matrices)
 
     @staticmethod
     def _epochtoRawArray(data: dict):
@@ -28,12 +41,43 @@ class FeatureExtractor:
         return raw
 
     @staticmethod
-    def _coh(data_input: dict, freq='alpha'):
+    def _coh(data_input: dict, freq='beta'):
         data = FeatureExtractor._epochtoRawArray(data_input)
         events = mne.make_fixed_length_events(data, duration=10, overlap=0.0)
         epochs = mne.Epochs(data, events, tmin=0, tmax=10, baseline=None, preload=True, verbose=False)
-        con = sp(method='coh', data=epochs, fmin=4, fmax=8, faverage=True, verbose=False)
+        
+        if freq == 'alpha':
+            con = sp(method='coh', data=epochs, fmin=4, fmax=8, faverage=True, verbose=False)
+        
+        elif freq == 'beta':
+            con = sp(method='coh', data=epochs, fmin=13, fmax=30, faverage=True, verbose=False)
+        else:
+            raise ValueError("Frequency must be either 'alpha' or 'beta'.")
+        
         data = con.get_data(output='dense')
         data = transpose(data, (2, 0, 1))  # PyTorch uses channel-first format
         return data
 
+    @staticmethod
+    def _stack_matrices(matrices):
+        if not matrices:
+            raise ValueError("No matrices to stack.")
+        
+        n_matrices = len(matrices)
+        if n_matrices > 2:
+            raise ValueError("Only 1 or 2 matrices are supported for stacking.")
+        if n_matrices == 1:
+            return matrices[0]
+        
+        n_channels, height, width = matrices[0].shape
+        if height != 19 or width != 19 or n_channels != 1:
+            raise ValueError("Matrices must have shape [1, 19, 19].")
+        if matrices[1].shape != (n_channels, height, width):
+            raise ValueError("All matrices must have the same shape.")
+        
+        output = zeros((1, 19, 19))
+        lower_tri = tril_indices(19, k=-1)
+        output[0][lower_tri] = matrices[0][0][lower_tri]
+        upper_tri = triu_indices(19, k=1)
+        output[0][upper_tri] = matrices[1][0][lower_tri]
+        return output
