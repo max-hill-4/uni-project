@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
     a.train()
     p = a.predict()
-    for i in len(p[0]):
+    for i in range(len(p[0])):
         print("PREDICTED :", p[0][i],"TRUTH", p[1][i])
     l = a.mse_per_class(*p)
     e = a.r2_per_class(*p)
