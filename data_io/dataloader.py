@@ -39,7 +39,6 @@ class RawDataset(Dataset):
         sample = {
             'data': torch.tensor(eeg_data, dtype=torch.float32),
             'label': torch.tensor(label_data, dtype=torch.float32),
-            'parp': participant
         }
 
         return sample

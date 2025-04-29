@@ -36,3 +36,4 @@ class FeatureExtractor:
         data = con.get_data(output='dense')
         data = transpose(data, (2, 0, 1))  # PyTorch uses channel-first format
         return data
+
