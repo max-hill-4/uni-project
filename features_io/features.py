@@ -7,21 +7,25 @@ from mne.channels import make_standard_montage
 
 
 class FeatureExtractor:
-    def __init__(self, feature, freqs): #could change to dict ? kley:value pariut tehcincally!
-        self.features = feature
-        self.freqs = freqs
-        print(self.features, self.freqs)
-        
+    def __init__(self, feature_freq): #could change to dict ? kley:value pariut tehcincally!
+        self.feature_freq = feature_freq
+        print(feature_freq) 
+   
     def get(self, data):
         
         matrices = []
         
-        for feature in self.features:
-            if feature.startswith('coh'):
-                matrices.append(self._coh(data, self.freqs[len(matrices)]))
+        for pair in self.feature_freq:
+            feature, freq = next(iter(pair.items()))
+            if feature == 'coh':
+                matrices.append(self._coh(data, freq))
             else:
                 raise ValueError(f"Unsupported feature: {feature}")
         
+        
+        # Stack results spatially
+        return self._stack_matrices(matrices)
+    
         # Stack results spatially
 
         return FeatureExtractor._stack_matrices(matrices)

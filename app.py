@@ -19,7 +19,8 @@ def collate_fn(batch):
 
 if __name__ == '__main__':
 
-    dataset = data_io.dataloader.RawDataset(sleep_stages=["N1"], feature_name=['coh'], freqs = ['alpha'], hormones = ['BDC1'] + [f'BDC1.{i}' for i in range(1, 12)]) 
+    feature_freq = [{'coh' : 'alpha'}, { 'coh' : 'alpha' }]
+    dataset = data_io.dataloader.RawDataset(sleep_stages=["N1"], feature_freq=feature_freq, hormones = ['BDC1'] + [f'BDC1.{i}' for i in range(1, 12)]) 
 
     train_dataset, test_dataset = data_io.dataloader.participant_split(dataset, 0.8) 
     
