@@ -22,13 +22,9 @@ class FeatureExtractor:
             else:
                 raise ValueError(f"Unsupported feature: {feature}")
         
-        
-        # Stack results spatially
         return self._stack_matrices(matrices)
+        
     
-        # Stack results spatially
-
-        return FeatureExtractor._stack_matrices(matrices)
 
     @staticmethod
     def _epochtoRawArray(data: dict):
@@ -75,20 +71,38 @@ class FeatureExtractor:
             raise ValueError("No matrices to stack.")
         
         n_matrices = len(matrices)
-        if n_matrices > 2:
-            raise ValueError("Only 1 or 2 matrices are supported for stacking.")
-        if n_matrices == 1:
-            return matrices[0]
+        max_channels = 5  # Adjust as needed
         
-        n_channels, height, width = matrices[0].shape
-        if height != 19 or width != 19 or n_channels != 1:
-            raise ValueError("Matrices must have shape [1, 19, 19].")
-        if matrices[1].shape != (n_channels, height, width):
-            raise ValueError("All matrices must have the same shape.")
+        # Validate shapes
+        for mat in matrices:
+            if mat.shape != (1, 19, 19):
+                raise ValueError(f"All matrices must be [1, 19, 19]. Got {mat.shape}")
         
-        output = zeros((1, 19, 19))
+        # Calculate output channels (pairs + remaining singles)
+        n_pairs = n_matrices // 2
+        n_singles = n_matrices % 2
+        total_channels = n_pairs + n_singles
+        
+        if total_channels > max_channels:
+            raise ValueError(f"Max {max_channels} channels allowed. Got {total_channels}.")
+        
+        output = zeros((total_channels, 19, 19))
         lower_tri = tril_indices(19, k=-1)
-        output[0][lower_tri] = matrices[0][0][lower_tri]
         upper_tri = triu_indices(19, k=1)
-        output[0][upper_tri] = matrices[1][0][lower_tri]
-        return output
+        
+        # Process pairs
+        for i in range(n_pairs):
+            lower_mat = matrices[2*i][0]    # [19, 19]
+            upper_mat = matrices[2*i+1][0]  # [19, 19]
+            
+            # Combine into one channel
+            output[i][lower_tri] = lower_mat[lower_tri]
+            output[i][upper_tri] = upper_mat[lower_tri]
+        
+            print("UPPER MATRIX UPPER UPPER ! : ", output[i][upper_tri])
+            print("LOWER MATRIX LOWER LOWER! : ", output[i][lower_tri])
+        # Process last unpaired matrix (if odd count)
+        if n_singles > 0:
+            output[-1] = matrices[-1][0]  # Full matrix in last channel
+        print(output.shape)
+        return output  # Shape: [total_channels, 19, 19]
