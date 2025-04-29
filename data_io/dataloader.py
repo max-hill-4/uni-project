@@ -75,7 +75,7 @@ def participant_split(dataset, train_proportion):
     num_participants = len(participants)
     
     # Use torch.randperm to shuffle participant indices
-    torch.manual_seed(42)
+    torch.manual_seed(2)
     indices = torch.randperm(num_participants)
     
     # Calculate number of training participants
@@ -87,7 +87,9 @@ def participant_split(dataset, train_proportion):
 
     train_participants = [participants[i] for i in train_indices]
     test_participants = [participants[i] for i in test_indices]
+    
     print(f'Traning Parps{train_participants}, Testing Parps {test_participants}')
+    
     train_sample_indices = [
         idx for idx, participant in enumerate(dataset.mat_files)
         if str(participant)[24] in train_participants
