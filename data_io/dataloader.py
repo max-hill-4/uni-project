@@ -9,14 +9,14 @@ from features_io import FeatureExtractor
 
 class RawDataset(Dataset):
 
-    def __init__(self, sleep_stages, feature_name=['coh'], hormones = ['BDC1']):
+    def __init__(self, sleep_stages, feature_name, freqs, hormones):
         self.root_dir = Path(r'/mnt/block/eeg')
         self.mat_files = [
             mat_file
             for stage in sleep_stages
             for mat_file in (self.root_dir / stage).glob('*.mat')
         ]
-        self.feature_extractor = FeatureExtractor(feature_name)
+        self.feature_extractor = FeatureExtractor(feature_name, freqs)
         self.bdc_columns = hormones
         self.labels = self._load_labels()
 

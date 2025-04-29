@@ -7,7 +7,7 @@ from mne.channels import make_standard_montage
 
 
 class FeatureExtractor:
-    def __init__(self, feature=['coh','coh'], freqs = ['alpha', 'beta']): #could change to dict ? kley:value pariut tehcincally!
+    def __init__(self, feature, freqs): #could change to dict ? kley:value pariut tehcincally!
         self.features = feature
         self.freqs = freqs
         print(self.features, self.freqs)
@@ -41,18 +41,25 @@ class FeatureExtractor:
         return raw
 
     @staticmethod
-    def _coh(data_input: dict, freq='beta'):
+    def _coh(data_input: dict, freq):
         data = FeatureExtractor._epochtoRawArray(data_input)
         events = mne.make_fixed_length_events(data, duration=10, overlap=0.0)
         epochs = mne.Epochs(data, events, tmin=0, tmax=10, baseline=None, preload=True, verbose=False)
         
-        if freq == 'alpha':
-            con = sp(method='coh', data=epochs, fmin=4, fmax=8, faverage=True, verbose=False)
-        
-        elif freq == 'beta':
-            con = sp(method='coh', data=epochs, fmin=13, fmax=30, faverage=True, verbose=False)
-        else:
-            raise ValueError("Frequency must be either 'alpha' or 'beta'.")
+                # Define frequency bands
+        FREQ_BANDS = {
+            'delta': (1, 4),
+            'theta': (4, 8),
+            'alpha': (8, 13),
+            'beta': (13, 30),
+            'gamma': (30, 45)
+        }
+
+        # Compute coherence based on frequency band
+        if freq not in FREQ_BANDS:
+            raise ValueError(f"Frequency must be one of: {', '.join(FREQ_BANDS.keys())}.")
+        fmin, fmax = FREQ_BANDS[freq]
+        con = sp(method='coh', data=epochs, fmin=fmin, fmax=fmax, faverage=True, verbose=False)
         
         data = con.get_data(output='dense')
         data = transpose(data, (2, 0, 1))  # PyTorch uses channel-first format
