@@ -1,1 +1,1 @@
-import features_io.features
+from features_io.features import FeatureExtractor

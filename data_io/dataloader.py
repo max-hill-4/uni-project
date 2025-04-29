@@ -1,22 +1,22 @@
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset
 from sklearn.preprocessing import MinMaxScaler
 from scipy.io import loadmat
-import numpy as np
 from pathlib import Path
 import pandas 
 from torch.utils.data import Subset
-from features_io import features
+from features_io import FeatureExtractor
+
 class RawDataset(Dataset):
 
-    def __init__(self, sleep_stages, feature='coh',hormones = ['BDC1']):
+    def __init__(self, sleep_stages, feature_name='coh',hormones = ['BDC1']):
         self.root_dir = Path(r'/mnt/block/eeg')
         self.mat_files = [
             mat_file
             for stage in sleep_stages
             for mat_file in (self.root_dir / stage).glob('*.mat')
         ]
-        self.feature = feature
+        self.feature_extractor = FeatureExtractor(feature_name)
         self.bdc_columns = hormones
         self.labels = self._load_labels()
 
@@ -28,8 +28,7 @@ class RawDataset(Dataset):
         file = self.mat_files[idx]
         eeg_data = loadmat(file)
         
-        if self.feature == 'coh':
-            eeg_data = features.Coherance.coh(eeg_data)
+        eeg_data = self.feature_extractor.get(eeg_data) 
         
         participant = str(file)[24]
         if participant in self.labels:

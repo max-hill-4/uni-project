@@ -4,24 +4,24 @@ import analysis
 from torch.utils.data import DataLoader, random_split
 from torch.utils.data.dataloader import default_collate
 import torch
+
+def collate_fn(batch):
+    filtered_batch = {'data': [], 'label': []}
+
+    for sample in batch:
+        if sample is not None:
+            filtered_batch['data'].append(sample['data'])
+            filtered_batch['label'].append(sample['label'])
+        
+    data = torch.stack(filtered_batch['data'])
+    labels = torch.stack(filtered_batch['label'])
+    return {'data': data, 'label': labels}
+
 if __name__ == '__main__':
 
-    def collate_fn(batch):
-        filtered_batch = {'data': [], 'label': []}
-
-        for sample in batch:
-            if sample is not None:
-                filtered_batch['data'].append(sample['data'])
-                filtered_batch['label'].append(sample['label'])
-            
-        data = torch.stack(filtered_batch['data'])
-        labels = torch.stack(filtered_batch['label'])
-        return {'data': data, 'label': labels}
-
-    dataset = data_io.dataloader.RawDataset(sleep_stages=["N1", "N2"], feature='coh', hormones=['BDC1', 'BDC1.1', 'BDC1.2', 'BDC1.3']) 
+    dataset = data_io.dataloader.RawDataset(sleep_stages=["N1"], feature_name='coh', hormones=['BDC1', 'BDC1.1', 'BDC1.2', 'BDC1.3']) 
 
     train_dataset, test_dataset = data_io.dataloader.participant_split(dataset, 0.8) 
-
     
     train_data = DataLoader(train_dataset, batch_size=4, shuffle=True, num_workers=4, collate_fn=collate_fn)    
     test_data = DataLoader(train_dataset, batch_size=4, shuffle=True, num_workers=4, collate_fn=collate_fn)
