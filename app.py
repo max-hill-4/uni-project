@@ -1,7 +1,7 @@
 import data_io
 import data_io.dataloader
 import analysis
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader
 from torch.utils.data.dataloader import default_collate
 import torch
 
