@@ -99,10 +99,7 @@ class FeatureExtractor:
             output[i][lower_tri] = lower_mat[lower_tri]
             output[i][upper_tri] = upper_mat[lower_tri]
         
-            print("UPPER MATRIX UPPER UPPER ! : ", output[i][upper_tri])
-            print("LOWER MATRIX LOWER LOWER! : ", output[i][lower_tri])
         # Process last unpaired matrix (if odd count)
         if n_singles > 0:
             output[-1] = matrices[-1][0]  # Full matrix in last channel
-        print(output.shape)
         return output  # Shape: [total_channels, 19, 19]

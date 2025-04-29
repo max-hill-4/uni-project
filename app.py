@@ -19,17 +19,17 @@ def collate_fn(batch):
 
 if __name__ == '__main__':
 
-    feature_freq = [{'coh' : 'alpha'}, { 'coh' : 'beta' }, {'coh' : 'theta'}]
-    dataset = data_io.dataloader.RawDataset(sleep_stages=["N2"], feature_freq=feature_freq, hormones = ['BDC1'] + [f'BDC1.{i}' for i in range(1, 12)]) 
+    feature_freq = [{'coh' : 'alpha'}, { 'coh' : 'beta' }, {'coh' : 'theta'}, {'coh' : 'delta'}, {'coh' : 'gamma'}]
+    dataset = data_io.dataloader.RawDataset(sleep_stages=["N1"], feature_freq=feature_freq, hormones = ['BDC1'] + [f'BDC1.{i}' for i in range(1, 12)]) 
 
     train_dataset, test_dataset = data_io.dataloader.participant_split(dataset, 0.8) 
     
     train_data = DataLoader(train_dataset, batch_size=4, shuffle=True, num_workers=4, collate_fn=collate_fn)    
     test_data = DataLoader(test_dataset, batch_size=4, shuffle=True, num_workers=4, collate_fn=collate_fn)
     
-    m = analysis.models.EEGCNN(filter_size=3, num_classes=12)
+    m = analysis.models.EEGCNN(filter_size=3, num_classes=12, in_channels=3)
 
-    a = analysis.train.model(m, train_data, test_data, iterations=5)
+    a = analysis.train.model(m, train_data, test_data, iterations=10)
 
     a.train()
     p = a.predict()
