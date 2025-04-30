@@ -115,46 +115,67 @@ class FeatureExtractor:
 
         import numpy as np
         from statsmodels.tsa.vector_ar.var_model import VAR
-        from scipy.linalg import inv
+        from scipy.signal import resample
         data = data_input['current_epoch']
         sampling_rate = 500
         freq_band = [8, 12]
+        n_samples = 200
+        n_channels, _ = data.shape
         
-        n_channels, n_samples = data.shape
-    
+        # Downsample data
+        data_downsampled = resample(data, n_samples, axis=1)
+        new_sampling_rate = sampling_rate * n_samples / data.shape[1]
+        
         # Fit minimal MVAR model
-        model = VAR(data.T)
+        model = VAR(data_downsampled.T)
         results = model.fit(order)
         ar_coefs = results.coefs  # Shape: (order, n_channels, n_channels)
-        order = 1
-        n_bins = 1
-        # Select minimal frequency bins in the band
+        
+        # Single frequency (midpoint of band)
         f_min, f_max = freq_band
-        freqs = np.linspace(f_min, f_max, n_bins) / sampling_rate  # Normalized frequencies
+        f = (f_min + f_max) / 2 / new_sampling_rate  # Normalized frequency
         
-        # Initialize PDC
-        pdc = np.zeros((n_channels, n_channels, n_bins), dtype=np.float64)
+        # Fourier transform of AR coefficients
+        A_f = np.eye(n_channels, dtype=np.complex64)
+        for lag in range(order):
+            A_f -= ar_coefs[lag] * np.exp(-2j * np.pi * f * (lag + 1))
         
-        # Vectorized PDC computation for all frequencies
-        for f_idx, f in enumerate(freqs):
-            # Fourier transform of AR coefficients
-            A_f = np.eye(n_channels, dtype=np.complex64)  # Lower precision for speed
-            for lag in range(order):
-                A_f -= ar_coefs[lag] * np.exp(-2j * np.pi * f * (lag + 1))
-            
-            # Inverse of A(f)
-            A_f_inv = inv(A_f)
-            
-            # Vectorized PDC: |A_f[i,j]| / sqrt(sum_k |A_f[k,j]|^2)
-            abs_A_f = np.abs(A_f)
-            denominators = np.sqrt(np.sum(abs_A_f**2, axis=0))
-            pdc[:, :, f_idx] = abs_A_f / denominators[np.newaxis, :]
-            
-            # Zero diagonal
-            np.fill_diagonal(pdc[:, :, f_idx], 0)
+        # Vectorized PDC
+        abs_A_f = np.abs(A_f)
+        denominators = np.sqrt(np.sum(abs_A_f**2, axis=0))
+        pdc = abs_A_f / denominators[np.newaxis, :]
+        np.fill_diagonal(pdc, 0)
         
-        # Average over frequency bins
-        pdc_band = np.mean(pdc, axis=2)  # Shape: (n_channels, n_channels)
-        pdc_out = pdc_band[np.newaxis, :, :]  # Shape: (1, n_channels, n_channels)
-        print('pdc calcd.')
-        return pdc_out
+        # Output shape (1, n_channels, n_channels)
+        return pdc[np.newaxis, :, :].astype(np.float32)
+
+    @staticmethod
+    def compute_lagged_correlation(data, lag=1, n_samples=1000):
+        """
+        Compute lagged correlation as a fast proxy for directed connectivity.
+        
+        Parameters:
+        - data: numpy array, shape (n_channels, n_samples)
+        - lag: time lag for correlation (in samples, e.g., 1)
+        - n_samples: number of samples after downsampling (e.g., 1000)
+        
+        Returns:
+        - corr: numpy array, shape (1, n_channels, n_channels), lagged correlation matrix
+        """
+        n_channels, _ = data.shape
+        
+        # Downsample data
+        data_downsampled = resample(data, n_samples, axis=1)
+        
+        # Normalize data
+        data_norm = (data_downsampled - np.mean(data_downsampled, axis=1, keepdims=True)) / np.std(data_downsampled, axis=1, keepdims=True)
+        
+        # Compute lagged correlation
+        corr = np.zeros((n_channels, n_channels), dtype=np.float32)
+        for i in range(n_channels):
+            for j in range(n_channels):
+                if i != j:
+                    # Correlation between data[i, t] and data[j, t-lag]
+                    corr[i, j] = np.corrcoef(data_norm[i, lag:], data_norm[j, :-lag])[0, 1]
+        
+        return corr[np.newaxis, :, :]
