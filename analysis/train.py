@@ -15,6 +15,9 @@ class model():
     def train(self):
         optimizer = torch.optim.Adam(self.m.parameters(), lr=0.001)
         loss = 0
+        loss_fn = torch.nn.MSELoss()
+        all_predictions = []
+        all_labels = []
         self.m.train()
         for epoch in range(self.iterations):
             for batch in self.train_data:
@@ -25,12 +28,11 @@ class model():
                 predictions = self.m(data)
                 
                 #loss_fn = torch.nn.SmoothL1Loss()  # Huber Loss
-                loss_fn = torch.nn.MSELoss()
                 loss = loss_fn(predictions, labels)
                 loss.backward()
-                optimizer.step()
-            print(loss)
-         
+                optimizer.step()               
+                print(r2_score(predictions, labels))
+   
     def predict(self):
         all_predictions = []
         all_labels = []
@@ -75,7 +77,7 @@ class model():
 
         assert predictions.shape == labels.shape and len(predictions.shape) == 2, \
             "Inputs must be 2D tensors of same shape"
-        
+         
         num_classes = predictions.shape[1]
         r2_values = r2_score(predictions, labels, multioutput='raw_values')
         

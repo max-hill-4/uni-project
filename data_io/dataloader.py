@@ -67,38 +67,69 @@ class RawDataset(Dataset):
             
         return labels
 
-def participant_split(dataset, train_proportion):
-
-
-    # Get unique participants with valid labels
+def participant_kfold_split(dataset, n_splits=5, shuffle=True, random_state=None):
+    """
+    Returns K folds with participant-wise separation
+    
+    Args:
+        dataset: Your dataset object (must have labels/mat_files accessible)
+        n_splits: Number of folds (default: 5)
+        shuffle: Whether to shuffle participants (default: True)
+        random_state: Seed for reproducibility (default: None)
+        
+    Returns:
+        List of K folds, each containing (train_subset, test_subset)
+    """
+    torch.manual_seed(42)
+    # Get unique participants
     participants = list(dataset.labels.keys())
     num_participants = len(participants)
+    # Shuffle participants if needed
+    if shuffle:
+        if random_state is not None:
+            torch.manual_seed(random_state)
+        indices = torch.randperm(num_participants).tolist()
+        participants = [participants[i] for i in indices]
     
-    # Use torch.randperm to shuffle participant indices
-    torch.manual_seed(2)
-    indices = torch.randperm(num_participants)
+    # Create folds
+    folds = []
+    for fold in range(n_splits):
+        # Calculate test participant range for this fold
+        fold_size = num_participants // n_splits
+        test_start = fold * fold_size
+        test_end = (fold + 1) * fold_size if fold != n_splits - 1 else num_participants
+        
+        # Split participants
+        test_participants = participants[test_start:test_end]
+        train_participants = [p for p in participants if p not in test_participants]
+        
+        # Get sample indices
+        train_indices = [
+            idx for idx, p in enumerate(dataset.mat_files) 
+            if str(p)[24] in train_participants
+        ]
+        test_indices = [
+            idx for idx, p in enumerate(dataset.mat_files) 
+            if str(p)[24] in test_participants
+        ]
+        
+        folds.append((
+            Subset(dataset, train_indices),
+            Subset(dataset, test_indices),
+            train_participants,  # Optional: return participant lists
+            test_participants    # for tracking
+        ))
     
-    # Calculate number of training participants
-    num_train = int(train_proportion * num_participants)
-    
-    # Split participants
-    train_indices = indices[:num_train]
-    test_indices = indices[num_train:]
+    return folds
 
-    train_participants = [participants[i] for i in train_indices]
-    test_participants = [participants[i] for i in test_indices]
-    
-    print(f'Traning Parps{train_participants}, Testing Parps {test_participants}')
-    
-    train_sample_indices = [
-        idx for idx, participant in enumerate(dataset.mat_files)
-        if str(participant)[24] in train_participants
-    ]
-    test_sample_indices = [
-        idx for idx, participant in enumerate(dataset.mat_files)
-        if str(participant)[24] in test_participants
-    ]
-    train_subset = Subset(dataset, train_sample_indices)
-    test_subset = Subset(dataset, test_sample_indices)
+def collate_fn(batch):
+    filtered_batch = {'data': [], 'label': []}
 
-    return train_subset, test_subset
+    for sample in batch:
+        if sample is not None:
+            filtered_batch['data'].append(sample['data'])
+            filtered_batch['label'].append(sample['label'])
+        
+    data = torch.stack(filtered_batch['data'])
+    labels = torch.stack(filtered_batch['label'])
+    return {'data': data, 'label': labels}

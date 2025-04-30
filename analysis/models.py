@@ -12,19 +12,29 @@ class EEGCNN(nn.Module):
         
         # Convolutional layers (now supports multi-channel input)
         self.conv = nn.Sequential(
-            nn.Conv2d(in_channels, 16, kernel_size=filter_size, padding=filter_size // 2),
+            # First Conv Block
+            nn.Conv2d(in_channels, 16, kernel_size=filter_size, padding=filter_size // 2, bias=False),  # Disabled bias
+            nn.BatchNorm2d(16),  # Added BatchNorm
             nn.ReLU(inplace=True),
-            nn.Conv2d(16, 32, kernel_size=filter_size, padding=filter_size // 2),
+            nn.Dropout(0.25),
+            
+            # Second Conv Block
+            nn.Conv2d(16, 32, kernel_size=filter_size, padding=filter_size // 2, bias=False),  # Disabled bias
+            nn.BatchNorm2d(32),  # Added BatchNorm
             nn.ReLU(inplace=True),
-            nn.MaxPool2d(2)  # Reduces spatial dims from 19x19 to 9x9
+            nn.MaxPool2d(2),  # Reduces spatial dims from 19x19 to 9x9
+            nn.Dropout(0.25)
         )
-        
+
         # Fully Connected Layers
         self.classifier = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(32 * 9 * 9, 256),
+            nn.Linear(32 * 9 * 9, 256, bias=False),  # Disabled bias
+            nn.BatchNorm1d(256),  # Added BatchNorm
             nn.ReLU(inplace=True),
-            nn.Linear(256, num_classes)
+            nn.Dropout(0.5),  # Increased dropout for FC layer (recommended)
+            nn.Linear(256, num_classes),
+            nn.Sigmoid()
         )
 
     def forward(self, x):
