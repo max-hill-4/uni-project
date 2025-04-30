@@ -1,4 +1,3 @@
-import mne
 from mne_connectivity import spectral_connectivity_epochs as sp
 from numpy import transpose, ceil, zeros, triu_indices,tril_indices
 from mne import create_info
@@ -9,6 +8,9 @@ import numpy as np
 import mne
 from mne.minimum_norm import make_inverse_operator, apply_inverse, apply_inverse_epochs
 from mne.datasets import sample
+import numpy as np
+from spectral_connectivity import Multitaper, Connectivity
+
 
 class FeatureExtractor:
     def __init__(self, feature_freq): #could change to dict ? kley:value pariut tehcincally!
@@ -47,8 +49,8 @@ class FeatureExtractor:
     @staticmethod
     def _coh(data_input: dict, freq):
         data = FeatureExtractor._epochtoRawArray(data_input)
-        events = mne.make_fixed_length_events(data, duration=2, overlap=0.0)
-        epochs = mne.Epochs(data, events, tmin=0, tmax=2, baseline=None, preload=True, verbose=False)
+        events = mne.make_fixed_length_events(data, duration=5, overlap=0.0)
+        epochs = mne.Epochs(data, events, tmin=0, tmax=5, baseline=None, preload=True, verbose=False)
         
                 # Define frequency bands
         FREQ_BANDS = {
@@ -107,64 +109,3 @@ class FeatureExtractor:
         if n_singles > 0:
             output[-1] = matrices[-1][0]  # Full matrix in last channel
         return output  # Shape: [total_channels, 19, 19]
-    
-    @staticmethod
-    def _sloreta(data_input: dict, freq: str):
-        """Compute sLORETA source estimates for a given frequency band.
-        
-        Parameters:
-        -----------
-        data_input : dict 
-            Input data dictionary (matches your PLI example format)
-        freq : str
-            Frequency band name ('delta', 'theta', etc.)
-            
-        Returns:
-        --------
-        stc_data : ndarray
-            Source time courses in shape (n_epochs, n_vertices)
-        """
-        # Convert input to MNE Raw (same as your PLI method)
-        data = FeatureExtractor._epochtoRawArray(data_input)
-        events = mne.make_fixed_length_events(data, duration=2, overlap=0.0)
-        epochs = mne.Epochs(data, events, tmin=0, tmax=2, baseline=None, preload=True, verbose=False)
-        
-        # Define frequency bands (identical to your PLI implementation)
-        FREQ_BANDS = {
-            'delta': (1, 4),
-            'theta': (4, 8),
-            'alpha': (8, 13),
-            'beta': (13, 30),
-            'gamma': (30, 45)
-        }
-        
-        if freq not in FREQ_BANDS:
-            raise ValueError(f"Frequency must be one of: {', '.join(FREQ_BANDS.keys())}.")
-        fmin, fmax = FREQ_BANDS[freq]
-        
-        # Band-pass filter the epochs (critical for sLORETA)
-        epochs_filtered = epochs.copy().filter(fmin, fmax, verbose=False)
-        
-        # --- sLORETA-specific steps ---
-        # 1. Load forward solution (replace with your own)
-        # This is a placeholder - you need your subject's head model!
-        fwd = mne.read_forward_solution('your_forward_model-fwd.fif')  
-        
-        # 2. Compute noise covariance from baseline
-        noise_cov = mne.compute_covariance(epochs_filtered, tmin=0, tmax=None, verbose=False)
-        
-        # 3. Create inverse operator
-        inv = mne.minimum_norm.make_inverse_operator(
-            epochs_filtered.info, fwd, noise_cov, loose=0.2, depth=0.8, verbose=False
-        )
-        
-        # 4. Apply sLORETA to each epoch
-        stcs = mne.minimum_norm.apply_inverse_epochs(
-            epochs_filtered, inv, lambda2=1./9., 
-            method="sLORETA", pick_ori=None, verbose=False
-        )
-        
-        # Convert to numpy array and average over time
-        stc_data = np.array([stc.data.mean(axis=1) for stc in stcs])  # (n_epochs, n_vertices)
-        
-        return stc_data

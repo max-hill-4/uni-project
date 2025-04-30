@@ -12,29 +12,17 @@ class EEGCNN(nn.Module):
         
         # Convolutional layers (now supports multi-channel input)
         self.conv = nn.Sequential(
-            # First Conv Block
-            nn.Conv2d(in_channels, 16, kernel_size=filter_size, padding=filter_size // 2, bias=False),  # Disabled bias
-            nn.BatchNorm2d(16),  # Added BatchNorm
+            nn.Conv2d(in_channels, 32, kernel_size=filter_size, padding=filter_size//2, bias=False),
             nn.ReLU(inplace=True),
-            nn.Dropout(0.25),
-            
-            # Second Conv Block
-            nn.Conv2d(16, 32, kernel_size=filter_size, padding=filter_size // 2, bias=False),  # Disabled bias
-            nn.BatchNorm2d(32),  # Added BatchNorm
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(2),  # Reduces spatial dims from 19x19 to 9x9
-            nn.Dropout(0.25)
+            nn.MaxPool2d(2),     # Reduces spatial dimensions
         )
-
-        # Fully Connected Layers
+        
+        # Classifier
         self.classifier = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(32 * 9 * 9, 256, bias=False),  # Disabled bias
-            nn.BatchNorm1d(256),  # Added BatchNorm
+            nn.Linear(32 * 9 * 9, 128, bias=False),  # Reduced capacity
             nn.ReLU(inplace=True),
-            nn.Dropout(0.5),  # Increased dropout for FC layer (recommended)
-            nn.Linear(256, num_classes),
-            nn.Sigmoid()
+            nn.Linear(128, num_classes)  # No activation for regression
         )
 
     def forward(self, x):

@@ -1,10 +1,11 @@
 import data_io.dataloader
 import analysis
 from torch.utils.data import DataLoader
-
+import seaborn as sns
+import matplotlib.pyplot as plt
 if __name__ == '__main__':
 
-    feature_freq = [{'coh' : 'alpha'}, { 'coh' : 'theta' }]
+    feature_freq = [{'coh' : 'alpha'}, { 'coh' : 'beta'}, {'coh' : 'delta'}, {'coh' : 'gamma'}]
     dataset = data_io.dataloader.RawDataset(sleep_stages=["N1"], feature_freq=feature_freq, hormones = ['BDC1']) 
 
     folds = data_io.dataloader.participant_kfold_split(dataset, 10)
@@ -13,18 +14,24 @@ if __name__ == '__main__':
     for fold in folds:
         train_dataset, test_dataset, tr_parps, te_parps = fold
         print(te_parps)
-        train_data = DataLoader(train_dataset, batch_size=64, shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)    
-        test_data = DataLoader(test_dataset, batch_size=64, shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)
+        train_data = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)    
+        test_data = DataLoader(test_dataset, batch_size=32, shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)
         
-        m = analysis.models.EEGCNN(filter_size=3, num_classes=1, in_channels=1)
+        m = analysis.models.EEGCNN(filter_size=3, num_classes=1, in_channels=2)
 
-        a = analysis.train.model(m, train_data, test_data, iterations=100)
+        a = analysis.train.model(m, train_data, test_data, iterations=5)
 
         a.train()
+
         p = a.predict()
         l = a.mse_per_class(*p)
         e = a.r2_per_class(*p)
         mse_results[te_parps[0]] = l
         r2_results[te_parps[0]] = e
-
+        print(mse_results , "\n")
         print(r2_results)
+        y_true , y_pred = p
+        residuals = y_true - y_pred
+        sns.histplot(residuals, kde=True)
+        plt.savefig(f'./eval/{te_parps[0]}_resisuals.png', dpi=300, bbox_inches='tight')
+        plt.close() 

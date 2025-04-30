@@ -1,7 +1,5 @@
-partial directed coherance ? :D 
-
-leave one out is probably the best idea 
-
 implement frontend
 
-might be a good idea to mess around with noramlisaiton ranges? like instead of 1 -> 10 ? for extra varianmce ? 
+use validation set for loss ?
+
+try different feature library? 

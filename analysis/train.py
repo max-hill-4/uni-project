@@ -1,7 +1,6 @@
 import torch
 from torch.nn.functional import mse_loss
 from torchmetrics.functional import r2_score
-import numpy as np
 class model():
     def __init__(self, m, train_data, test_data, iterations=10):
         self.m = m
@@ -15,9 +14,11 @@ class model():
     def train(self):
         optimizer = torch.optim.Adam(self.m.parameters(), lr=0.001)
         loss = 0
-        loss_fn = torch.nn.MSELoss()
         all_predictions = []
         all_labels = []
+        loss_fn = torch.nn.MSELoss()
+        #loss_fn = torch.nn.SmoothL1Loss() 
+        #loss_fn = torch.nn.HuberLoss(delta=0.5)
         self.m.train()
         for epoch in range(self.iterations):
             for batch in self.train_data:
@@ -26,13 +27,14 @@ class model():
                 optimizer.zero_grad()
                 
                 predictions = self.m(data)
-                
-                #loss_fn = torch.nn.SmoothL1Loss()  # Huber Loss
+                all_predictions.append(predictions.cpu())  # Store predictions on the CPU for evaluation later
+                all_labels.append(labels.cpu())  # Store labels on the CPU               
                 loss = loss_fn(predictions, labels)
                 loss.backward()
+                torch.nn.utils.clip_grad_norm_(self.m.parameters(), max_norm=1.0)
                 optimizer.step()               
-                print(r2_score(predictions, labels))
-   
+            print(loss)
+
     def predict(self):
         all_predictions = []
         all_labels = []
