@@ -20,7 +20,6 @@ if __name__ == '__main__':
         m = analysis.models.EEGCNN(filter_size=3, num_classes=1, in_channels=2)
 
         a = analysis.train.model(m, train_data, test_data, iterations=5)
-
         a.train()
 
         p = a.predict()

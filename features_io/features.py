@@ -4,12 +4,7 @@ from mne import create_info
 from mne.io import RawArray
 from mne.channels import make_standard_montage
 import numpy as np
-import numpy as np
 import mne
-from mne.minimum_norm import make_inverse_operator, apply_inverse, apply_inverse_epochs
-from mne.datasets import sample
-import numpy as np
-from spectral_connectivity import Multitaper, Connectivity
 
 
 class FeatureExtractor:
@@ -25,8 +20,10 @@ class FeatureExtractor:
             feature, freq = next(iter(pair.items()))
             if feature == 'coh':
                 matrices.append(self._coh(data, freq))
+            elif feature == 'pdc':
+                matrices.append(self._pdc(data, freq))
             else:
-                raise ValueError(f"Unsupported feature: {feature}")
+                raise ValueError(f"Unsupported feature: {feature == 'coh'}")
         
         return self._stack_matrices(matrices)
         
@@ -68,6 +65,7 @@ class FeatureExtractor:
         con = sp(method='pli', data=epochs, fmin=fmin, fmax=fmax, faverage=True, verbose=False)
         
         data = con.get_data(output='dense')
+        print('coh calcd')
         data = transpose(data, (2, 0, 1))  # PyTorch uses channel-first format
         return data
 
@@ -109,3 +107,54 @@ class FeatureExtractor:
         if n_singles > 0:
             output[-1] = matrices[-1][0]  # Full matrix in last channel
         return output  # Shape: [total_channels, 19, 19]
+    
+    @staticmethod
+    def _pdc(data_input: dict, freq):
+        order = 10
+        n_fft=512
+
+        import numpy as np
+        from statsmodels.tsa.vector_ar.var_model import VAR
+        from scipy.linalg import inv
+        data = data_input['current_epoch']
+        sampling_rate = 500
+        freq_band = [8, 12]
+        
+        n_channels, n_samples = data.shape
+    
+        # Fit minimal MVAR model
+        model = VAR(data.T)
+        results = model.fit(order)
+        ar_coefs = results.coefs  # Shape: (order, n_channels, n_channels)
+        order = 1
+        n_bins = 1
+        # Select minimal frequency bins in the band
+        f_min, f_max = freq_band
+        freqs = np.linspace(f_min, f_max, n_bins) / sampling_rate  # Normalized frequencies
+        
+        # Initialize PDC
+        pdc = np.zeros((n_channels, n_channels, n_bins), dtype=np.float64)
+        
+        # Vectorized PDC computation for all frequencies
+        for f_idx, f in enumerate(freqs):
+            # Fourier transform of AR coefficients
+            A_f = np.eye(n_channels, dtype=np.complex64)  # Lower precision for speed
+            for lag in range(order):
+                A_f -= ar_coefs[lag] * np.exp(-2j * np.pi * f * (lag + 1))
+            
+            # Inverse of A(f)
+            A_f_inv = inv(A_f)
+            
+            # Vectorized PDC: |A_f[i,j]| / sqrt(sum_k |A_f[k,j]|^2)
+            abs_A_f = np.abs(A_f)
+            denominators = np.sqrt(np.sum(abs_A_f**2, axis=0))
+            pdc[:, :, f_idx] = abs_A_f / denominators[np.newaxis, :]
+            
+            # Zero diagonal
+            np.fill_diagonal(pdc[:, :, f_idx], 0)
+        
+        # Average over frequency bins
+        pdc_band = np.mean(pdc, axis=2)  # Shape: (n_channels, n_channels)
+        pdc_out = pdc_band[np.newaxis, :, :]  # Shape: (1, n_channels, n_channels)
+        print('pdc calcd.')
+        return pdc_out
