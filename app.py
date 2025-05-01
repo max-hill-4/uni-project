@@ -31,24 +31,24 @@ def main(**args):
         print(mse_results , "\n")
         print(r2_results)
     
-    save(m.state_dict(), f'./trained_models/{args}.model.pt')
-    
-    with open('results.json', 'w') as f:
-        json.dump({'params' : args, 'mse' : mse_results, 'r2' : r2_results}, f, indent=4)
+        save(m.state_dict(), f'./trained_models/{args}.model.pt')
+        
+        with open('results.json', 'a') as f:
+            json.dump({args : { 'mse' : mse_results, 'r2' : r2_results}}, f, indent=4)
 
 
 
 if __name__ == '__main__':
 
     params = {
-        "feature_freq" : [{'lc' : 'alpha'}, {'coh' : 'beta'}],
+        "feature_freq" : [{'sl' : 'alpha'}, {'coh' : 'beta'}, {'coh' : 'gamma'}],
         "hormones" : ['BDC1.1'],
         "sleep_stages" : ['N1'],
         "b_size" : 4 ,
         "filter_size" : 3,
-        "iterations" : 5,
+        "iterations" : 1,
         "k_folds" : 10,
-        "in_channels" : 1
+        "in_channels" : 2
     }
 
     main(**params)

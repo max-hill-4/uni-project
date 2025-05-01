@@ -5,3 +5,5 @@ use validation set for loss ?
 r2 isnt that good as my labels have no variance ? 
 is my scalar loss okay for multi output?
 
+
+19x15000 - > 19x19 x 5
