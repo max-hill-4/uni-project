@@ -2,4 +2,6 @@ implement frontend
 
 use validation set for loss ?
 
-try different feature library? 
+r2 isnt that good as my labels have no variance ? 
+is my scalar loss okay for multi output?
+

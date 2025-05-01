@@ -6,31 +6,36 @@ import matplotlib.pyplot as plt
 if __name__ == '__main__':
 
     feature_freq = [{'pdc' : 'alpha'}]
-    dataset = data_io.dataloader.RawDataset(sleep_stages=["N1"], feature_freq=feature_freq, hormones = ['BDC1']) 
+    hormones = ['BDC1.1']
+    sleep_stages = ["N1"]
+    b_size = 4
+    filter_size = 5
+    iterations = 3
+    k_folds = 7
+    in_channels = 1
 
-    folds = data_io.dataloader.participant_kfold_split(dataset, 2)
-    mse_results = {} 
+    dataset = data_io.dataloader.RawDataset(sleep_stages=sleep_stages, feature_freq=feature_freq, hormones = hormones) 
+
+    folds = data_io.dataloader.participant_kfold_split(dataset, k_folds)
+    mse_results = {}
     r2_results = {}
+    
     for fold in folds:
         train_dataset, test_dataset, tr_parps, te_parps = fold
-        print(te_parps)
-        train_data = DataLoader(train_dataset, batch_size=4, shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)    
-        test_data = DataLoader(test_dataset, batch_size=4, shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)
+        train_data = DataLoader(train_dataset, batch_size=b_size, shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)    
+        test_data = DataLoader(test_dataset, batch_size=b_size, shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)
         
-        m = analysis.models.EEGCNN(filter_size=3, num_classes=1, in_channels=1)
+        m = analysis.models.EEGCNN(filter_size=filter_size, num_classes=1, in_channels=in_channels)
 
-        a = analysis.train.model(m, train_data, test_data, iterations=1)
+        a = analysis.train.model(m, train_data, test_data, iterations=iterations)
         a.train()
 
         p = a.predict()
         l = a.mse_per_class(*p)
         e = a.r2_per_class(*p)
+        
         mse_results[te_parps[0]] = l
         r2_results[te_parps[0]] = e
+        
         print(mse_results , "\n")
         print(r2_results)
-        y_true , y_pred = p
-        residuals = y_true - y_pred
-        sns.histplot(residuals, kde=True)
-        plt.savefig(f'./eval/{te_parps[0]}_resisuals.png', dpi=300, bbox_inches='tight')
-        plt.close() 

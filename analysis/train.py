@@ -23,7 +23,6 @@ class model():
         for epoch in range(self.iterations):
             for batch in self.train_data:
                 data, labels = batch['data'].to(self.device), batch['label'].to(self.device)
-                
                 optimizer.zero_grad()
                 
                 predictions = self.m(data)
@@ -42,10 +41,9 @@ class model():
         with torch.no_grad():  # Disable gradient calculations for inference
             for batch in self.test_data:
                 data, labels = batch['data'].to(self.device), batch['label'].to(self.device)  # Move data and labels to the device
-                
+
                 # Get predictions from the model
                 predictions = self.m(data)
-                
                 # Store predictions and labels
                 all_predictions.append(predictions.cpu())  # Store predictions on the CPU for evaluation later
                 all_labels.append(labels.cpu())  # Store labels on the CPU
@@ -79,8 +77,42 @@ class model():
 
         assert predictions.shape == labels.shape and len(predictions.shape) == 2, \
             "Inputs must be 2D tensors of same shape"
-         
+
         num_classes = predictions.shape[1]
         r2_values = r2_score(predictions, labels, multioutput='raw_values')
-        
-        return {i: r2_values[i].item() for i in range(num_classes)}  
+        return {i: r2_values[i].item() for i in range(num_classes)} 
+    
+
+import torch
+import torch.nn as nn
+import torchvision.models as models
+
+class ResNetEEG(nn.Module):
+    def __init__(self, in_channels: int = 1, filter_size: int = 3, num_classes: int = 108):
+        """
+        Args:
+            in_channels: Number of input channels (e.g., 1 for single-channel, 5 for multi-channel).
+            filter_size: Size of the filter (typically 3x3, 7x7, etc.).
+            num_classes: Number of output classes.
+        """
+        super().__init__()
+
+        # Initialize the pre-trained ResNet model (ResNet-18 for simplicity)
+        resnet = models.resnet18(pretrained=False)  # Load ResNet-18 architecture (without pre-trained weights)
+
+        # Modify the first convolution layer to accept in_channels (e.g., 1 or 5 channels for EEG)
+        resnet.conv1 = nn.Conv2d(in_channels, 64, kernel_size=filter_size, stride=2, padding=filter_size // 2, bias=False)
+
+        # Optionally, modify the fully connected layer to match the number of output classes
+        resnet.fc = nn.Linear(resnet.fc.in_features, num_classes)
+
+        # To match your desired format, we'll keep the residual layers as they are in ResNet, but use the classifier format
+        self.resnet = resnet
+
+    def forward(self, x):
+        """
+        Forward pass through the network
+        """
+        # Input shape: (batch, in_channels, 19, 19)
+        x = self.resnet(x)  # Output: (batch, num_classes)
+        return x
