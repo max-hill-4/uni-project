@@ -1,8 +1,6 @@
 import data_io.dataloader
 import analysis
 from torch.utils.data import DataLoader
-import seaborn as sns
-import matplotlib.pyplot as plt
 if __name__ == '__main__':
 
     feature_freq = [{'psd' : 'alpha'}]
