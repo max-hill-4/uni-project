@@ -11,28 +11,39 @@ class model():
         print(self.device)
         self.m.to(self.device)
 
+
     def train(self):
+        # Optimizer and loss function
         optimizer = torch.optim.Adam(self.m.parameters(), lr=0.001)
-        loss = 0
+        loss_fn = torch.nn.SmoothL1Loss()
+        
         all_predictions = []
         all_labels = []
-        loss_fn = torch.nn.MSELoss()
-        #loss_fn = torch.nn.SmoothL1Loss() 
-        #loss_fn = torch.nn.HuberLoss(delta=0.5)
-        self.m.train()
+
         for epoch in range(self.iterations):
+            epoch_loss = 0  # To track loss for each epoch
+            
             for batch in self.train_data:
                 data, labels = batch['data'].to(self.device), batch['label'].to(self.device)
-                optimizer.zero_grad()
                 
+                optimizer.zero_grad()  # Zero out gradients
+
+                # Forward pass
                 predictions = self.m(data)
-                all_predictions.append(predictions.cpu())  # Store predictions on the CPU for evaluation later
-                all_labels.append(labels.cpu())  # Store labels on the CPU               
+                all_predictions.append(predictions.cpu())  # Store predictions for evaluation later
+                all_labels.append(labels.cpu())  # Store labels for evaluation
+                
+                # Compute loss
                 loss = loss_fn(predictions, labels)
+                epoch_loss += loss.item()  # Accumulate loss for reporting
+                
+                # Backward pass and optimization
                 loss.backward()
-                torch.nn.utils.clip_grad_norm_(self.m.parameters(), max_norm=1.0)
-                optimizer.step()               
-            print(loss)
+                #torch.nn.utils.clip_grad_norm_(self.m.parameters(), max_norm=1.0)  # Gradient clipping
+                optimizer.step()
+
+            # Step the scheduler at the end of each epoch
+
 
     def predict(self):
         all_predictions = []
@@ -47,7 +58,7 @@ class model():
                 # Store predictions and labels
                 all_predictions.append(predictions.cpu())  # Store predictions on the CPU for evaluation later
                 all_labels.append(labels.cpu())  # Store labels on the CPU
-
+                print
         # After collecting predictions and labels
         all_predictions = torch.cat(all_predictions, dim=0)  # Ensure proper concatenation along the batch dimension
         all_labels = torch.cat(all_labels, dim=0)

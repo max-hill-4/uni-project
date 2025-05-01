@@ -16,16 +16,19 @@ class EEGCNN(nn.Module):
             nn.ReLU(inplace=True),
             nn.Conv2d(16, 32, kernel_size=filter_size, padding=filter_size // 2),
             nn.ReLU(inplace=True),
-            nn.MaxPool2d(2)  # Reduces spatial dims from 19x19 to 9x9
+            #nn.MaxPool2d(2)
         )
         
         # Classifier
         self.classifier = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(32 * 9 * 9, 128, bias=False),  # Reduced capacity
-            nn.ReLU(inplace=True),
-            nn.Linear(128, num_classes)  # No activation for regression
+            nn.Linear(32 * 19 * 19, 256),  # Increased capacity
+            nn.ReLU(),
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Linear(128, num_classes)
         )
+
 
     def forward(self, x):
         # Input shape: (batch, in_channels, 19, 19)
