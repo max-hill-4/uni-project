@@ -24,8 +24,10 @@ class FeatureExtractor:
             elif feature == 'pdc':
                 matrices.append(self._pdc(data, freq))
             elif feature == 'lc':
-                matrices.append(self._pdc(data, freq))
+                matrices.append(self._lc(data, freq))
             elif feature == 'psd':
+                matrices.append(self._psd(data, freq))
+            elif feature == 'sl':
                 matrices.append(self._sl(data, freq))
             else:
                 raise ValueError(f"Unsupported feature: {feature == 'coh'}")
