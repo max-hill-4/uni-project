@@ -305,7 +305,7 @@ class FeatureExtractor:
 
         # Downsample epochs to 100 time points (assuming original sampling rate gives 15000 points over 5 seconds)
         original_sfreq = data.info['sfreq']
-        target_sfreq = 50 / 5.0  # 20 Hz for 100 points over 5 seconds
+        target_sfreq = 25 / 5.0  # 20 Hz for 100 points over 5 seconds
         epochs.resample(sfreq=target_sfreq, verbose=False)
 
         # Initialize SL matrix
@@ -314,7 +314,7 @@ class FeatureExtractor:
 
         # Compute SL for each epoch and average
         for epoch in epochs.get_data():  # Shape: (n_channels, n_time_points), e.g., (19, 100)
-            if epoch.shape[0] != num_channels or epoch.shape[1] != 50:
+            if epoch.shape[0] != num_channels or epoch.shape[1] != 25:
                 raise ValueError(f"Unexpected epoch shape: {epoch.shape}, expected ({num_channels}, 100)")
 
             time_points = epoch.shape[1]  # 100 time points

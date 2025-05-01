@@ -3,10 +3,10 @@ import analysis
 from torch.utils.data import DataLoader
 if __name__ == '__main__':
 
-    feature_freq = [{'psd' : 'alpha'}]
+    feature_freq = [{'sl' : 'alpha'}]
     hormones = ['BDC1.1']
     sleep_stages = ["N1"]
-    b_size = 4
+    b_size = 64 
     filter_size = 5
     iterations = 3
     k_folds = 7
