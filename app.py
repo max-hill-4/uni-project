@@ -3,7 +3,9 @@ import analysis
 from torch.utils.data import DataLoader
 from torch import save
 import json
+import time
 def main(**args):
+
 
     dataset = data_io.dataloader.RawDataset(sleep_stages=args["sleep_stages"], feature_freq=args["feature_freq"], hormones = args["hormones"]) 
 
@@ -34,14 +36,14 @@ def main(**args):
         save(m.state_dict(), f'./trained_models/{args}.model.pt')
         
         with open('results.json', 'a') as f:
-            json.dump({args : { 'mse' : mse_results, 'r2' : r2_results}}, f, indent=4)
+            json.dump({int(time.time()) : { 'args' : args, 'mse' : mse_results, 'r2' : r2_results}}, f, indent=4)
 
 
 
 if __name__ == '__main__':
 
     params = {
-        "feature_freq" : [{'sl' : 'alpha'}, {'coh' : 'beta'}, {'coh' : 'gamma'}],
+        "feature_freq" : [{'sl' : 'delta'}, {'sl' : 'beta'}, {'sl' : 'alpha'}, {'sl' : 'beta'}],
         "hormones" : ['BDC1.1'],
         "sleep_stages" : ['N1'],
         "b_size" : 4 ,
