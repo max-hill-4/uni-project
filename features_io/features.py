@@ -257,26 +257,21 @@ class FeatureExtractor:
         psd_matrix = transpose(psd_matrix, (0, 2, 1))  # Shape: (1, n_channels, n_channels)
         print(psd_matrix.shape)
         return psd_matrix
+    
     @staticmethod
-    def _sl(data_input: dict, freq: str, w1: int = 10, w2: int = 20):
+    def _sl(data_input: dict, freq: str, w1: int = 5, w2: int = 10):
         """
-        Compute Synchronization Likelihood (SL) for EEG data across 19 channels.
+        Compute Synchronization Likelihood (SL) for EEG data across 19 channels, with downsampling to 19x100.
 
         Parameters:
         - data_input: dict, containing EEG data and sampling frequency
         - freq: str, frequency band ('delta', 'theta', 'alpha', 'beta', 'gamma')
-        - w1: int, window for Theiler correction
-        - w2: int, window for time resolution sharpening
+        - w1: int, window for Theiler correction (default: 1 for 100 time points)
+        - w2: int, window for time resolution sharpening (default: 2 for 100 time points)
 
         Returns:
-        - sl_matrix: numpy array of shape (19, 19), SL matrix
-        - metrics: dict, graph metrics
+        - sl_matrix: numpy array of shape (1, 19, 19), SL matrix
         """
-
-        import numpy as np
-        import mne
-        import networkx as nx
-        from scipy.signal import welch
 
         # Define frequency bands
         FREQ_BANDS = {
@@ -294,72 +289,70 @@ class FeatureExtractor:
 
         # Convert input to RawArray and create epochs
         data = FeatureExtractor._epochtoRawArray(data_input)
+        if data is None:
+            raise ValueError("Failed to convert input to RawArray.")
+
         events = mne.make_fixed_length_events(data, duration=5, overlap=0.0)
         epochs = mne.Epochs(data, events, tmin=0, tmax=5, baseline=None, preload=True, verbose=False)
 
+        if len(epochs) == 0:
+            raise ValueError("No epochs created. Check input data or epoching parameters.")
+
         # Filter data in the specified frequency band
         epochs.filter(l_freq=fmin, h_freq=fmax, verbose=False)
+
+        # Downsample epochs to 100 time points (assuming original sampling rate gives 15000 points over 5 seconds)
+        original_sfreq = data.info['sfreq']
+        target_sfreq = 50 / 5.0  # 20 Hz for 100 points over 5 seconds
+        epochs.resample(sfreq=target_sfreq, verbose=False)
 
         # Initialize SL matrix
         num_channels = 19
         sl_matrix = np.zeros((num_channels, num_channels))
 
         # Compute SL for each epoch and average
-        for epoch in epochs.get_data():  # Shape: (1, channels, time_points)
-            epoch = epoch.squeeze(0)  # Shape: (channels, time_points)
-            time_points = epoch.shape[1]
+        for epoch in epochs.get_data():  # Shape: (n_channels, n_time_points), e.g., (19, 100)
+            if epoch.shape[0] != num_channels or epoch.shape[1] != 50:
+                raise ValueError(f"Unexpected epoch shape: {epoch.shape}, expected ({num_channels}, 100)")
+
+            time_points = epoch.shape[1]  # 100 time points
             temp_sl = np.zeros((num_channels, num_channels))
 
-            for k in range(num_channels):
-                for i in range(time_points):
+            # Validate window sizes
+            if w1 >= time_points or w2 >= time_points or w1 < 0 or w2 < 0:
+                raise ValueError(f"Invalid window sizes: w1={w1}, w2={w2} for {time_points} time points")
+
+            # Compute SL between all channel pairs
+            for k1 in range(num_channels):
+                for k2 in range(k1, num_channels):  # Upper triangle to avoid redundant computation
                     sync_sum = 0
                     count = 0
-                    for j in range(time_points):
-                        if abs(i - j) <= w1:
-                            continue
-                        if abs(i - j) <= w2 and i + w2 <= time_points and j + w2 <= time_points:
-                            # Simplified synchronization measure (correlation in frequency band)
-                            segment_i = epoch[k, i:i+w2]
-                            segment_j = epoch[k, j:j+w2]
-                            sync = np.abs(np.corrcoef(segment_i, segment_j)[0, 1])
-                            sync_sum += sync
-                            count += 1
-                    temp_sl[k, k] += sync_sum / count if count > 0 else 0
+                    for i in range(time_points):
+                        for j in range(time_points):
+                            if abs(i - j) <= w1:
+                                continue
+                            if abs(i - j) <= w2 and i + w2 <= time_points and j + w2 <= time_points:
+                                segment_i = epoch[k1, i:i+w2]
+                                segment_j = epoch[k2, j:j+w2]
+                                if len(segment_i) == w2 and len(segment_j) == w2:  # Ensure valid segments
+                                    sync = np.abs(np.corrcoef(segment_i, segment_j)[0, 1])
+                                    if not np.isnan(sync):  # Skip NaN correlations
+                                        sync_sum += sync
+                                        count += 1
+                    if count > 0:
+                        temp_sl[k1, k2] = sync_sum / count
+                        temp_sl[k2, k1] = temp_sl[k1, k2]  # Symmetrize
 
-            # Symmetrize and normalize
-            temp_sl = (temp_sl + temp_sl.T) / 2
-            temp_sl = np.clip(temp_sl / np.max(temp_sl) if np.max(temp_sl) != 0 else temp_sl, 0, 1)
+            # Normalize
+            if np.max(temp_sl) != 0:
+                temp_sl = np.clip(temp_sl / np.max(temp_sl), 0, 1)
             sl_matrix += temp_sl
 
         # Average across epochs
-        sl_matrix /= len(epochs)
+        sl_matrix /= len(epochs) if len(epochs) > 0 else 1
 
         # Set diagonal to 0 (no self-loops)
         np.fill_diagonal(sl_matrix, 0)
 
-        # Compute graph metrics
-        G = nx.from_numpy_array(sl_matrix)
-        metrics = {}
-
-        # Small-world property
-        clustering_coeff = nx.average_clustering(G, weight='weight')
-        char_path_length = nx.average_shortest_path_length(G, weight='weight') if nx.is_connected(G) else float('inf')
-        metrics['small_world_sigma'] = clustering_coeff / char_path_length if char_path_length != 0 else 0
-
-        # Clustering coefficient
-        metrics['clustering_coefficient'] = clustering_coeff
-
-        # Graph density
-        metrics['graph_density'] = nx.density(G)
-
-        # Characteristic path length
-        metrics['characteristic_path_length'] = char_path_length
-
-        # Efficiency
-        metrics['efficiency'] = 1 / char_path_length if char_path_length != 0 else 0
-
-        # Mean betweenness centrality
-        betweenness = nx.betweenness_centrality(G, weight='weight')
-        metrics['mean_betweenness_centrality'] = np.mean(list(betweenness.values()))
-
-        return sl_matrix
+        # Reshape to (1, 19, 19) for compatibility with _stack_matrices
+        return np.expand_dims(sl_matrix, axis=0)

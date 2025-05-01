@@ -5,7 +5,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 if __name__ == '__main__':
 
-    feature_freq = [{'pdc' : 'alpha'}]
+    feature_freq = [{'psd' : 'alpha'}]
     hormones = ['BDC1.1']
     sleep_stages = ["N1"]
     b_size = 4
