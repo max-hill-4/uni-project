@@ -20,7 +20,7 @@ def main(**args):
         
         m = analysis.models.EEGCNN(filter_size=args["filter_size"], num_classes=len(args['hormones']), in_channels=args["in_channels"])
 
-        a = analysis.train.model(m, train_data, train_data, iterations=args[ "iterations" ])
+        a = analysis.train.model(m, train_data, test_data, iterations=args[ "iterations" ])
         a.train()
 
         p = a.predict()
@@ -45,7 +45,7 @@ if __name__ == '__main__':
     params = {
         "feature_freq" : [{'coh' : 'alpha'}, {'coh' : 'beta'}, {'coh' : 'delta'}, {'coh' : 'theta'}],
         "hormones" : ['BDC1.1'],
-        "sleep_stages" : ['N1'],
+        "sleep_stages" : ['N2'],
         "b_size" : 4 ,
         "filter_size" : 3,
         "iterations" : 5,

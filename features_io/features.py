@@ -56,7 +56,7 @@ class FeatureExtractor:
         events = mne.make_fixed_length_events(data, duration=5, overlap=0.0)
         epochs = mne.Epochs(data, events, tmin=0, tmax=5, baseline=None, preload=True, verbose=False)
         
-                # Define frequency bands
+        # Define frequency bands
         FREQ_BANDS = {
             'delta': (1, 4),
             'theta': (4, 8),
@@ -72,6 +72,13 @@ class FeatureExtractor:
         con = sp(method='coh', data=epochs, fmin=fmin, fmax=fmax, faverage=True, verbose=False)
         
         data = con.get_data(output='dense')
+        
+        # Apply RobustScaler
+        from sklearn.preprocessing import RobustScaler
+        scaler = RobustScaler()
+        original_shape = data.shape
+        data = scaler.fit_transform(data.reshape(-1, original_shape[-1])).reshape(original_shape)
+        
         data = transpose(data, (2, 0, 1))  # PyTorch uses channel-first format
         return data
 
