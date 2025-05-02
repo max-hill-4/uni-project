@@ -10,7 +10,7 @@ from features_io import FeatureExtractor
 class RawDataset(Dataset):
 
     def __init__(self, sleep_stages, feature_freq, hormones):
-        self.root_dir = Path(r'/mnt/block/eeg')
+        self.root_dir = Path(r'/mnt/eeg')
         self.mat_files = [
             mat_file
             for stage in sleep_stages
@@ -30,7 +30,7 @@ class RawDataset(Dataset):
         
         eeg_data = self.feature_extractor.get(eeg_data) 
         
-        participant = str(file)[24]
+        participant = str(file)[18]
         if participant in self.labels:
             label_data = self.labels[participant]
         else:
@@ -90,7 +90,6 @@ def participant_kfold_split(dataset, n_splits=5, shuffle=True, random_state=None
             torch.manual_seed(random_state)
         indices = torch.randperm(num_participants).tolist()
         participants = [participants[i] for i in indices]
-    
     # Create folds
     folds = []
     for fold in range(n_splits):
@@ -106,11 +105,11 @@ def participant_kfold_split(dataset, n_splits=5, shuffle=True, random_state=None
         # Get sample indices
         train_indices = [
             idx for idx, p in enumerate(dataset.mat_files) 
-            if str(p)[24] in train_participants
+            if str(p)[18] in train_participants
         ]
         test_indices = [
             idx for idx, p in enumerate(dataset.mat_files) 
-            if str(p)[24] in test_participants
+            if str(p)[18] in test_participants
         ]
         
         folds.append((

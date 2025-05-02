@@ -15,13 +15,12 @@ class model():
     def train(self):
         # Optimizer and loss function
         optimizer = torch.optim.Adam(self.m.parameters(), lr=0.001)
-        loss_fn = torch.nn.SmoothL1Loss()
+        loss_fn = torch.nn.MSELoss()
         
         all_predictions = []
         all_labels = []
 
         for epoch in range(self.iterations):
-            epoch_loss = 0  # To track loss for each epoch
             
             for batch in self.train_data:
                 data, labels = batch['data'].to(self.device), batch['label'].to(self.device)
@@ -34,8 +33,7 @@ class model():
                 all_labels.append(labels.cpu())  # Store labels for evaluation
                 
                 # Compute loss
-                loss = loss_fn(predictions, labels)
-                epoch_loss += loss.item()  # Accumulate loss for reporting
+                loss = mse_loss(predictions, labels)
                 
                 # Backward pass and optimization
                 loss.backward()

@@ -43,12 +43,12 @@ def main(**args):
 if __name__ == '__main__':
 
     params = {
-        "feature_freq" : [{'sl' : 'delta'}, {'sl' : 'beta'}, {'sl' : 'alpha'}, {'sl' : 'beta'}],
+        "feature_freq" : [{'coh' : 'alpha'}, {'coh' : 'beta'}, {'coh' : 'delta'}, {'coh' : 'theta'}],
         "hormones" : ['BDC1.1'],
         "sleep_stages" : ['N1'],
         "b_size" : 4 ,
         "filter_size" : 3,
-        "iterations" : 1,
+        "iterations" : 5,
         "k_folds" : 10,
         "in_channels" : 2
     }

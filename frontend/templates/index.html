@@ -18,7 +18,7 @@
                 <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
                 <p class="text-xs text-gray-500 dark:text-gray-400">.MAT (19x15000px)</p>
             </div>
-            <input id="dropzone-file" type="file" class="hidden" multiple>
+            <input id="dropzone-file" type="file" name="file" class="hidden" multiple>
         </label>
         <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-500">
@@ -37,11 +37,11 @@
 
         dropzone.addEventListener("dragover", (e) => {
             e.preventDefault();
-            dropzone.classList.add("bg-gray-200");
+            dropzone.classList.add("bg-gray-100");
         });
 
         dropzone.addEventListener("dragleave", () => {
-            dropzone.classList.remove("bg-gray-200");
+            dropzone.classList.remove("bg-gray-100");
         });
 
         dropzone.addEventListener("drop", (e) => {
@@ -51,9 +51,6 @@
             console.log(files);
         });
 
-        fileInput.addEventListener("change", (e) => {
-            console.log(e.target.files);
-        });
     </script>
 
 </body>
