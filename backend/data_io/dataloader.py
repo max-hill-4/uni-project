@@ -5,7 +5,7 @@ from scipy.io import loadmat
 from pathlib import Path
 import pandas 
 from torch.utils.data import Subset
-from features_io import FeatureExtractor
+from features_extract import FeatureExtractor
 
 class RawDataset(Dataset):
 
