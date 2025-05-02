@@ -1,6 +1,7 @@
 from features_extract import _utils
 from mne import make_fixed_length_events, Epochs
 from mne_connectivity import spectral_connectivity_epochs as sp
+from numpy import transpose
 
 def _coh(data_input: dict, freq):
     data = _utils._epochtoRawArray(data_input)

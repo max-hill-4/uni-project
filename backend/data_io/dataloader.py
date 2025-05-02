@@ -43,7 +43,7 @@ class RawDataset(Dataset):
 
         return sample
 
-    def _load_labels(self, filepath, scaler = 'minmax'):
+    def _load_labels(self, scaler = 'minmax'):
         "Needs to return dictionary of shape {particpant: {BDC : [nparray of shape [12]], ...}, ...}"   
         labels = {}
         df = pandas.read_csv(r'/mnt/raw_data/biomarkers.csv').dropna()
@@ -53,7 +53,7 @@ class RawDataset(Dataset):
         # feature_range=(-1, 1)
 
         # Scale the hormone columns in the DataFrame
-        df[self.bdc_columns] = scaler.fit_transform(df[self.bdc_columns])
+        #df[self.bdc_columns] = scaler.fit_transform(df[self.bdc_columns])
 
         labels = {}
         participants = df['Participant'].unique()
