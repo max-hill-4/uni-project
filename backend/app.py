@@ -36,17 +36,13 @@ def main(**args):
         if e[0] > 0:
             plt.figure(figsize=(8, 6))
             plt.scatter(p[0],p[1] , color='blue', alpha=0.5, label='Predicted vs Truth') 
-            plt.savefig(f'intrestingdata/predicted/{e[0]}.png', format='png', dpi=300, bbox_inches='tight')
+            plt.savefig(f'./backend/intrestingdata/predicted/{e[0]}.png', format='png', dpi=300, bbox_inches='tight')
             plt.close()
-            save(m.state_dict(), f'{args}.pt')
-        
-            with open('results.json', 'a') as f:
+            save(m.state_dict(), f'./backend/trained_models/{e[0]}.pt')
+
+            with open('./backend/intrestingdata/results.json', 'a') as f:
                 json.dump({int(time.time()) : { 'args' : args, 'mse' : mse_results, 'r2' : r2_results}}, f, indent=4)
 
-    plt.figure(figsize=(8,6))
-    plt.scatter(tuple(e.keys()),tuple(e.values()), color='blue', alpha=0.5, label='R2 Scores') 
-    plt.savefig(f'r2scores.png', format='png', dpi=300, bbox_inches='tight')
-    plt.close()
 
 
 if __name__ == '__main__':
@@ -56,7 +52,7 @@ if __name__ == '__main__':
         "b_size" : 4 ,
         "filter_size" : 3,
         "iterations" : 5,
-        "k_folds" : 22,
+        "k_folds" : 10,
         "in_channels" : 1
     }
 
@@ -74,4 +70,7 @@ if __name__ == '__main__':
         
         print(f"Running with params: {params}")  # Optional: log the params
         if __name__ == "__main__":
+            import os
+            print(os.getcwd())
+            print("hello")
             main(**params)

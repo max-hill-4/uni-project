@@ -5,6 +5,6 @@ param_options = {
                        [{'coh' : 'gamma'}],
                        [{'coh' : 'delta'}]],
                        
-    "hormones" : [['BDC1.2']],
-    "sleep_stages" : [['N1']],
+    "hormones" : [['BDC1.1'], ['BDC1']],
+    "sleep_stages" : [['N1'], ['N2']],
 }
