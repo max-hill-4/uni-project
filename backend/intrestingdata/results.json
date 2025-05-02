@@ -1,0 +1,32 @@
+{
+    "1746193130": {
+        "args": {
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 5,
+            "in_channels": 1,
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                }
+            ],
+            "hormones": [
+                "BDC1.2"
+            ],
+            "sleep_stages": [
+                "N1"
+            ]
+        },
+        "mse": {
+            "L": {
+                "0": 0.0393328033387661
+            }
+        },
+        "r2": {
+            "L": {
+                "0": 0.10716938972473145
+            }
+        }
+    }
+}

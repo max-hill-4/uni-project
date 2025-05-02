@@ -1,1 +1,3 @@
 create a massive scan and try find bets params with the most positive r2 values 
+
+use gradcam to visualise feature heatmap
