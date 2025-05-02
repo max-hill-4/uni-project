@@ -1,9 +1,10 @@
+import numpy as np
+from statsmodels.tsa.vector_ar.var_model import VAR
+from scipy.signal import resample
 def _pdc(data_input: dict, freq):
     order = 10
 
-    import numpy as np
-    from statsmodels.tsa.vector_ar.var_model import VAR
-    from scipy.signal import resample
+
     data = data_input['current_epoch']
     sampling_rate = 500
 

@@ -1,3 +1,7 @@
+from features_extract._utils import _epochtoRawArray
+import mne
+import numpy as np
+
 def _sl(data_input: dict, freq: str, w1: int = 5, w2: int = 10):
     """
     Compute Synchronization Likelihood (SL) for EEG data across 19 channels, with downsampling to 19x100.
@@ -14,11 +18,7 @@ def _sl(data_input: dict, freq: str, w1: int = 5, w2: int = 10):
 
     # Define frequency bands
     FREQ_BANDS = {
-        'delta': (1, 4),
-        'theta': (4, 8),
-        'alpha': (8, 13),
-        'beta': (13, 30),
-        'gamma': (30, 45)
+        'deltaFeatureExtractor.a': (30, 45)
     }
 
     # Validate frequency band
@@ -27,7 +27,7 @@ def _sl(data_input: dict, freq: str, w1: int = 5, w2: int = 10):
     fmin, fmax = FREQ_BANDS[freq]
 
     # Convert input to RawArray and create epochs
-    data = FeatureExtractor._epochtoRawArray(data_input)
+    data = _epochtoRawArray(data_input)
     if data is None:
         raise ValueError("Failed to convert input to RawArray.")
 

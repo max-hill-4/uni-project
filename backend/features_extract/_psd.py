@@ -1,6 +1,7 @@
 import numpy as np
 from features_extract._utils import _epochtoRawArray
 import mne
+from numpy import transpose
 def _psd(data_input: dict, freq: str):
 
 
