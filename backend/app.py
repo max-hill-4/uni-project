@@ -4,8 +4,9 @@ from torch.utils.data import DataLoader
 from torch import save
 import json
 import time
+import matplotlib.pyplot as plt
+from tests import param_options
 def main(**args):
-
 
     dataset = data_io.dataloader.RawDataset(sleep_stages=args["sleep_stages"], feature_freq=args["feature_freq"], hormones = args["hormones"]) 
 
@@ -32,15 +33,20 @@ def main(**args):
         print(mse_results , "\n")
         print(r2_results)
 
-        if e[0] > 0.1:
-            import matplotlib.pyplot as plt
+        if e[0] > 0:
             plt.figure(figsize=(8, 6))
             plt.scatter(p[0],p[1] , color='blue', alpha=0.5, label='Predicted vs Truth') 
-            plt.savefig(f'{e}.png', format='png', dpi=300, bbox_inches='tight')
-            save(m.state_dict(), f'./trained_models/{args}.model.pt')
+            plt.savefig(f'intrestingdata/predicted/{e[0]}.png', format='png', dpi=300, bbox_inches='tight')
+            plt.close()
+            save(m.state_dict(), f'{args}.pt')
         
             with open('results.json', 'a') as f:
                 json.dump({int(time.time()) : { 'args' : args, 'mse' : mse_results, 'r2' : r2_results}}, f, indent=4)
+
+    plt.figure(figsize=(8,6))
+    plt.scatter(tuple(e.keys()),tuple(e.values()), color='blue', alpha=0.5, label='R2 Scores') 
+    plt.savefig(f'r2scores.png', format='png', dpi=300, bbox_inches='tight')
+    plt.close()
 
 
 if __name__ == '__main__':
@@ -50,14 +56,8 @@ if __name__ == '__main__':
         "b_size" : 4 ,
         "filter_size" : 3,
         "iterations" : 5,
-        "k_folds" : 5,
+        "k_folds" : 22,
         "in_channels" : 1
-    }
-
-    param_options = {
-        "feature_freq" : [[{'coh' : 'alpha'}, {'coh' : 'beta'}], [{'coh' : 'alpha'}]],
-        "hormones" : [['BDC1.2']],
-        "sleep_stages" : [['N1']],
     }
 
     for feature_freq, hormone, sleep_stage in product(

@@ -53,7 +53,7 @@ class RawDataset(Dataset):
         # feature_range=(-1, 1)
 
         # Scale the hormone columns in the DataFrame
-        #df[self.bdc_columns] = scaler.fit_transform(df[self.bdc_columns])
+        df[self.bdc_columns] = scaler.fit_transform(df[self.bdc_columns])
 
         labels = {}
         participants = df['Participant'].unique()
