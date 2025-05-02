@@ -26,33 +26,52 @@ def main(**args):
         p = a.predict()
         l = a.mse_per_class(*p)
         e = a.r2_per_class(*p)
-        import matplotlib.pyplot as plt
-        plt.figure(figsize=(8, 6))
-        plt.scatter(p[0],p[1] , color='blue', alpha=0.5, label='Predicted vs Truth') 
-        plt.savefig(f'{e}.png', format='png', dpi=300, bbox_inches='tight')
         mse_results[te_parps[0]] = l
         r2_results[te_parps[0]] = e
         print(f'trnaing parps are : {tr_parps}') 
         print(mse_results , "\n")
         print(r2_results)
-    
-        save(m.state_dict(), f'./trained_models/{args}.model.pt')
+
+        if e[0] > 0.1:
+            import matplotlib.pyplot as plt
+            plt.figure(figsize=(8, 6))
+            plt.scatter(p[0],p[1] , color='blue', alpha=0.5, label='Predicted vs Truth') 
+            plt.savefig(f'{e}.png', format='png', dpi=300, bbox_inches='tight')
+            save(m.state_dict(), f'./trained_models/{args}.model.pt')
         
-        with open('results.json', 'a') as f:
-            json.dump({int(time.time()) : { 'args' : args, 'mse' : mse_results, 'r2' : r2_results}}, f, indent=4)
+            with open('results.json', 'a') as f:
+                json.dump({int(time.time()) : { 'args' : args, 'mse' : mse_results, 'r2' : r2_results}}, f, indent=4)
 
 
 if __name__ == '__main__':
 
+    from itertools import product
     params = {
-        "feature_freq" : [{'coh' : 'alpha'}, {'coh' : 'beta'}],
-        "hormones" : ['BDC1.2'],
-        "sleep_stages" : ['N1'],
         "b_size" : 4 ,
         "filter_size" : 3,
         "iterations" : 5,
-        "k_folds" : 11,
+        "k_folds" : 5,
         "in_channels" : 1
     }
 
-    main(**params)
+    param_options = {
+        "feature_freq" : [[{'coh' : 'alpha'}, {'coh' : 'beta'}], [{'coh' : 'alpha'}]],
+        "hormones" : [['BDC1.2']],
+        "sleep_stages" : [['N1']],
+    }
+
+    for feature_freq, hormone, sleep_stage in product(
+        param_options["feature_freq"],
+        param_options["hormones"],
+        param_options["sleep_stages"]
+    ):
+        params = params.copy()
+        params.update({
+            "feature_freq": feature_freq,
+            "hormones": hormone,
+            "sleep_stages": sleep_stage
+        })
+        
+        print(f"Running with params: {params}")  # Optional: log the params
+        if __name__ == "__main__":
+            main(**params)

@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torchvision.models as models
 class EEGCNN(nn.Module):
     def __init__(self, in_channels: int = 1, filter_size: int = 3, num_classes: int = 108):
         """
@@ -35,10 +36,6 @@ class EEGCNN(nn.Module):
         x = self.conv(x)            # Output: (batch, 32, 9, 9)
         x = self.classifier(x)      # Output: (batch, num_classes)
         return x
-    
-import torch
-import torch.nn as nn
-import torchvision.models as models
 
 class ResNetEEG(nn.Module):
     def __init__(self, in_channels: int = 1, filter_size: int = 3, num_classes: int = 108):
