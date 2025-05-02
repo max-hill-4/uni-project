@@ -26,10 +26,13 @@ def main(**args):
         p = a.predict()
         l = a.mse_per_class(*p)
         e = a.r2_per_class(*p)
-        
+        import matplotlib.pyplot as plt
+        plt.figure(figsize=(8, 6))
+        plt.scatter(p[0],p[1] , color='blue', alpha=0.5, label='Predicted vs Truth') 
+        plt.savefig(f'{e}.png', format='png', dpi=300, bbox_inches='tight')
         mse_results[te_parps[0]] = l
         r2_results[te_parps[0]] = e
-        print(tr_parps) 
+        print(f'trnaing parps are : {tr_parps}') 
         print(mse_results , "\n")
         print(r2_results)
     
@@ -39,18 +42,17 @@ def main(**args):
             json.dump({int(time.time()) : { 'args' : args, 'mse' : mse_results, 'r2' : r2_results}}, f, indent=4)
 
 
-
 if __name__ == '__main__':
 
     params = {
-        "feature_freq" : [{'coh' : 'alpha'}, {'coh' : 'beta'}, {'coh' : 'delta'}, {'coh' : 'theta'}],
-        "hormones" : ['BDC1.1'],
-        "sleep_stages" : ['N2'],
+        "feature_freq" : [{'coh' : 'alpha'}, {'coh' : 'beta'}],
+        "hormones" : ['BDC1.2'],
+        "sleep_stages" : ['N1'],
         "b_size" : 4 ,
         "filter_size" : 3,
         "iterations" : 5,
-        "k_folds" : 10,
-        "in_channels" : 2
+        "k_folds" : 11,
+        "in_channels" : 1
     }
 
     main(**params)

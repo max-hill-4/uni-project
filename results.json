@@ -2409,4 +2409,940 @@
             }
         }
     }
+}{
+    "1746150541": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                },
+                {
+                    "coh": "delta"
+                },
+                {
+                    "coh": "theta"
+                }
+            ],
+            "hormones": [
+                "BDC1.1"
+            ],
+            "sleep_stages": [
+                "N2"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 10,
+            "in_channels": 2
+        },
+        "mse": {
+            "G": {
+                "0": 0.011643233709037304
+            }
+        },
+        "r2": {
+            "G": {
+                "0": -4.55269193649292
+            }
+        }
+    }
+}{
+    "1746152314": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                },
+                {
+                    "coh": "delta"
+                },
+                {
+                    "coh": "theta"
+                }
+            ],
+            "hormones": [
+                "BDC1.1"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 10,
+            "in_channels": 2
+        },
+        "mse": {
+            "G": {
+                "0": 0.014937018975615501
+            }
+        },
+        "r2": {
+            "G": {
+                "0": -13.523923873901367
+            }
+        }
+    }
+}{
+    "1746152408": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                },
+                {
+                    "coh": "delta"
+                },
+                {
+                    "coh": "theta"
+                }
+            ],
+            "hormones": [
+                "BDC1.1"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 10,
+            "in_channels": 2
+        },
+        "mse": {
+            "G": {
+                "0": 0.014937018975615501
+            },
+            "W": {
+                "0": 0.0086344750598073
+            }
+        },
+        "r2": {
+            "G": {
+                "0": -13.523923873901367
+            },
+            "W": {
+                "0": -7.278572082519531
+            }
+        }
+    }
+}{
+    "1746152666": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                },
+                {
+                    "coh": "delta"
+                },
+                {
+                    "coh": "theta"
+                }
+            ],
+            "hormones": [
+                "BDC1.1"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 10,
+            "in_channels": 2
+        },
+        "mse": {
+            "G": {
+                "0": 0.014937018975615501
+            }
+        },
+        "r2": {
+            "G": {
+                "0": -13.523923873901367
+            }
+        }
+    }
+}{
+    "1746153166": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.1"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 5,
+            "in_channels": 1
+        },
+        "mse": {
+            "G": {
+                "0": 0.02967790886759758
+            }
+        },
+        "r2": {
+            "G": {
+                "0": -2.3998966217041016
+            }
+        }
+    }
+}{
+    "1746153286": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.1"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 5,
+            "in_channels": 1
+        },
+        "mse": {
+            "Y": {
+                "0": 0.003552287118509412
+            }
+        },
+        "r2": {
+            "Y": {
+                "0": 0.9461331367492676
+            }
+        }
+    }
+}{
+    "1746153945": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.1"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 2,
+            "in_channels": 1
+        },
+        "mse": {
+            "Y": {
+                "0": 0.0008932295604608953
+            }
+        },
+        "r2": {
+            "Y": {
+                "0": 0.9775530695915222
+            }
+        }
+    }
+}{
+    "1746153978": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.1"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 2,
+            "in_channels": 1
+        },
+        "mse": {
+            "Y": {
+                "0": 0.0008932295604608953
+            },
+            "H": {
+                "0": 0.007764768786728382
+            }
+        },
+        "r2": {
+            "Y": {
+                "0": 0.9775530695915222
+            },
+            "H": {
+                "0": 0.8282670974731445
+            }
+        }
+    }
+}{
+    "1746154067": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.1"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 2,
+            "in_channels": 1
+        },
+        "mse": {
+            "Y": {
+                "0": 0.0008932295604608953
+            }
+        },
+        "r2": {
+            "Y": {
+                "0": 0.9775530695915222
+            }
+        }
+    }
+}{
+    "1746154101": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.1"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 2,
+            "in_channels": 1
+        },
+        "mse": {
+            "Y": {
+                "0": 0.0008932295604608953
+            },
+            "H": {
+                "0": 0.007764768786728382
+            }
+        },
+        "r2": {
+            "Y": {
+                "0": 0.9775530695915222
+            },
+            "H": {
+                "0": 0.8282670974731445
+            }
+        }
+    }
+}{
+    "1746154217": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.1"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 2,
+            "in_channels": 1
+        },
+        "mse": {
+            "Y": {
+                "0": 0.07728810608386993
+            }
+        },
+        "r2": {
+            "Y": {
+                "0": -0.7093769311904907
+            }
+        }
+    }
+}{
+    "1746154252": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.1"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 2,
+            "in_channels": 1
+        },
+        "mse": {
+            "Y": {
+                "0": 0.07728810608386993
+            },
+            "H": {
+                "0": 0.04865504801273346
+            }
+        },
+        "r2": {
+            "Y": {
+                "0": -0.7093769311904907
+            },
+            "H": {
+                "0": -0.22270679473876953
+            }
+        }
+    }
+}{
+    "1746154491": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.2"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 2,
+            "in_channels": 1
+        },
+        "mse": {
+            "Y": {
+                "0": 0.07709954679012299
+            }
+        },
+        "r2": {
+            "Y": {
+                "0": -1.468506097793579
+            }
+        }
+    }
+}{
+    "1746154524": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.2"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 2,
+            "in_channels": 1
+        },
+        "mse": {
+            "Y": {
+                "0": 0.07709954679012299
+            },
+            "H": {
+                "0": 0.05187086760997772
+            }
+        },
+        "r2": {
+            "Y": {
+                "0": -1.468506097793579
+            },
+            "H": {
+                "0": -1.333864688873291
+            }
+        }
+    }
+}{
+    "1746156273": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.2"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 2,
+            "in_channels": 1
+        },
+        "mse": {
+            "Y": {
+                "0": 0.07709954679012299
+            }
+        },
+        "r2": {
+            "Y": {
+                "0": -1.468506097793579
+            }
+        }
+    }
+}{
+    "1746156469": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.2"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 21,
+            "in_channels": 1
+        },
+        "mse": {
+            "L": {
+                "0": 0.15743213891983032
+            }
+        },
+        "r2": {
+            "L": {
+                "0": 0.0
+            }
+        }
+    }
+}{
+    "1746156567": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.2"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 20,
+            "in_channels": 1
+        },
+        "mse": {
+            "L": {
+                "0": 0.15743213891983032
+            }
+        },
+        "r2": {
+            "L": {
+                "0": 0.0
+            }
+        }
+    }
+}{
+    "1746156668": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.2"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 19,
+            "in_channels": 1
+        },
+        "mse": {
+            "L": {
+                "0": 0.15743213891983032
+            }
+        },
+        "r2": {
+            "L": {
+                "0": 0.0
+            }
+        }
+    }
+}{
+    "1746156720": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.2"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 19,
+            "in_channels": 1
+        },
+        "mse": {
+            "L": {
+                "0": 0.15743213891983032
+            },
+            "H": {
+                "0": 0.004438098520040512
+            }
+        },
+        "r2": {
+            "L": {
+                "0": 0.0
+            },
+            "H": {
+                "0": 0.0
+            }
+        }
+    }
+}{
+    "1746156826": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.2"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 11,
+            "in_channels": 1
+        },
+        "mse": {
+            "L": {
+                "0": 0.07587642967700958
+            }
+        },
+        "r2": {
+            "L": {
+                "0": -1.0147912502288818
+            }
+        }
+    }
+}{
+    "1746156876": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.2"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 11,
+            "in_channels": 1
+        },
+        "mse": {
+            "L": {
+                "0": 0.07587642967700958
+            },
+            "P": {
+                "0": 0.0769881084561348
+            }
+        },
+        "r2": {
+            "L": {
+                "0": -1.0147912502288818
+            },
+            "P": {
+                "0": -0.4817166328430176
+            }
+        }
+    }
+}{
+    "1746156932": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.2"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 11,
+            "in_channels": 1
+        },
+        "mse": {
+            "L": {
+                "0": 0.07587642967700958
+            },
+            "P": {
+                "0": 0.0769881084561348
+            },
+            "B": {
+                "0": 0.025912273675203323
+            }
+        },
+        "r2": {
+            "L": {
+                "0": -1.0147912502288818
+            },
+            "P": {
+                "0": -0.4817166328430176
+            },
+            "B": {
+                "0": 0.38703352212905884
+            }
+        }
+    }
+}{
+    "1746156990": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.2"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 11,
+            "in_channels": 1
+        },
+        "mse": {
+            "L": {
+                "0": 0.07587642967700958
+            },
+            "P": {
+                "0": 0.0769881084561348
+            },
+            "B": {
+                "0": 0.025912273675203323
+            },
+            "C": {
+                "0": 0.0782407894730568
+            }
+        },
+        "r2": {
+            "L": {
+                "0": -1.0147912502288818
+            },
+            "P": {
+                "0": -0.4817166328430176
+            },
+            "B": {
+                "0": 0.38703352212905884
+            },
+            "C": {
+                "0": -25.607738494873047
+            }
+        }
+    }
+}{
+    "1746157046": {
+        "args": {
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                },
+                {
+                    "coh": "beta"
+                }
+            ],
+            "hormones": [
+                "BDC1.2"
+            ],
+            "sleep_stages": [
+                "N1"
+            ],
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 11,
+            "in_channels": 1
+        },
+        "mse": {
+            "L": {
+                "0": 0.07587642967700958
+            },
+            "P": {
+                "0": 0.0769881084561348
+            },
+            "B": {
+                "0": 0.025912273675203323
+            },
+            "C": {
+                "0": 0.0782407894730568
+            },
+            "Y": {
+                "0": 0.019886966794729233
+            }
+        },
+        "r2": {
+            "L": {
+                "0": -1.0147912502288818
+            },
+            "P": {
+                "0": -0.4817166328430176
+            },
+            "B": {
+                "0": 0.38703352212905884
+            },
+            "C": {
+                "0": -25.607738494873047
+            },
+            "Y": {
+                "0": 0.0
+            }
+        }
+    }
 }
