@@ -21,7 +21,7 @@ def main(**args):
         
         m = analysis.models.EEGCNN(filter_size=args["filter_size"], num_classes=len(args['hormones']), in_channels=args["in_channels"])
 
-        a = analysis.train.model(m, train_data, test_data, iterations=args[ "iterations" ])
+        a = analysis.train.model(m, train_data, test, iterations=args[ "iterations" ])
         a.train()
 
         p = a.predict()

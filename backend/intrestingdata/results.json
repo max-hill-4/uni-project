@@ -60,4 +60,35 @@
             }
         }
     }
+}{
+    "1746203458": {
+        "args": {
+            "b_size": 4,
+            "filter_size": 3,
+            "iterations": 5,
+            "k_folds": 10,
+            "in_channels": 1,
+            "feature_freq": [
+                {
+                    "coh": "alpha"
+                }
+            ],
+            "hormones": [
+                "BDC1"
+            ],
+            "sleep_stages": [
+                "N1"
+            ]
+        },
+        "mse": {
+            "L": {
+                "0": 0.17867286503314972
+            }
+        },
+        "r2": {
+            "L": {
+                "0": 0.2735411524772644
+            }
+        }
+    }
 }
