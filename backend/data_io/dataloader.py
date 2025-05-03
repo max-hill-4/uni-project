@@ -48,12 +48,12 @@ class RawDataset(Dataset):
         labels = {}
         df = pandas.read_csv(r'/mnt/raw_data/biomarkers.csv').dropna()
 
-        scaler = MinMaxScaler()
+        #scaler = MinMaxScaler()
         # Might be a good idea to not scale to complete 0 and 1 ?
         # feature_range=(-1, 1)
 
         # Scale the hormone columns in the DataFrame
-        df[self.bdc_columns] = scaler.fit_transform(df[self.bdc_columns])
+        #df[self.bdc_columns] = scaler.fit_transform(df[self.bdc_columns])
 
         labels = {}
         participants = df['Participant'].unique()
