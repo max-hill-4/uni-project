@@ -16,11 +16,13 @@ def upload_file():
         return "No file uploaded"
     
     file = request.files["file"]
-    
+    hormone = request.form.get('hormone') 
+    print(hormone)
     if file.filename == "":
         return "No file selected"
-
-    response = requests.post('http://localhost:5005/receive', files={'file' : file.read()})
+    files = {'file' : file.read()}
+    data = {'hormone' : hormone}
+    response = requests.post('http://localhost:5005/receive', files=files, data=data)
     print(response.text)
     return f"{response.text}"
 

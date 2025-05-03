@@ -85,6 +85,19 @@ def participant_kfold_split(dataset, n_splits=5, shuffle=True, random_state=None
     participants = list(dataset.labels.keys())
     num_participants = len(participants)
     # Shuffle participants if needed
+    if n_splits == 1:
+        train_indices = [
+            idx for idx, p in enumerate(dataset.mat_files) 
+            if str(p)[18] in participants
+        ]
+        return [(
+            Subset(dataset, train_indices),
+            Subset(dataset, []),  # Empty test set
+            participants,         # All participants in train
+            []                   # No test participants
+        )]
+
+
     if shuffle:
         if random_state is not None:
             torch.manual_seed(random_state)

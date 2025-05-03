@@ -29,9 +29,9 @@ def main(**args):
      
     for fold in folds:
         train_dataset, test_dataset, tr_parps, te_parps = fold
+        print(tr_parps)
         train_data = DataLoader(train_dataset, batch_size=args["b_size"], shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)    
-        test_data = DataLoader(test_dataset, batch_size=args["b_size"], shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)
-        
+        #test_data = DataLoader(test_dataset, batch_size=args["b_size"], shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)
         m = analysis.models.EEGCNN(filter_size=args["filter_size"], num_classes=len(args['hormones']), in_channels=args["in_channels"])
         a = analysis.train.model(m, train_data, train_data, iterations=args[ "iterations" ])
         a.train()
@@ -40,11 +40,11 @@ def main(**args):
 
         l = a.mse_per_class(predictions, truth)
         e = a.r2_per_class(predictions, truth)
-        mse_results[te_parps[0]] = l
-        r2_results[te_parps[0]] = e
+        #mse_results[te_parps[0]] = l
+        #r2_results[te_parps[0]] = e
         print(f'trnaing parps are : {tr_parps}') 
-        print(mse_results , "\n")
-        print(r2_results)
+        # print(mse_results , "\n")
+        # print(r2_results)
 
 
         if e[0] > 0:
