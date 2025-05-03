@@ -3,6 +3,10 @@ app = Flask(__name__)
 import socketio
 import io
 sio = socketio.Client()
+from werkzeug.datastructures import FileStorage
+import base64
+import json
+sio.connect("http://localhost:5005", transports=["websocket"])
 
 @sio.on("connect")
 def on_connect():
@@ -10,9 +14,17 @@ def on_connect():
 
 def send_and_wait_for_response(data):
     
-    sio.connect("http://localhost:5005")
-    response = sio.call("send_data", data)  # Sends and waits for reply
-    print(f"Received response: {response}")
+    if not sio.connected:
+        print("SocketIO client not connected. Connecting now...")
+        sio.connect('http://localhost:5005')  # Use your actual server address
+
+    try:
+        response = sio.call("send_data", data, timeout=10)
+        print(f"Received response: {response}")
+    except socketio.exceptions.TimeoutError:
+        print("Timed out waiting for response from server.")
+    except socketio.exceptions.BadNamespaceError:
+        print("Not connected to the correct namespace.")
 
 
 @app.route("/")
@@ -31,10 +43,12 @@ def upload_file():
     if file.filename == "":
         return "No file selected"
 
-    # Process the file without saving
-    file_bytes = io.BytesIO(file.read()).getvalue()  # Convert FileStorage to bytes
-    print(file.filename)
-    send_and_wait_for_response(file_bytes)
+    data = io.BytesIO(file.read()).getvalue()
+
+    # Encode the file data in base64
+    encoded_data = base64.b64encode(data).decode('utf-8')
+
+    send_and_wait_for_response(json.dumps({'yay': 'yay'}))
     return f"File {file.filename} received successfully!"
 
 

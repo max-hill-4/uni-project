@@ -6,8 +6,14 @@ from features_extract import FeatureExtractor
 from flask import Flask
 from flask_socketio import SocketIO
 
+
+import eventlet
+
+eventlet.monkey_patch()  # Needed for compatibility
+
+
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", logger=True,)
 
 @socketio.on("send_data")
 def handle_send_data(data):
@@ -19,11 +25,8 @@ def handle_send_data(data):
         m = EEGCNN(num_classes=1)
         m.load_state_dict(torch.load("model.pt"))
         m.eval()
-        input_tensor = torch.tensor(f.get(mat_data), dtype=torch.float32)
-        input_tensor = input_tensor.unsqueeze(1)
-        print(input_tensor.shape)
+        input_tensor = torch.tensor(f.get(mat_data), dtype=torch.float32).unsqueeze(1)
         
-        print("got model, predicting")
         with torch.no_grad():  # Disable gradient computation for inference
             prediction = m(input_tensor)  # Forward pass
         print(f"Predicted value: {prediction.item()}")
@@ -34,4 +37,4 @@ def handle_send_data(data):
     return response  
 
 if __name__ == '__main__':
-	app.run(debug=True, port=5005)
+	socketio.run(app=app, debug=True, port=5005)
