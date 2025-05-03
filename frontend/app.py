@@ -22,7 +22,7 @@ def upload_file():
 
     response = requests.post('http://localhost:5005/receive', files={'file' : file.read()})
     print(response.text)
-    return f"File {response.text} received successfully!"
+    return f"{response.text}"
 
 
 if __name__ == '__main__':
