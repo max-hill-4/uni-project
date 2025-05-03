@@ -1,5 +1,5 @@
 param_options = {
-    "feature_freq" : [[{'coh' : 'alpha'}, {'coh' : 'beta'}],
+    "feature_freq" : [[{'coh' : 'alpha'} ],
                        [{'coh' : 'beta'}, {'coh' : 'delta'}],
                        [{'coh' : 'theta'}, {'coh' : 'gamma'}]],
                        

@@ -58,24 +58,26 @@ def main(**args):
         if e[0] > 0:
             saliency_map = create_saliency_map(m, all_inputs, device)
 
-            plt.imshow(saliency_map, cmap="jet", alpha=0.5)
-            plt.colorbar()
-            plt.savefig(f'./backend/intrestingdata/saliency/{e[0]}.png', dpi=300)
-            plt.close()
+            # plt.imshow(saliency_map, cmap="jet", alpha=0.5)
+            # plt.colorbar()
+            # plt.savefig(f'./backend/intrestingdata/saliency/{e[0]}.png', dpi=300)
+            # plt.close()
 
-            plt.figure(figsize=(8, 6))
-            plt.scatter(predictions, truth , color='blue', alpha=0.5, label='Predicted vs Truth') 
-            plt.savefig(f'./backend/intrestingdata/predicted/{e[0]}.png', format='png', dpi=300, bbox_inches='tight')
-            plt.close()
-            save(m.state_dict(), f'./backend/trained_models/{e[0]}.pt')
+            # plt.figure(figsize=(8, 6))
+            # plt.scatter(predictions, truth , color='blue', alpha=0.5, label='Predicted vs Truth') 
+            # plt.savefig(f'./backend/intrestingdata/predicted/{e[0]}.png', format='png', dpi=300, bbox_inches='tight')
+            # plt.close()
+            save(m.state_dict(), f'./trained_models/{e[0]}.pt')
 
-            with open('./backend/intrestingdata/results.json', 'a') as f:
-                json.dump({int(time.time()) : { 'args' : args, 'mse' : mse_results, 'r2' : r2_results}}, f, indent=4)
+            # with open('./backend/intrestingdata/results.json', 'a') as f:
+            #     json.dump({int(time.time()) : { 'args' : args, 'mse' : mse_results, 'r2' : r2_results}}, f, indent=4)
 
 
 
 if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  # Defined here
+    import os 
+    print(os.getcwd())
     params = {
         "b_size" : 8,
         "filter_size" : 3,

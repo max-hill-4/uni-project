@@ -1,3 +1,4 @@
+import numpy as np
 def _lc(data_input, lag=1, n_samples=1000):
     """
     Compute lagged correlation as a fast proxy for directed connectivity.

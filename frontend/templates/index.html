@@ -30,28 +30,20 @@
 
 
     <script>
-        const dropzone = document.getElementById("dropzone");
-        const fileInput = document.getElementById("dropzone-file");
+    const fileInput = document.getElementById("dropzone-file");
+    fileInput.addEventListener("change", () => {
+        const file = fileInput.files[0];
+        if (!file) return;
 
-        dropzone.addEventListener("click", () => fileInput.click());
+        const formData = new FormData();
+        formData.append("file", file);
 
-        dropzone.addEventListener("dragover", (e) => {
-            e.preventDefault();
-            dropzone.classList.add("bg-gray-100");
-        });
-
-        dropzone.addEventListener("dragleave", () => {
-            dropzone.classList.remove("bg-gray-100");
-        });
-
-        dropzone.addEventListener("drop", (e) => {
-            e.preventDefault();
-            dropzone.classList.remove("bg-gray-200");
-            const files = e.dataTransfer.files;
-            console.log(files);
-        });
-
-    </script>
-
-</body>
-</html>
+        fetch("/upload", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => console.log("Upload success:", data))
+        .catch(error => console.error("Upload failed:", error));
+    });
+    </script><form action="/upload" method="POST" enctype="multipart/form-data">
