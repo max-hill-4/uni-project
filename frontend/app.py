@@ -1,22 +1,18 @@
 from flask import Flask, render_template, request
 app = Flask(__name__)
-import socket
+import socketio
 import io
+sio = socketio.Client()
 
-def send_file_over_socket(mat_file):
-    HOST = "localhost"  # Change to your destination server
-    PORT = 5001  # Your socket server port
+@sio.on("connect")
+def on_connect():
+    print("Connected to server!")
 
-    # Open socket connection
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((HOST, PORT))
-
-        # Convert .mat file content into byte stream
-        file_bytes = io.BytesIO(mat_file.read()).getvalue()
-        
-        # Send data
-        s.sendall(file_bytes)
-        print("File sent successfully!")
+def send_and_wait_for_response(data):
+    
+    sio.connect("http://localhost:5005")
+    response = sio.call("send_data", data)  # Sends and waits for reply
+    print(f"Received response: {response}")
 
 
 @app.route("/")
@@ -36,10 +32,11 @@ def upload_file():
         return "No file selected"
 
     # Process the file without saving
+    file_bytes = io.BytesIO(file.read()).getvalue()  # Convert FileStorage to bytes
     print(file.filename)
-    send_file_over_socket(file)
+    send_and_wait_for_response(file_bytes)
     return f"File {file.filename} received successfully!"
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run(debug=True, port=5008)
