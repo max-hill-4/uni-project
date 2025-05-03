@@ -22,15 +22,17 @@
         </label>
         <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-500">
-        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 45%"></div>
-        </divoiu
-
-
+        <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+        <div id="upload-feedback" class="mt-4 text-center text-sm text-gray-500 dark:text-gray-400"></div>
+        </divoiu>
     </form>
 
 
     <script>
     const fileInput = document.getElementById("dropzone-file");
+    const progressBar = document.getElementById("progress-bar");
+    const feedbackElement = document.getElementById("upload-feedback");
+
     fileInput.addEventListener("change", () => {
         const file = fileInput.files[0];
         if (!file) return;
@@ -43,6 +45,15 @@
             body: formData
         })
         .then(response => response.text())
+        .then(data => {
+            console.log("Upload success:", data);
+            // Show a success message
+            feedbackElement.textContent = "Upload successful!";
+            feedbackElement.classList.remove("text-gray-500");
+            feedbackElement.classList.add("text-green-500");
+
+            progressBar.style.width = "100%";
+        })
         .then(data => console.log("Upload success:", data))
         .catch(error => console.error("Upload failed:", error));
     });

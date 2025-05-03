@@ -10,22 +10,14 @@ from tests import param_options
 import torch
 import numpy as np
 from itertools import product
-def create_saliency_map(model, input_tensor, device):
+
+def compute_saliency_map(model, input_tensor, device):
     model.eval()
-    saliency_maps = []
-    
-    # Process each sample in the batch
-    for i in range(input_tensor.shape[0]):  # input_tensor: [batch_size, 1, 19, 19]
-        sample = input_tensor[i:i+1].to(device).requires_grad_(True)  # Shape: [1, 1, 19, 19]
-        output = model(sample)  # Shape: [1, 1] for regression
-        output.backward()  # Compute gradients
-        saliency = sample.grad.abs().squeeze()  # Shape: [1, 19, 19]
-        saliency = saliency / (saliency.max() + 1e-8)  # Normalize to [0, 1] per sample
-        saliency_maps.append(saliency.cpu().numpy())
-    
-    # Average saliency maps across the batch
-    combined_saliency = np.mean(saliency_maps, axis=0)  # Shape: [19, 19]
-    return combined_saliency
+    input_tensor = input_tensor.to(device).requires_grad_(True)
+    output = model(input_tensor)  # Shape: [1, 1]
+    output.backward()  # Compute gradients w.r.t. input
+    saliency = input_tensor.grad.abs().squeeze()  # Shape: [1, 19, 19]
+    return saliency.cpu().numpy()
 
 def main(**args):
 
@@ -56,7 +48,7 @@ def main(**args):
 
 
         if e[0] > 0:
-            saliency_map = create_saliency_map(m, all_inputs, device)
+            saliency_map = compute_saliency_map(m, all_inputs, device)
 
             # plt.imshow(saliency_map, cmap="jet", alpha=0.5)
             # plt.colorbar()
