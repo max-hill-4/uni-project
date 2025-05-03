@@ -8,14 +8,24 @@ import time
 import matplotlib.pyplot as plt
 from tests import param_options
 import torch
+import numpy as np
 from itertools import product
-def compute_saliency_map(model, input_tensor, device):
+def create_saliency_map(model, input_tensor, device):
     model.eval()
-    input_tensor = input_tensor.to(device).requires_grad_(True)
-    output = model(input_tensor)  # Shape: [1, 1]
-    output.backward()  # Compute gradients w.r.t. input
-    saliency = input_tensor.grad.abs().squeeze()  # Shape: [1, 19, 19]
-    return saliency.cpu().numpy()
+    saliency_maps = []
+    
+    # Process each sample in the batch
+    for i in range(input_tensor.shape[0]):  # input_tensor: [batch_size, 1, 19, 19]
+        sample = input_tensor[i:i+1].to(device).requires_grad_(True)  # Shape: [1, 1, 19, 19]
+        output = model(sample)  # Shape: [1, 1] for regression
+        output.backward()  # Compute gradients
+        saliency = sample.grad.abs().squeeze()  # Shape: [1, 19, 19]
+        saliency = saliency / (saliency.max() + 1e-8)  # Normalize to [0, 1] per sample
+        saliency_maps.append(saliency.cpu().numpy())
+    
+    # Average saliency maps across the batch
+    combined_saliency = np.mean(saliency_maps, axis=0)  # Shape: [19, 19]
+    return combined_saliency
 
 def main(**args):
 
@@ -31,11 +41,10 @@ def main(**args):
         test_data = DataLoader(test_dataset, batch_size=args["b_size"], shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)
         
         m = analysis.models.EEGCNN(filter_size=args["filter_size"], num_classes=len(args['hormones']), in_channels=args["in_channels"])
-        a = analysis.train.model(m, train_data, test_data, iterations=args[ "iterations" ])
+        a = analysis.train.model(m, train_data, train_data, iterations=args[ "iterations" ])
         a.train()
 
         all_inputs, predictions, truth = a.predict()
-        input_tensor = all_inputs[0:1]
 
         l = a.mse_per_class(predictions, truth)
         e = a.r2_per_class(predictions, truth)
@@ -44,11 +53,10 @@ def main(**args):
         print(f'trnaing parps are : {tr_parps}') 
         print(mse_results , "\n")
         print(r2_results)
-        import torch
 
 
         if e[0] > 0:
-            saliency_map = compute_saliency_map(m, input_tensor, device)
+            saliency_map = create_saliency_map(m, all_inputs, device)
 
             plt.imshow(saliency_map, cmap="jet", alpha=0.5)
             plt.colorbar()

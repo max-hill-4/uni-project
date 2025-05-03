@@ -1,0 +1,4 @@
+eeg.maxh.work {
+    tls /etc/ssl/caddy/cert.pem /etc/ssl/caddy/key.pem 
+    reverse_proxy web:8000
+}

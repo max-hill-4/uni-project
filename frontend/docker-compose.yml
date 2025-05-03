@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy:/etc/caddy       # Full config dir bind mount
+      - /home/eeg/ssl:/etc/ssl/caddy
+      - caddy_data:/data         # Caddy's internal TLS data
+      - caddy_config:/config     # Caddy's dynamic config
+    restart: unless-stopped
+  web:
+    image: python:3.11-slim
+    container_name: web
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: >
+      sh -c "pip install --no-cache-dir flask gunicorn &&
+             gunicorn app:app --bind 0.0.0.0:8000"
+    restart: unless-stopped
+volumes:
+  caddy_data:
+  caddy_config:
+

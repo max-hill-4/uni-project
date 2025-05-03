@@ -8,7 +8,7 @@ def index():
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
-    
+    print('upload detected!') 
     if "file" not in request.files:
         return "No file uploaded"
     
@@ -22,7 +22,5 @@ def upload_file():
     return f"File {file.filename} received successfully!"
 
 
-
-
 if __name__ == '__main__':
-	app.run(debug=True, port=9696)
+	app.run(debug=True)
