@@ -2,26 +2,20 @@ import scipy.io
 import torch
 from analysis.models import EEGCNN
 from features_extract import FeatureExtractor
+from flask import Flask, request
 
-from flask import Flask
-from flask_socketio import SocketIO
-
-
-import eventlet
-
-eventlet.monkey_patch()  # Needed for compatibility
 
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*", logger=True,)
 
-@socketio.on("send_data")
-def handle_send_data(data):
+@app.route('/receive', methods=['POST'])
+def handle_send_data():
+    data = request.files['file']
     print(f"Received: {data}")
     
     try:
         f = FeatureExtractor([{'coh' : 'alpha'}]) # could get freqs from embdedded byte header?
-        mat_data = scipy.io.loadmat(data)  # Load directly from memory
+        mat_data = scipy.io.loadmat(data.stream)  # Load directly from memory
         m = EEGCNN(num_classes=1)
         m.load_state_dict(torch.load("model.pt"))
         m.eval()
@@ -30,11 +24,12 @@ def handle_send_data(data):
         with torch.no_grad():  # Disable gradient computation for inference
             prediction = m(input_tensor)  # Forward pass
         print(f"Predicted value: {prediction.item()}")
+        response = {'prediction' : str(prediction.item())}
     except Exception as e:
         print(f"Error loading .mat file: {e}")
         # Process data and respond
         response = f'{e}'
-    return response  
+    return response
 
 if __name__ == '__main__':
-	socketio.run(app=app, debug=True, port=5005)
+	app.run(debug=True, port=5005)
