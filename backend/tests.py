@@ -1,13 +1,10 @@
 param_options = {
-    "feature_freq" : [[{'coh' : 'alpha'}],
-                       [{'coh' : 'beta'}],
-                       [{'coh' : 'theta'}],
-                       [{'coh' : 'gamma'}],
-                       [{'coh' : 'delta'}]],
+    "feature_freq" : [[{'coh' : 'alpha'}, {'coh' : 'beta'}],
+                       [{'coh' : 'beta'}, {'coh' : 'delta'}],
+                       [{'coh' : 'theta'}, {'coh' : 'gamma'}]],
                        
-    "hormones" : [['BDC1'], ['BDC1.1'], ['BDC1.2'], ['BDC1.3'], ['BDC1.4'], 
-                  ['BDC1.5'], ['BDC1.6'], ['BDC1.7'],
-                  ['BDC1.8'], ['BDC1.9'], ['BDC1.10'], ['BDC1.11']],
+    "hormones" : [['BDC1'], ['BDC1.3'], ['BDC1.4'], 
+                  ['BDC1.5'], ['BDC1.8'], ['BDC1.9']],
 
-    "sleep_stages" : [['N1'], ['N2']],
+    "sleep_stages" : [['N1']],
 }

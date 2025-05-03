@@ -56,11 +56,10 @@ class model():
                 # Store predictions and labels
                 all_predictions.append(predictions.cpu())  # Store predictions on the CPU for evaluation later
                 all_labels.append(labels.cpu())  # Store labels on the CPU
-                print
         # After collecting predictions and labels
         all_predictions = torch.cat(all_predictions, dim=0)  # Ensure proper concatenation along the batch dimension
         all_labels = torch.cat(all_labels, dim=0)
-        return all_predictions, all_labels
+        return data, all_predictions, all_labels
     
     def mse(self, predict, truth):
         mse = mse_loss(predict, truth)

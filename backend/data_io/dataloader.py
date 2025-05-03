@@ -80,7 +80,7 @@ def participant_kfold_split(dataset, n_splits=5, shuffle=True, random_state=None
     Returns:
         List of K folds, each containing (train_subset, test_subset)
     """
-    torch.manual_seed(4)
+    torch.manual_seed(42)
     # Get unique participants
     participants = list(dataset.labels.keys())
     num_participants = len(participants)

@@ -1,6 +1,6 @@
-import torch
 import torch.nn as nn
 import torchvision.models as models
+
 class EEGCNN(nn.Module):
     def __init__(self, in_channels: int = 1, filter_size: int = 3, num_classes: int = 108):
         """
@@ -14,9 +14,9 @@ class EEGCNN(nn.Module):
         # Convolutional layers (now supports multi-channel input
         self.conv = nn.Sequential(
             nn.Conv2d(in_channels, 16, kernel_size=filter_size, padding=filter_size // 2),
-            nn.ReLU(inplace=True),
+            nn.ReLU(),
             nn.Conv2d(16, 32, kernel_size=filter_size, padding=filter_size // 2),
-            nn.ReLU(inplace=True),
+            nn.ReLU(),
             #nn.MaxPool2d(2)
         )
         
@@ -66,3 +66,4 @@ class ResNetEEG(nn.Module):
         # Input shape: (batch, in_channels, 19, 19)
         x = self.resnet(x)  # Output: (batch, num_classes)
         return x
+    
