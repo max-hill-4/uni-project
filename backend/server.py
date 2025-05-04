@@ -14,7 +14,6 @@ app = Flask(__name__)
 def handle_send_data():
     data = request.files['file']
     hormone = request.form.get('hormone')
-    print(hormone)
     print(f"Received: {data}")
     
     hormone_map = {
@@ -34,8 +33,10 @@ def handle_send_data():
 
     try:
         f = FeatureExtractor([{'coh' : 'alpha'}]) # could get freqs from embdedded byte header?
+        print(data.stream)
         mat_data = scipy.io.loadmat(data.stream)  # Load directly from memory
         m = EEGCNN(num_classes=1)
+        print(f'trying to load {hormone_map[hormone]}.pt')
         m.load_state_dict(torch.load(f"trained_models/{hormone_map[hormone]}.pt"))
         m.eval()
         input_tensor = torch.tensor(f.get(mat_data), dtype=torch.float32).unsqueeze(1)

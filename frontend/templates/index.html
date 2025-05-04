@@ -24,8 +24,6 @@
         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-500">
         <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
         <div id="upload-feedback" class="mt-4 text-center text-sm text-gray-500 dark:text-gray-400"></div>
-        <div id="response-text" class="mt-4 text-center text-sm text-gray-400"></div>
-        <img id="saliency-map" src="" alt="Saliency Map" class="w-full h-64 mt-5 mx-auto" style="display: none; max-width: 500px; margin: 20px auto; image-rendering: pixelated; image-rendering: crisp-edges;">
         </divoiu>
 
     </form>
@@ -35,8 +33,7 @@
     const fileInput = document.getElementById("dropzone-file");
     const progressBar = document.getElementById("progress-bar");
     const feedbackElement = document.getElementById("upload-feedback");
-    const saliencyMapImg = document.getElementById('saliency-map');
-    const responseTextElement = document.getElementById("response-text");
+    
     fileInput.addEventListener("change", () => {
         const file = fileInput.files[0];
         if (!file) return;
@@ -54,13 +51,10 @@
         .then(data => {
             console.log("Upload success:", data);
             // Show a success message
+            localStorage.setItem('formData', JSON.stringify(formData));
             feedbackElement.textContent = "Upload successful!";
-            feedbackElement.classList.remove("text-gray-500");
-            feedbackElement.classList.add("text-green-500");
             responseTextElement.textContent = data.prediction;
             progressBar.style.width = "100%";
-            saliencyMapImg.src = data.sm;
-            saliencyMapImg.style.display = "block"
         })
         .then(data => console.log("Upload success:", data))
         .catch(error => console.error("Upload failed:", error));

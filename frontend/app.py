@@ -17,7 +17,6 @@ def upload_file():
     
     file = request.files["file"]
     hormone = request.form.get('hormone') 
-    print(hormone)
     if file.filename == "":
         return "No file selected"
     files = {'file' : file.read()}
@@ -26,6 +25,9 @@ def upload_file():
     print(response.text)
     return f"{response.text}"
 
+@app.route('/results/<unique_id>')
+def show_results(unique_id):
+    return render_template("results.html")
 
 if __name__ == '__main__':
 	app.run(debug=True, port=5008)
