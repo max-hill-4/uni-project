@@ -16,16 +16,6 @@ def _sl(data_input: dict, freq: str, w1: int = 5, w2: int = 10):
     - sl_matrix: numpy array of shape (1, 19, 19), SL matrix
     """
 
-    # Define frequency bands
-    FREQ_BANDS = {
-        'deltaFeatureExtractor.a': (30, 45)
-    }
-
-    # Validate frequency band
-    if freq not in FREQ_BANDS:
-        raise ValueError(f"Frequency must be one of: {', '.join(FREQ_BANDS.keys())}.")
-    fmin, fmax = FREQ_BANDS[freq]
-
     # Convert input to RawArray and create epochs
     data = _epochtoRawArray(data_input)
     if data is None:
@@ -37,11 +27,7 @@ def _sl(data_input: dict, freq: str, w1: int = 5, w2: int = 10):
     if len(epochs) == 0:
         raise ValueError("No epochs created. Check input data or epoching parameters.")
 
-    # Filter data in the specified frequency band
-    epochs.filter(l_freq=fmin, h_freq=fmax, verbose=False)
-
     # Downsample epochs to 100 time points (assuming original sampling rate gives 15000 points over 5 seconds)
-    original_sfreq = data.info['sfreq']
     target_sfreq = 25 / 5.0  # 20 Hz for 100 points over 5 seconds
     epochs.resample(sfreq=target_sfreq, verbose=False)
 

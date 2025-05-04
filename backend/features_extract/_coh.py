@@ -25,11 +25,5 @@ def _coh(data_input: dict, freq):
     
     data = con.get_data(output='dense')
     
-    # Apply RobustScaler
-    from sklearn.preprocessing import RobustScaler 
-    scaler = RobustScaler()
-    original_shape = data.shape
-    data = scaler.fit_transform(data.reshape(-1, original_shape[-1])).reshape(original_shape)
-    
     data = transpose(data, (2, 0, 1))  # PyTorch uses channel-first format
     return data
