@@ -10,18 +10,31 @@ services:
     volumes:
       - ./caddy:/etc/caddy       # Full config dir bind mount
       - /home/eeg/ssl:/etc/ssl/caddy
+      - ./requirements.txt/:/app
       - caddy_data:/data         # Caddy's internal TLS data
       - caddy_config:/config     # Caddy's dynamic config
     restart: unless-stopped
   web:
     image: python:3.11-slim
-    container_name: web
+    container_name: frontend 
     working_dir: /app
     volumes:
       - ./:/app
     command: >
-      sh -c "pip install --no-cache-dir flask gunicorn &&
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
              gunicorn app:app --bind 0.0.0.0:8000"
+    restart: unless-stopped
+  backend:
+    image: python:3.11-slim
+    container_name: backend 
+    working_dir: /predict
+    volumes:
+      - ../backend:/predict
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+             gunicorn server:server --bind 0.0.0.0:6000"
+    ports: 
+      - "6000:6000"
     restart: unless-stopped
 volumes:
   caddy_data:

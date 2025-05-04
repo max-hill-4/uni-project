@@ -1,7 +1,6 @@
 import scipy.io
 import torch
 from analysis.models import EEGCNN
-from werkzeug.datastructures import FileStorage
 from features_extract import FeatureExtractor
 from flask import Flask, request
 from app import compute_saliency_map
@@ -9,9 +8,9 @@ import matplotlib.pyplot as plt
 import io 
 import base64
 import json
-app = Flask(__name__)
+server = Flask(__name__)
 
-@app.route('/receive', methods=['POST'])
+@server.route('/receive', methods=['POST'])
 def handle_send_data():
     data = request.files['file']
     feature = request.form.get('feature')
@@ -63,4 +62,4 @@ def handle_send_data():
 
     
 if __name__ == '__main__':
-	app.run(debug=True, port=5005)
+	server.run(debug=True, port=6000)

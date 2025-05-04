@@ -1,0 +1,12 @@
+numpy
+scipy
+mne
+mne-connectivity
+torch
+torchmetrics
+pandas
+scikit-learn
+gunicorn
+flask
+torchvision
+statsmodels

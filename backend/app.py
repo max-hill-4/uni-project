@@ -59,7 +59,7 @@ def main(**args):
             # plt.scatter(predictions, truth , color='blue', alpha=0.5, label='Predicted vs Truth') 
             # plt.savefig(f'./backend/intrestingdata/predicted/{e[0]}.png', format='png', dpi=300, bbox_inches='tight')
             # plt.close()
-            save(m.state_dict(), f'./trained_models/{args['hormones'][0]}.pt')
+            save(m.state_dict(), f"./trained_models/{args['feature_freq']}_{['hormones'][0]}.pt")
 
             # with open('./backend/intrestingdata/results.json', 'a') as f:
             #     json.dump({int(time.time()) : { 'args' : args, 'mse' : mse_results, 'r2' : r2_results}}, f, indent=4)
