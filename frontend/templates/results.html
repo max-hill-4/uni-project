@@ -9,16 +9,20 @@
 <body class="flex items-center justify-center h-screen bg-gray-700">
 
     <div id="upload-feedback" class="mt-4 text-center text-sm text-gray-500 dark:text-gray-400"></div>
+    <img id="saliency-map" src="" alt="Saliency Map" class="w-full h-64 mt-5 mx-auto" style="display: none; max-width: 500px; margin: 20px auto; image-rendering: pixelated; image-rendering: crisp-edges;">
 
 </body>
 <script>
     const feedbackElement = document.getElementById("upload-feedback");
-    
+    const saliencyMapImg = document.getElementById('saliency-map');
+
     document.addEventListener("DOMContentLoaded", () => {
         const storedFormData = localStorage.getItem('formData');
         const parsedData = JSON.parse(storedFormData);
 
         feedbackElement.textContent = parsedData.prediction; 
+        saliencyMapImg.src = parsedData.sm;
+        saliencyMapImg.style.display = "block"
 
         // Show a success message
         console.log(storedFormData)
