@@ -23,7 +23,7 @@ def upload_file():
         return "No file selected"
     files = {'file' : file.read()}
     data = {'hormone' : hormone, 'feature' : feature}
-    response = requests.post('http://backend:6000/receive', files=files, data=data)
+    response = requests.post('http://localhost:6000/receive', files=files, data=data)
     print(response.text)
     return f"{response.text}"
 

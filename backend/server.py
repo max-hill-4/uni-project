@@ -15,8 +15,10 @@ def handle_send_data():
     data = request.files['file']
     feature = request.form.get('feature')
     hormone = request.form.get('hormone')
-    feature = json.loads(feature)
+    print(f'my feature before jsonloda is {feature}')
+    feature = json.loads(f'[{feature}]') if feature else []
     print(feature)
+    print(f'type of feature is {type(feature)}')
     print(f"Received: {data}")
     hormone_map = {
         "TAC mmol/L": "BDC1",
@@ -34,12 +36,12 @@ def handle_send_data():
     }
 
     try:
-        f = FeatureExtractor([dict(feature)]) # could get freqs from embdedded byte header?
+        f = FeatureExtractor(feature) # could get freqs from embdedded byte header?
         print(data.stream)
         mat_data = scipy.io.loadmat(data.stream)  # Load directly from memory
         m = EEGCNN(num_classes=1)
         print(f'trying to load {hormone_map[hormone]}.pt')
-        m.load_state_dict(torch.load(f"trained_models/{[dict(feature)]},{hormone}.pt"))
+        m.load_state_dict(torch.load(f"trained_models/({feature}, '{hormone_map[hormone]}').pt"))
         m.eval()
         input_tensor = torch.tensor(f.get(mat_data), dtype=torch.float32).unsqueeze(1)
         
