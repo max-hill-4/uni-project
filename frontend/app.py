@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from werkzeug.datastructures import FileStorage
 import requests
-
+import json
 app = Flask(__name__)
 
 @app.route("/")
@@ -14,13 +14,16 @@ def upload_file():
     print('upload detected!') 
     if "file" not in request.files:
         return "No file uploaded"
-    
+    # why the fuck does this even exist ? arent i just fetching the data in results anyways ? IDEKEKEKEKDKEK
     file = request.files["file"]
     hormone = request.form.get('hormone') 
+    feature = request.form.get('feature') 
+    print(f'feature is of type {type(feature)}')
+
     if file.filename == "":
         return "No file selected"
     files = {'file' : file.read()}
-    data = {'hormone' : hormone}
+    data = {'hormone' : hormone, 'feature' : feature}
     response = requests.post('http://localhost:5005/receive', files=files, data=data)
     print(response.text)
     return f"{response.text}"

@@ -8,14 +8,17 @@ from app import compute_saliency_map
 import matplotlib.pyplot as plt
 import io 
 import base64
+import json
 app = Flask(__name__)
 
 @app.route('/receive', methods=['POST'])
 def handle_send_data():
     data = request.files['file']
+    feature = request.form.get('feature')
     hormone = request.form.get('hormone')
+    feature = json.loads(feature)
+    print(feature)
     print(f"Received: {data}")
-    
     hormone_map = {
         "TAC mmol/L": "BDC1",
         "ADA U/L": "BDC1.1",
@@ -32,7 +35,7 @@ def handle_send_data():
     }
 
     try:
-        f = FeatureExtractor([{'coh' : 'alpha'}]) # could get freqs from embdedded byte header?
+        f = FeatureExtractor([dict(feature)]) # could get freqs from embdedded byte header?
         print(data.stream)
         mat_data = scipy.io.loadmat(data.stream)  # Load directly from memory
         m = EEGCNN(num_classes=1)
