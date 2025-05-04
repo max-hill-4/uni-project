@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload Dropzone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-700">
+
+    <div id="upload-feedback" class="mt-4 text-center text-sm text-gray-500 dark:text-gray-400"></div>
+
+</body>
+<script>
+    const feedbackElement = document.getElementById("upload-feedback");
+    
+    document.addEventListener("DOMContentLoaded", () => {
+        const storedFormData = localStorage.getItem('formData');
+        const parsedData = JSON.parse(storedFormData);
+
+        feedbackElement.textContent = parsedData.prediction; 
+
+        // Show a success message
+        console.log(storedFormData)
+    });
+</script>

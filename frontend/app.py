@@ -25,8 +25,8 @@ def upload_file():
     print(response.text)
     return f"{response.text}"
 
-@app.route('/results/<unique_id>')
-def show_results(unique_id):
+@app.route("/results")
+def show_results():
     return render_template("results.html")
 
 if __name__ == '__main__':

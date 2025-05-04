@@ -30,6 +30,7 @@
 
 
     <script>
+
     const fileInput = document.getElementById("dropzone-file");
     const progressBar = document.getElementById("progress-bar");
     const feedbackElement = document.getElementById("upload-feedback");
@@ -49,14 +50,13 @@
 
         .then(response => response.json())
         .then(data => {
-            console.log("Upload success:", data);
             // Show a success message
-            localStorage.setItem('formData', JSON.stringify(formData));
+            localStorage.setItem('formData', JSON.stringify(data));
             feedbackElement.textContent = "Upload successful!";
-            responseTextElement.textContent = data.prediction;
             progressBar.style.width = "100%";
+            window.location.href = "/results";
         })
         .then(data => console.log("Upload success:", data))
         .catch(error => console.error("Upload failed:", error));
     });
-    </script><form action="/upload" method="POST" enctype="multipart/form-data">
+    </script>
