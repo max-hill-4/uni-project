@@ -3,28 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Upload Dropzone</title>
+    <title>Upload Results</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="flex items-center justify-center h-screen bg-gray-700">
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-700 text-white">
+    <h1 class="text-3xl font-bold mb-8">Upload Results</h1>
+    <div id="upload-feedback" class="text-center text-lg text-gray-300 mb-8 max-w-2xl"></div>
+    <div class="flex flex-col md:flex-row w-full max-w-4xl mx-auto gap-8">
+        <div class="md:w-1/3 mb-6">
+            <p class="block text-sm font-medium text-gray-300 mb-2">Select Feature:</p>
+            <div id="feature-options" class="space-y-2">
+                <label class="block px-3 py-2 cursor-pointer">
+                    <input type="radio" name="feature" value="{'coh' : 'alpha'}"> Alpha Wave Coh
+                </label>
+                <label class="block px-3 py-2 cursor-pointer">
+                    <input type="radio" name="feature" value="Feature_B"> Alpha + Beta Coh
+                </label>
+                <label class="block px-3 py-2 cursor-pointer">
+                    <input type="radio" name="feature" value="Feature_C"> Alpha + Beta + Delta Coh
+                </label>
+            </div>
+        </div>
 
-    <div id="upload-feedback" class="mt-4 text-center text-sm text-gray-500 dark:text-gray-400"></div>
-    <img id="saliency-map" src="" alt="Saliency Map" class="w-full h-64 mt-5 mx-auto" style="display: none; max-width: 500px; margin: 20px auto; image-rendering: pixelated; image-rendering: crisp-edges;">
+        <div class="md:w-1/3">
+            <label for="hormone-select" class="block text-sm font-medium text-gray-300 mb-2">Select Hormone</label>
+            <select id="hormone-select" class="w-full bg-gray-800 text-white border border-gray-600 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="" disabled selected>Select a hormone</option>
+                <option value="TAC mmol/L">TAC mmol/L</option>
+                <option value="ADA U/L">ADA U/L</option>
+                <option value="ADA2 U/L">ADA2 U/L</option>
+                <option value="%ADA2">%ADA2</option>
+                <option value="GLU mg/Dl">GLU mg/Dl</option>
+                <option value="PHOS mg/Dl">PHOS mg/Dl</option>
+                <option value="CA mg/Dl">CA mg/Dl</option>
+                <option value="CHOL mg/Dl">CHOL mg/Dl</option>
+                <option value="TRI mg/Dl">TRI mg/Dl</option>
+                <option value="HDL mg/dL">HDL mg/dL</option>
+                <option value="LDL-C mg/Dl">LDL-C mg/Dl</option>
+                <option value="CPK U/L">CPK U/L</option>
+            </select>
+        </div>
+        <div class="md:w-2/3 flex flex-col items-center">
+            <img id="saliency-map" src="" alt="Saliency Map" class="w-full max-w-md mb-6 rounded-md hidden" style="image-rendering: pixelated; image-rendering: crisp-edges;">
+            <img id="placeholder-image" src="" alt="Placeholder Image" class="w-full max-w-md mb-6 rounded-md bg-gray-600 hidden">
+        </div>
+    </div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const feedbackElement = document.getElementById("upload-feedback");
+            const saliencyMapImg = document.getElementById("saliency-map");
+            const placeholderImg = document.getElementById("placeholder-image");
+            const hormoneSelect = document.getElementById("hormone-select");
+            const featureOptions = document.querySelectorAll('input[name="feature"]');
+            const storedPrediction = localStorage.getItem('prediction');
+            const storedSm = localStorage.getItem('sm');
+
+            const updateUI = (data) => {
+                if (data.prediction) {
+                    feedbackElement.textContent = `Prediction: ${data.prediction}`;
+                    if (data.sm) {
+                        saliencyMapImg.src = data.sm;
+                        saliencyMapImg.classList.remove("hidden");
+                    } else {
+                        saliencyMapImg.classList.add("hidden");
+                        feedbackElement.textContent += " No saliency map available.";
+                    }
+                } else {
+                    feedbackElement.textContent = "No prediction available.";
+                    saliencyMapImg.classList.add("hidden");
+                    placeholderImg.classList.add("hidden");
+                }
+                console.log("Updated Data:", data);
+            };
+
+            if (storedPrediction && storedSm) {
+                try {
+                    const parsedPrediction = parseFloat(storedPrediction);
+                    updateUI({ prediction: parsedPrediction, sm: storedSm });
+                } catch (e) {
+                    console.error("Error parsing localStorage data:", e);
+                    feedbackElement.textContent = "Error loading results.";
+                }
+            } else {
+                feedbackElement.textContent = "No results found.";
+            }
+
+            hormoneSelect.addEventListener("change", () => {
+                const hormone = hormoneSelect.value;
+                const selectedFeature = Array.from(featureOptions).find(radio => radio.checked)?.value;
+
+                if (!hormone || !selectedFeature) {
+                    feedbackElement.textContent = "Please select both a hormone and a feature.";
+                    return;
+                }
+
+                const matFileBase64 = localStorage.getItem('matFile');
+                if (!matFileBase64) {
+                    feedbackElement.textContent = "No .mat file found. Please upload a file.";
+                    return;
+                }
+
+                try {
+                    const byteCharacters = atob(matFileBase64);
+                    const byteNumbers = Array.from(byteCharacters, char => char.charCodeAt(0));
+                    const byteArray = new Uint8Array(byteNumbers);
+                    const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+                    const file = new File([blob], 'uploaded.mat', { type: 'application/octet-stream' });
+
+                    const formData = new FormData();
+                    formData.append("file", file);
+                    formData.append("hormone", hormone);
+                    formData.append("feature", selectedFeature); // Append the selected feature
+
+                    feedbackElement.textContent = "Loading...";
+                    saliencyMapImg.classList.add("hidden");
+
+                    fetch("/upload", { method: "POST", body: formData })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.prediction && data.sm) {
+                                localStorage.setItem('prediction', data.prediction);
+                                localStorage.setItem('sm', data.sm);
+                                updateUI(data);
+                                feedbackElement.textContent = `Results for ${hormone} (${selectedFeature}): ${data.prediction}`;
+                            } else {
+                                throw new Error("Invalid response format.");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Fetch error:", error);
+                            feedbackElement.textContent = `Error loading results for ${hormone} (${selectedFeature}).`;
+                        });
+                } catch (e) {
+                    console.error("Error processing .mat file:", e);
+                    feedbackElement.textContent = "File processing error.";
+                }
+            });
+        });
+    </script>
 </body>
-<script>
-    const feedbackElement = document.getElementById("upload-feedback");
-    const saliencyMapImg = document.getElementById('saliency-map');
-
-    document.addEventListener("DOMContentLoaded", () => {
-        const storedFormData = localStorage.getItem('formData');
-        const parsedData = JSON.parse(storedFormData);
-
-        feedbackElement.textContent = parsedData.prediction; 
-        saliencyMapImg.src = parsedData.sm;
-        saliencyMapImg.style.display = "block"
-
-        // Show a success message
-        console.log(storedFormData)
-    });
-</script>
+</html>

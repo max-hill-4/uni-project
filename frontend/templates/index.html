@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="flex items-center justify-center h-screen bg-gray-700">
-
     <form action="/upload" method="POST" enctype="multipart/form-data">
         <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
         <label for="dropzone-file" id="dropzone" class="flex flex-col justify-start items-center justify-center w-96 h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
@@ -22,41 +21,62 @@
         </label>
         <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-500">
-        <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
-        <div id="upload-feedback" class="mt-4 text-center text-sm text-gray-500 dark:text-gray-400"></div>
-        </divoiu>
-
+            <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+            <div id="upload-feedback" class="mt-4 text-center text-sm text-gray-500 dark:text-gray-400"></div>
+        </div>
     </form>
 
-
     <script>
+        const fileInput = document.getElementById("dropzone-file");
+        const progressBar = document.getElementById("progress-bar");
+        const feedbackElement = document.getElementById("upload-feedback");
 
-    const fileInput = document.getElementById("dropzone-file");
-    const progressBar = document.getElementById("progress-bar");
-    const feedbackElement = document.getElementById("upload-feedback");
-    
-    fileInput.addEventListener("change", () => {
-        const file = fileInput.files[0];
-        if (!file) return;
+        fileInput.addEventListener("change", () => {
+            const file = fileInput.files[0];
+            if (!file) return;
 
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("hormone", "TAC mmol/L")
+            // Convert file to Base64
+            const reader = new FileReader();
+            reader.onload = () => {
+                const base64String = reader.result.split(',')[1]; // Remove data:image/*;base64, prefix
+                localStorage.setItem('matFile', base64String);
 
-        fetch("/upload", {
-            method: "POST",
-            body: formData
-        })
+                // Proceed with upload
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append("hormone", "TAC mmol/L");
 
-        .then(response => response.json())
-        .then(data => {
-            // Show a success message
-            localStorage.setItem('formData', JSON.stringify(data));
-            feedbackElement.textContent = "Upload successful!";
-            progressBar.style.width = "100%";
-            window.location.href = "/results";
-        })
-        .then(data => console.log("Upload success:", data))
-        .catch(error => console.error("Upload failed:", error));
-    });
+                fetch("/upload", {
+                    method: "POST",
+                    body: formData
+                })
+                    .then(response => {
+                        if (!response.ok) throw new Error("Network response was not ok");
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.prediction) {
+                            localStorage.setItem('prediction', JSON.stringify(data.prediction));
+                            localStorage.setItem('sm', JSON.stringify(data.sm));
+                            feedbackElement.textContent = "Upload successful!";
+                            progressBar.style.width = "100%";
+                            window.location.href = "/results";
+
+                        } else {
+                            throw new Error("No prediction in response");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Upload failed:", error);
+                        feedbackElement.textContent = "Upload failed. Please try again.";
+                    });
+            };
+            reader.onerror = () => {
+                console.error("Failed to read file");
+                feedbackElement.textContent = "Error reading file.";
+            };
+            reader.readAsDataURL(file);
+        });
     </script>
+</body>
+</html>
