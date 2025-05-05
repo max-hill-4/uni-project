@@ -2,7 +2,7 @@ from features_extract._coh import _coh
 from features_extract._psd import _psd
 from features_extract._lc import _lc
 from features_extract._pdc import _pdc
-from features_extract._sl import _sl
+from features_extract._se import _se
 
 
 from features_extract._utils import _stack_matrices
@@ -27,8 +27,8 @@ class FeatureExtractor:
                 matrices.append(_lc(data, freq))
             elif feature == 'psd':
                 matrices.append(_psd(data, freq))
-            elif feature == 'sl':
-                matrices.append(_sl(data, freq))
+            elif feature == 'se':
+                matrices.append(_se(data, freq))
             else:
                 raise ValueError(f"Unsupported feature: {feature == 'coh'}")
         

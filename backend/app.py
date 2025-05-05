@@ -31,38 +31,38 @@ def main(**args):
         train_dataset, test_dataset, tr_parps, te_parps = fold
         print(tr_parps)
         train_data = DataLoader(train_dataset, batch_size=args["b_size"], shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)    
-        #test_data = DataLoader(test_dataset, batch_size=args["b_size"], shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)
+        test_data = DataLoader(test_dataset, batch_size=args["b_size"], shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)
         m = analysis.models.EEGCNN(filter_size=args["filter_size"], num_classes=len(args['hormones']), in_channels=args["in_channels"])
-        a = analysis.train.model(m, train_data, train_data, iterations=args[ "iterations" ])
+        a = analysis.train.model(m, train_data, test_data, iterations=args[ "iterations" ])
         a.train()
 
         all_inputs, predictions, truth = a.predict()
 
         l = a.mse_per_class(predictions, truth)
         e = a.r2_per_class(predictions, truth)
-        #mse_results[te_parps[0]] = l
-        #r2_results[te_parps[0]] = e
+        mse_results[te_parps[0]] = l
+        r2_results[te_parps[0]] = e
         print(f'trnaing parps are : {tr_parps}') 
-        # print(mse_results , "\n")
-        # print(r2_results)
+        print(mse_results , "\n")
+        print(r2_results)
 
 
         if e[0] > 0:
-            #saliency_map = compute_saliency_map(m, all_inputs[0:1], device)
+            saliency_map = compute_saliency_map(m, all_inputs[0:1], device)
 
-            # plt.imshow(saliency_map, cmap="jet", alpha=0.5)
-            # plt.colorbar()
-            # plt.savefig(f'./backend/intrestingdata/saliency/{e[0]}.png', dpi=300)
-            # plt.close()
+            plt.imshow(saliency_map, cmap="jet", alpha=0.5)
+            plt.colorbar()
+            plt.savefig(f'./backend/intrestingdata/saliency/{e[0]}.png', dpi=300)
+            plt.close()
 
-            # plt.figure(figsize=(8, 6))
-            # plt.scatter(predictions, truth , color='blue', alpha=0.5, label='Predicted vs Truth') 
-            # plt.savefig(f'./backend/intrestingdata/predicted/{e[0]}.png', format='png', dpi=300, bbox_inches='tight')
-            # plt.close()
-            save(m.state_dict(), f"./trained_models/{args['feature_freq']}_{args['hormones'][0]}.pt")
+            plt.figure(figsize=(8, 6))
+            plt.scatter(predictions, truth , color='blue', alpha=0.5, label='Predicted vs Truth') 
+            plt.savefig(f'./backend/intrestingdata/predicted/{e[0]}.png', format='png', dpi=300, bbox_inches='tight')
+            plt.close()
+            #save(m.state_dict(), f"./trained_models/{args['feature_freq']}_{args['hormones'][0]}.pt")
 
-            # with open('./backend/intrestingdata/results.json', 'a') as f:
-            #     json.dump({int(time.time()) : { 'args' : args, 'mse' : mse_results, 'r2' : r2_results}}, f, indent=4)
+            with open('backend/intrestingdata/results.json', 'a') as f:
+                json.dump({int(time.time()) : { 'args' : args, 'mse' : mse_results, 'r2' : r2_results}}, f, indent=4)
 
 
 
@@ -73,8 +73,8 @@ if __name__ == '__main__':
     params = {
         "b_size" : 4,
         "filter_size" : 3,
-        "iterations" : 8,
-        "k_folds" : 1,
+        "iterations" : 6,
+        "k_folds" : 3,
         "in_channels" : 1
     }
 
@@ -94,5 +94,4 @@ if __name__ == '__main__':
         if __name__ == "__main__":
             import os
             print(os.getcwd())
-            print("hello")
             main(**params)
