@@ -22,7 +22,7 @@ class model():
         all_predictions = []
         all_labels = []
         losses = []  # List to store average loss per epoch
-
+        results = []
         for epoch in range(self.iterations):
             epoch_loss = 0.0  # Accumulate loss for the epoch
             num_batches = 0
@@ -35,6 +35,8 @@ class model():
                 predictions = self.m(data)
                 all_predictions.append(predictions.cpu())  # Store predictions
                 all_labels.append(labels.cpu())  # Store labels
+     
+                results.append(self.accuracy(predictions, labels))
                 # Compute loss
                 loss = criterion(predictions, labels)
                 epoch_loss += loss.item()  # Accumulate loss
@@ -42,21 +44,12 @@ class model():
                 # Backward pass and optimization
                 loss.backward()
                 optimizer.step()
-            
+             
             # Compute average loss for the epoch
             avg_loss = epoch_loss / num_batches
             losses.append(avg_loss)
-            print(f"Epoch {epoch+1}/{self.iterations}, Average Loss: {avg_loss:.4f}")
+            print(f"Epoch {epoch+1}/{self.iterations}, Average Loss: {avg_loss:.4f}, Traning Acc: {sum(results) / len(results)} Val Acc: {self.accuracy(*self.predict())}")
 
-        # Plot the loss convergence
-        plt.figure(figsize=(10, 6))
-        plt.plot(range(1, self.iterations + 1), losses, label='Training Loss')
-        plt.xlabel('Epoch')
-        plt.ylabel('Average Loss')
-        plt.title('SGD Optimizer Convergence')
-        plt.grid(True)
-        plt.legend()
-        plt.savefig('uhoh.png')
 
         return losses, all_predictions, all_labels
 
@@ -116,3 +109,8 @@ class model():
         r2_values = r2_score(predictions, labels, multioutput='raw_values')
         return {i: r2_values[i].item() for i in range(num_classes)} 
     
+    def accuracy(self, predictions: torch.Tensor, labels: torch.Tensor):
+        predicted_classes = torch.argmax(predictions, dim=1)
+        correct = (predicted_classes == labels).sum().item()
+        accuracy = correct / len(labels)
+        return accuracy

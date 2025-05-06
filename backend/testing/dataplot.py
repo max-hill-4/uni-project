@@ -31,7 +31,7 @@ for participant, count in sorted(participant_counts.items()):
     print(f"{participant}: {count}")
 
 # Find the minimum number of epochs
-min_epochs = 15
+min_epochs = 5 
 print(f"Minimum number of epochs: {min_epochs}")
 
 # Create N2_small: select min_epochs files per participant
@@ -50,7 +50,7 @@ for participant, count in sorted(N2_small_counts.items()):
     print(f"{participant}: {count}")
 
 # Save N2_small files to a new directory
-N2_small_dir = Path('/mnt/eeg/N3_small')
+N2_small_dir = Path('/mnt/eeg/L9_small')
 N2_small_dir.mkdir(exist_ok=True)
 for f in N2_small_files:
     shutil.copy(f, N2_small_dir / f.name)

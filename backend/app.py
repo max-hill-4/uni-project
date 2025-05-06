@@ -3,8 +3,6 @@ import data_io.dataloader
 import analysis
 from torch.utils.data import DataLoader
 from torch import save
-import json
-import time
 import matplotlib.pyplot as plt
 from tests import param_options
 import torch
@@ -36,21 +34,22 @@ def main(**args):
     folds = data_io.dataloader.participant_kfold_split(dataset, args["k_folds"])
     results = []
     for fold in folds:
-        train_dataset, test_dataset, tr_parps, te_parps = fold
 
-        print(tr_parps)
+        train_dataset, test_dataset, tr_parps, te_parps = fold
+        print(f'TRANING PARSP{tr_parps}')
+        print(f'TESTING PARPS{te_parps}')
         train_data = DataLoader(train_dataset, batch_size=args["b_size"], shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)    
         test_data = DataLoader(test_dataset, batch_size=args["b_size"], shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)
+        print(len(train_data))
+        print(len(test_data))
         m = analysis.models.EEGCNN(filter_size=args["filter_size"], num_classes=len(args['hormones']), in_channels=args["in_channels"])
-        a = analysis.train.model(m, train_data, train_data, iterations=args[ "iterations" ])
+        a = analysis.train.model(m, train_data, test_data, iterations=args[ "iterations" ])
 
         a.train()
 
         predictions, truth = a.predict()
-        predicted_classes = torch.argmax(predictions, dim=1)
-        correct = (predicted_classes == truth).sum().item()
-        accuracy = correct / len(truth) 
-        results.append(accuracy)
+
+        results.append(a.accuracy(predictions, truth))
     
     write_results(args, results)
 
@@ -62,7 +61,7 @@ if __name__ == '__main__':
     params = {
         "b_size" : 4,
         "filter_size" : 5,
-        "iterations" : 10,
+        "iterations" : 50,
         "k_folds" : 3,
         "in_channels" : 1
     }
