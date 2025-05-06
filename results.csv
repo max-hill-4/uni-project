@@ -1,4 +1,13 @@
-Fold,"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1'],['N3_small'],Accuracy
-1,"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1'],['N3_small'],0.42857142857142855
-2,"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1'],['N3_small'],0.3333333333333333
-3,"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1'],['N3_small'],0.3238095238095238
+Feature,Hormone,Sleep Stage,Accuracy
+Feature,Hormone,Sleep Stage,Average Accuracy
+"[{'coh': 'alpha'}]","['BDC1']","['N2_small']",0.3692
+"[{'coh': 'alpha'}]","['BDC1']","['N3_small']",0.3460
+"[{'coh': 'alpha'}]","['BDC1.2']","['N2_small']",0.2843
+"[{'coh': 'alpha'}]","['BDC1.2']","['N3_small']",0.3074
+"[{'coh': 'alpha'}]","['BDC1.3']","['N2_small']",0.2731
+"[{'coh': 'alpha'}]","['BDC1.3']","['N3_small']",0.2762
+"[{'coh': 'alpha'}]","['BDC1.4']","['N2_small']",0.3483
+"[{'coh': 'alpha'}]","['BDC1.4']","['N3_small']",0.2434
+"[{'coh': 'alpha'}]","['BDC1.5']","['N2_small']",0.2631
+"[{'coh': 'alpha'}]","['BDC1.5']","['N3_small']",0.2698
+"[{'coh': 'alpha'}]","['BDC1.6']","['N3_small']",0.3947
