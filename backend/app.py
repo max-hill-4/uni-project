@@ -36,6 +36,8 @@ def main(**args):
     for fold in folds:
 
         train_dataset, test_dataset, tr_parps, te_parps = fold
+        print(len(train_dataset))
+        print(len(test_dataset))
         print(f'TRANING PARSP{tr_parps}')
         print(f'TESTING PARPS{te_parps}')
         train_data = DataLoader(train_dataset, batch_size=args["b_size"], shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)    
@@ -62,7 +64,7 @@ if __name__ == '__main__':
         "b_size" : 4,
         "filter_size" : 5,
         "iterations" : 50,
-        "k_folds" : 3,
+        "k_folds" : 2,
         "in_channels" : 1
     }
 

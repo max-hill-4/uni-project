@@ -9,8 +9,8 @@ print(df.columns)
 
 # Function to convert values to 0, 1, or 2 based on quartiles
 def quartile_label(series):
-    q1 = series.quantile(0.25)  # Lower quartile (25th percentile)
-    q3 = series.quantile(0.75)  # Upper quartile (75th percentile)
+    q1 = series.quantile(0.33333)  # Lower quartile (25th percentile)
+    q3 = series.quantile(0.66666)  # Upper quartile (75th percentile)
     return series.apply(lambda x: 0 if x <= q1 else 2 if x >= q3 else 1)
 
 # Create a new DataFrame to store the converted values
@@ -25,6 +25,6 @@ for column in df_quartiles.columns:
         print(f"Skipping non-numeric column: {column}")
 
 # Print the first few rows to verify
-output_path = r'/mnt/raw_data/biomarkers_quartiles.csv'
+output_path = r'/mnt/raw_data/biomarkers_thirds.csv'
 df_quartiles.to_csv(output_path, index=False)
 print(df_quartiles.head())

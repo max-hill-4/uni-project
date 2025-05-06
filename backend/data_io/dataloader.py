@@ -46,7 +46,7 @@ class RawDataset(Dataset):
     def _load_labels(self, scaler = 'minmax'):
         "Needs to return dictionary of shape {particpant: {BDC : [nparray of shape [12]], ...}, ...}"   
         labels = {}
-        df = pandas.read_csv(r'/mnt/raw_data/biomarkers_quartiles.csv').dropna()
+        df = pandas.read_csv(r'/mnt/raw_data/biomarkers_thirds.csv').dropna()
 
         labels = {}
         participants = df['Participant'].unique()

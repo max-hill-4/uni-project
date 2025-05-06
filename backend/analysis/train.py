@@ -2,7 +2,8 @@ import torch
 from torch.nn.functional import mse_loss
 from torchmetrics.functional import r2_score
 import torch.nn as nn
-import matplotlib.pyplot as plt
+import copy
+
 class model():
     def __init__(self, m, train_data, test_data, iterations=10):
         self.m = m
@@ -18,9 +19,10 @@ class model():
         # Optimizer and loss function
         optimizer = torch.optim.Adam(self.m.parameters(), lr=0.0001)
         criterion = nn.CrossEntropyLoss() 
-        
+        patience = 0 
         all_predictions = []
         all_labels = []
+        b_val_ac = 0
         losses = []  # List to store average loss per epoch
         results = []
         for epoch in range(self.iterations):
@@ -45,11 +47,24 @@ class model():
                 loss.backward()
                 optimizer.step()
              
+
+            traning_acc = sum(results) / len(results)
+            val_acc = self.accuracy(*self.predict())
+
+            if val_acc > b_val_ac:
+                b_val_ac = val_acc
+                best_model_state = copy.deepcopy(self.m.state_dict())
+                patience = 0
+            else :
+                patience+=1
             # Compute average loss for the epoch
             avg_loss = epoch_loss / num_batches
             losses.append(avg_loss)
-            print(f"Epoch {epoch+1}/{self.iterations}, Average Loss: {avg_loss:.4f}, Traning Acc: {sum(results) / len(results)} Val Acc: {self.accuracy(*self.predict())}")
-
+            print(f"Epoch {epoch+1}/{self.iterations}, Average Loss: {avg_loss:.4f}, Traning Acc: {traning_acc} Val Acc: {val_acc}")
+            if patience >= 10:
+                ('No improvmenet in val acc')
+                self.m.load_state_dict(best_model_state)
+                break
 
         return losses, all_predictions, all_labels
 
@@ -72,10 +87,8 @@ class model():
         # Concatenate predictions and labels
         all_predictions = torch.cat(all_predictions, dim=0)  # Shape: (n_samples, 3)
         all_labels = torch.cat(all_labels, dim=0)  # Shape: (n_samples,)
-
         # Apply softmax to convert logits to probabilities
         all_probabilities = torch.softmax(all_predictions, dim=1)  # Shape: (n_samples, 3)
-
         # Map indices to class names (optional)
         # Return data, probabilities, predicted classes, and labels
         return all_probabilities, all_labels

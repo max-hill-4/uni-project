@@ -1,43 +1,25 @@
-Feature,Hormone,Sleep Stage,Accuracy
-"[{'coh': 'alpha'}]","['BDC1']","['N2_small']",0.3692
-"[{'coh': 'alpha'}]","['BDC1']","['N3_small']",0.3460
-"[{'coh': 'alpha'}]","['BDC1.2']","['N2_small']",0.2843
-"[{'coh': 'alpha'}]","['BDC1.2']","['N3_small']",0.3074
-"[{'coh': 'alpha'}]","['BDC1.3']","['N2_small']",0.2731
-"[{'coh': 'alpha'}]","['BDC1.3']","['N3_small']",0.2762
-"[{'coh': 'alpha'}]","['BDC1.4']","['N2_small']",0.3483
-"[{'coh': 'alpha'}]","['BDC1.4']","['N3_small']",0.2434
-"[{'coh': 'alpha'}]","['BDC1.5']","['N2_small']",0.2631
-"[{'coh': 'alpha'}]","['BDC1.5']","['N3_small']",0.2698
-"[{'coh': 'alpha'}]","['BDC1.6']","['N3_small']",0.3947
-[{'coh': 'alpha'}],['BDC1.7'],['N3_small'],0.44603174603174606
-[{'coh': 'alpha'}],['BDC1.7'],['N2_small'],0.35716823406478576
-[{'coh': 'alpha'}],['BDC1.8'],['N3_small'],0.31216931216931215
-"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.7'],['N3_small'],0.39365079365079364
-"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.7'],['N2_small'],0.32286115464994775
-"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.8'],['N3_small'],0.42063492063492064
-"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.8'],['N2_small'],0.3107562695924765
-"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.9'],['N3_small'],0.40740740740740744
-"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.7'],['N3_small'],0.3259259259259259
-"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.7'],['N2_small'],0.36929140543364686
-"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.7'],['N3_small'],0.3259259259259259
-"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.7'],['N2_small'],0.36929140543364686
-"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.8'],['N3_small'],0.2973544973544973
-"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.8'],['N2_small'],0.3060455851619645
-"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.9'],['N3_small'],0.444973544973545
-"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.7'],['N3_small'],0.25026455026455025
-"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.7'],['N3_small'],0.1984126984126984
-[{'coh': 'alpha'}],['BDC1.7'],['N3_small'],0.8332112332112332
-[{'coh': 'alpha'}],['BDC1.7'],['N2_small'],0.9870485605917807
-[{'coh': 'alpha'}],['BDC1.8'],['N3_small'],0.868986568986569
-"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.7'],['N3_small'],1.0
-"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.7'],['N2_small'],1.0
-"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.8'],['N3_small'],0.9914529914529915
-"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.7'],['N3_small'],0.576923076923077 # these vales are from traning on a single epoch !
-"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.7'],['N2_small'],0.6666666666666666
-"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.8'],['N3_small'],0.5538461538461538
-"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.8'],['N2_small'],0.5753968253968255
-"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.7'],['N3_small'],0.8974358974358975
-"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.7'],['N3_small'],0.48359788359788364
-"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.7'],['N2_small'],0.23309654163461682
-[{'coh': 'alpha'}],['BDC1.7'],['L9_small'],0.5380952380952381
+[{'coh': 'alpha'}],['BDC1.7'],['L9_small'],0.426984126984127
+[{'coh': 'alpha'}],['BDC1.2'],['N3_small'],0.2
+[{'coh': 'alpha'}],['BDC1.3'],['N3_small'],0.5
+[{'coh': 'alpha'}],['BDC1.2'],['N3_small'],0.2
+[{'coh': 'alpha'}],['BDC1.3'],['N3_small'],0.5
+[{'coh': 'alpha'}],['BDC1.4'],['N3_small'],0.25
+[{'coh': 'alpha'}],['BDC1.5'],['N3_small'],0.41333333333333333
+[{'coh': 'alpha'}],['BDC1.6'],['N3_small'],0.45
+[{'coh': 'alpha'}],['BDC1.7'],['N3_small'],0.43999999999999995
+[{'coh': 'alpha'}],['BDC1.8'],['N3_small'],0.45
+[{'coh': 'alpha'}],['BDC1.9'],['N3_small'],0.45
+[{'coh': 'alpha'}],['BDC1.2'],['N3_small'],0.2
+[{'coh': 'alpha'}],['BDC1.3'],['N3_small'],0.5
+[{'coh': 'alpha'}],['BDC1.4'],['N3_small'],0.25
+[{'coh': 'alpha'}],['BDC1.5'],['N3_small'],0.41333333333333333
+[{'coh': 'alpha'}],['BDC1.6'],['N3_small'],0.45
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.2'],['N3_small'],0.5700000000000001
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.2'],['N3_small'],0.5700000000000001
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.3'],['N3_small'],0.3
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.4'],['N3_small'],0.3466666666666667
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.5'],['N3_small'],0.4
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.6'],['N3_small'],0.36
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.7'],['N3_small'],0.45666666666666667
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.8'],['N3_small'],0.43333333333333335
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.9'],['N3_small'],0.38
