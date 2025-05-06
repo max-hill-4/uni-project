@@ -50,10 +50,10 @@ if __name__ == '__main__':
     import os 
     print(os.getcwd())
     params = {
-        "b_size" : 4,
-        "filter_size" : 3,
+        "b_size" : 32,
+        "filter_size" : 5,
         "iterations" : 6,
-        "k_folds" : 10,
+        "k_folds" : 3,
         "in_channels" : 1
     }
 

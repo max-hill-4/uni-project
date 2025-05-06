@@ -46,7 +46,7 @@ class model():
     def predict(self):
         all_predictions = []
         all_labels = []
-        self.m.eval()        
+        self.m.eval()
         with torch.no_grad():  # Disable gradient calculations for inference
             for batch in self.test_data:
                 data, labels = batch['data'].to(self.device), batch['label'].to(self.device)  # Move data and labels to the device
