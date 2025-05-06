@@ -25,14 +25,9 @@ def write_results(args, results):
     with open("results.csv", mode="a", newline="") as file:
         writer = csv.writer(file)
 
-        # Define headers using specific args keys
-        header = ["Feature", "Hormone", "Sleep Stage"] + ["Accuracy"]
-        writer.writerow(header)
         avg = sum(results) / len(results)
 
-        # Write each row with fold index and accuracy
-
-        row = [args["feature_freq"], args["hormones"], args["sleep_stages"]] + avg
+        row = [args["feature_freq"], args["hormones"], args["sleep_stages"]] + [avg]
         writer.writerow(row)
 
 def main(**args):
