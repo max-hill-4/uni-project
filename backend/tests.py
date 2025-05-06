@@ -1,5 +1,5 @@
 param_options = {
-    "feature_freq" : [[{'coh' : 'alpha'}, {'coh' : 'beta'}, {'coh' : 'delta'}, {'coh' : 'gamma'}], [{'coh' : 'delta'}, {'coh' : 'gamma'}], [{'sl' : 'alpha'}]],
+    "feature_freq" : [[{'coh' : 'alpha'}]],
                        
     "hormones" : [
                    ['BDC1.7'],['BDC1.8'],

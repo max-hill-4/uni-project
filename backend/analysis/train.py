@@ -2,6 +2,7 @@ import torch
 from torch.nn.functional import mse_loss
 from torchmetrics.functional import r2_score
 import torch.nn as nn
+import matplotlib.pyplot as plt
 class model():
     def __init__(self, m, train_data, test_data, iterations=10):
         self.m = m
@@ -15,31 +16,49 @@ class model():
 
     def train(self):
         # Optimizer and loss function
-        optimizer = torch.optim.Adam(self.m.parameters(), lr=0.001)
+        optimizer = torch.optim.Adam(self.m.parameters(), lr=0.0001)
         criterion = nn.CrossEntropyLoss() 
         
         all_predictions = []
         all_labels = []
+        losses = []  # List to store average loss per epoch
 
         for epoch in range(self.iterations):
+            epoch_loss = 0.0  # Accumulate loss for the epoch
+            num_batches = 0
             
             for batch in self.train_data:
                 data, labels = batch['data'].to(self.device), batch['label'].to(self.device)
                 labels = labels.squeeze(1)
-                optimizer.zero_grad() # Zero out gradients
+                optimizer.zero_grad()  # Zero out gradients
                 # Forward pass
                 predictions = self.m(data)
-                all_predictions.append(predictions.cpu())  # Store predictions for evaluation later
-                all_labels.append(labels.cpu())  # Store labels for evaluation
+                all_predictions.append(predictions.cpu())  # Store predictions
+                all_labels.append(labels.cpu())  # Store labels
                 # Compute loss
                 loss = criterion(predictions, labels)
-                
+                epoch_loss += loss.item()  # Accumulate loss
+                num_batches += 1
                 # Backward pass and optimization
                 loss.backward()
-                #torch.nn.utils.clip_grad_norm_(self.m.parameters(), max_norm=1.0)  # Gradient clipping
                 optimizer.step()
+            
+            # Compute average loss for the epoch
+            avg_loss = epoch_loss / num_batches
+            losses.append(avg_loss)
+            print(f"Epoch {epoch+1}/{self.iterations}, Average Loss: {avg_loss:.4f}")
 
-            # Step the scheduler at the end of each epoch
+        # Plot the loss convergence
+        plt.figure(figsize=(10, 6))
+        plt.plot(range(1, self.iterations + 1), losses, label='Training Loss')
+        plt.xlabel('Epoch')
+        plt.ylabel('Average Loss')
+        plt.title('SGD Optimizer Convergence')
+        plt.grid(True)
+        plt.legend()
+        plt.savefig('uhoh.png')
+
+        return losses, all_predictions, all_labels
 
 
     def predict(self):

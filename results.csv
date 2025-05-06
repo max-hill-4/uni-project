@@ -19,3 +19,14 @@ Feature,Hormone,Sleep Stage,Accuracy
 "[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.8'],['N2_small'],0.3107562695924765
 "[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.9'],['N3_small'],0.40740740740740744
 "[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.7'],['N3_small'],0.3259259259259259
+"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.7'],['N2_small'],0.36929140543364686
+"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.7'],['N3_small'],0.3259259259259259
+"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.7'],['N2_small'],0.36929140543364686
+"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.8'],['N3_small'],0.2973544973544973
+"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.8'],['N2_small'],0.3060455851619645
+"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.9'],['N3_small'],0.444973544973545
+"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.7'],['N3_small'],0.25026455026455025
+"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.7'],['N3_small'],0.1984126984126984
+[{'coh': 'alpha'}],['BDC1.7'],['N3_small'],0.8332112332112332
+[{'coh': 'alpha'}],['BDC1.7'],['N2_small'],0.9870485605917807
+[{'coh': 'alpha'}],['BDC1.8'],['N3_small'],0.868986568986569

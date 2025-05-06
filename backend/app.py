@@ -42,7 +42,7 @@ def main(**args):
         train_data = DataLoader(train_dataset, batch_size=args["b_size"], shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)    
         test_data = DataLoader(test_dataset, batch_size=args["b_size"], shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)
         m = analysis.models.EEGCNN(filter_size=args["filter_size"], num_classes=len(args['hormones']), in_channels=args["in_channels"])
-        a = analysis.train.model(m, train_data, test_data, iterations=args[ "iterations" ])
+        a = analysis.train.model(m, train_data, train_data, iterations=args[ "iterations" ])
 
         a.train()
 
@@ -60,11 +60,11 @@ if __name__ == '__main__':
     import os 
     print(os.getcwd())
     params = {
-        "b_size" : 32,
+        "b_size" : 4,
         "filter_size" : 5,
         "iterations" : 10,
         "k_folds" : 3,
-        "in_channels" : 2 
+        "in_channels" : 1
     }
 
     for feature_freq, hormone, sleep_stage in product(
