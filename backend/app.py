@@ -64,7 +64,7 @@ if __name__ == '__main__':
         "filter_size" : 5,
         "iterations" : 10,
         "k_folds" : 3,
-        "in_channels" : 1
+        "in_channels" : 2 
     }
 
     for feature_freq, hormone, sleep_stage in product(

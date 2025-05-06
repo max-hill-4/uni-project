@@ -13,3 +13,9 @@ Feature,Hormone,Sleep Stage,Accuracy
 [{'coh': 'alpha'}],['BDC1.7'],['N3_small'],0.44603174603174606
 [{'coh': 'alpha'}],['BDC1.7'],['N2_small'],0.35716823406478576
 [{'coh': 'alpha'}],['BDC1.8'],['N3_small'],0.31216931216931215
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.7'],['N3_small'],0.39365079365079364
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.7'],['N2_small'],0.32286115464994775
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.8'],['N3_small'],0.42063492063492064
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.8'],['N2_small'],0.3107562695924765
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.9'],['N3_small'],0.40740740740740744
+"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'delta'}, {'coh': 'gamma'}]",['BDC1.7'],['N3_small'],0.3259259259259259
