@@ -27,7 +27,6 @@ class model():
                 data, labels = batch['data'].to(self.device), batch['label'].to(self.device)
                 labels = labels.squeeze(1)
                 optimizer.zero_grad() # Zero out gradients
-
                 # Forward pass
                 predictions = self.m(data)
                 all_predictions.append(predictions.cpu())  # Store predictions for evaluation later
@@ -51,6 +50,7 @@ class model():
             for batch in self.test_data:
                 data, labels = batch['data'].to(self.device), batch['label'].to(self.device)  # Move data and labels to the device
 
+                labels = labels.squeeze(1)
                 # Get predictions from the model
                 predictions = self.m(data)  # Shape: (batch_size, 3) - raw logits
                 # Store predictions and labels

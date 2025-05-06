@@ -10,6 +10,7 @@ from tests import param_options
 import torch
 import numpy as np
 from itertools import product
+import csv
 
 def compute_saliency_map(model, input_tensor, device):
     model.eval()
@@ -19,12 +20,28 @@ def compute_saliency_map(model, input_tensor, device):
     saliency = input_tensor.grad.abs().squeeze()  # Shape: [1, 19, 19]
     return saliency.cpu().numpy()
 
+def write_results(args, results):
+    """Writes results to a CSV file with dynamically generated headers."""
+    with open("results.csv", mode="w", newline="") as file:
+        writer = csv.writer(file)
+
+        # Define headers using specific args keys
+        header = ["ID"] + ["Feature", "Hormone", "Sleep Stage"] + ["Accuracy"]
+        writer.writerow(header)
+
+        # Compute average accuracy for reference
+        avg_accuracy = sum(results) / len(results)
+
+        # Write each row with fold index and accuracy
+        for i, accuracy in enumerate(results):
+            row = [i + 1] + [args["feature_freq"], args["hormones"], args["sleep_stages"]] + [accuracy]
+            writer.writerow(row)
+
 def main(**args):
 
     dataset = data_io.dataloader.RawDataset(sleep_stages=args["sleep_stages"], feature_freq=args["feature_freq"], hormones = args["hormones"]) 
     folds = data_io.dataloader.participant_kfold_split(dataset, args["k_folds"])
-    mse_results = {}
-    r2_results = {}
+    results = []
     for fold in folds:
         train_dataset, test_dataset, tr_parps, te_parps = fold
 
@@ -37,12 +54,12 @@ def main(**args):
         a.train()
 
         predictions, truth = a.predict()
-
         predicted_classes = torch.argmax(predictions, dim=1)
-
         correct = (predicted_classes == truth).sum().item()
-        accuracy = correct / truth.size(0)
-        print(accuracy)
+        accuracy = correct / len(truth) 
+        results.append(accuracy)
+    
+    write_results(args, results)
 
 
 if __name__ == '__main__':

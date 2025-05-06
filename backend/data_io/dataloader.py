@@ -31,7 +31,7 @@ class RawDataset(Dataset):
         
         eeg_data = self.feature_extractor.get(eeg_data) 
         
-        participant = str(file)[18]
+        participant = str(file)[24]
         if participant in self.labels:
             label_data = self.labels[participant]
         else:
@@ -80,7 +80,7 @@ def participant_kfold_split(dataset, n_splits=5, shuffle=True, random_state=None
     if n_splits == 1:
         train_indices = [
             idx for idx, p in enumerate(dataset.mat_files) 
-            if str(p)[18] in participants
+            if str(p)[24] in participants
         ]
         return [(
             Subset(dataset, train_indices),
@@ -110,11 +110,11 @@ def participant_kfold_split(dataset, n_splits=5, shuffle=True, random_state=None
         # Get sample indices
         train_indices = [
             idx for idx, p in enumerate(dataset.mat_files) 
-            if str(p)[18] in train_participants
+            if str(p)[24] in train_participants
         ]
         test_indices = [
             idx for idx, p in enumerate(dataset.mat_files) 
-            if str(p)[18] in test_participants
+            if str(p)[24] in test_participants
         ]
         
         folds.append((

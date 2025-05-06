@@ -1,0 +1,4 @@
+Fold,"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1'],['N3_small'],Accuracy
+1,"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1'],['N3_small'],0.42857142857142855
+2,"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1'],['N3_small'],0.3333333333333333
+3,"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1'],['N3_small'],0.3238095238095238
