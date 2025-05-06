@@ -16,8 +16,9 @@ class RawDataset(Dataset):
             for stage in sleep_stages
             for mat_file in (self.root_dir / stage).glob('*.mat')
         ]
+
         self.feature_extractor = FeatureExtractor(feature_freq)
-        self.bdc_columns = hormones
+        self.hormones = hormones
         self.labels = self._load_labels()
 
     def __len__(self):
@@ -38,33 +39,24 @@ class RawDataset(Dataset):
         
         sample = {
             'data': torch.tensor(eeg_data, dtype=torch.float32),
-            'label': torch.tensor(label_data, dtype=torch.float32),
+            'label': torch.tensor(label_data, dtype=torch.long),
         }
-
         return sample
 
     def _load_labels(self, scaler = 'minmax'):
         "Needs to return dictionary of shape {particpant: {BDC : [nparray of shape [12]], ...}, ...}"   
         labels = {}
-        df = pandas.read_csv(r'/mnt/raw_data/biomarkers.csv').dropna()
-
-        #scaler = MinMaxScaler()
-        # Might be a good idea to not scale to complete 0 and 1 ?
-        # feature_range=(-1, 1)
-
-        # Scale the hormone columns in the DataFrame
-        #df[self.bdc_columns] = scaler.fit_transform(df[self.bdc_columns])
+        df = pandas.read_csv(r'/mnt/raw_data/biomarkers_quartiles.csv').dropna()
 
         labels = {}
         participants = df['Participant'].unique()
         for participant in participants:
             values = []
             participant_df = df[df['Participant'] == participant]
-            for hormone in self.bdc_columns:
-                hormone_value = participant_df[hormone].to_numpy().flatten()[0]
+            for h in self.hormones:
+                hormone_value = participant_df[h].values[0]
                 values.append(hormone_value)
             labels[participant] = values
-            
         return labels
 
 def participant_kfold_split(dataset, n_splits=5, shuffle=True, random_state=None):
@@ -131,7 +123,7 @@ def participant_kfold_split(dataset, n_splits=5, shuffle=True, random_state=None
             train_participants,  # Optional: return participant lists
             test_participants    # for tracking
         ))
-    
+
     return folds
 
 def collate_fn(batch):
