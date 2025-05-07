@@ -20,12 +20,11 @@ def compute_saliency_map(model, input_tensor, device):
 
 def write_results(args, results):
     """Writes results to a CSV file with dynamically generated headers."""
-    with open("results.csv", mode="a", newline="") as file:
+    with open(f"results{args['sleep_stages']}.csv", mode="a", newline="") as file:
         writer = csv.writer(file)
 
-        avg = sum(results) / len(results)
 
-        row = [args["feature_freq"], args["hormones"], args["sleep_stages"]] + [avg]
+        row = [args["feature_freq"], args["hormones"], args["sleep_stages"]] + [max(results)]
         writer.writerow(row)
 
 def main(**args):
@@ -61,10 +60,10 @@ if __name__ == '__main__':
     import os 
     print(os.getcwd())
     params = {
-        "b_size" : 32,
+        "b_size" : 16,
         "filter_size" : 5,
         "iterations" : 50,
-        "k_folds" : 2,
+        "k_folds" : 3,
         "in_channels" : 1
     }
 

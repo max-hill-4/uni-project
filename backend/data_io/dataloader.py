@@ -10,7 +10,7 @@ from features_extract import FeatureExtractor
 class RawDataset(Dataset):
 
     def __init__(self, sleep_stages, feature_freq, hormones):
-        self.root_dir = Path(r'/mnt/eeg')
+        self.root_dir = Path(r'')
         self.mat_files = [
             mat_file
             for stage in sleep_stages
@@ -31,7 +31,7 @@ class RawDataset(Dataset):
         
         eeg_data = self.feature_extractor.get(eeg_data) 
         
-        participant = str(file)[24]
+        participant = str(file)[9]
         if participant in self.labels:
             label_data = self.labels[participant]
         else:
@@ -46,7 +46,7 @@ class RawDataset(Dataset):
     def _load_labels(self, scaler = 'minmax'):
         "Needs to return dictionary of shape {particpant: {BDC : [nparray of shape [12]], ...}, ...}"   
         labels = {}
-        df = pandas.read_csv(r'/mnt/raw_data/biomarkers_thirds.csv').dropna()
+        df = pandas.read_csv(r'biomarkers_thirds.csv').dropna()
 
         labels = {}
         participants = df['Participant'].unique()
@@ -80,7 +80,7 @@ def participant_kfold_split(dataset, n_splits=5, shuffle=True, random_state=None
     if n_splits == 1:
         train_indices = [
             idx for idx, p in enumerate(dataset.mat_files) 
-            if str(p)[24] in participants
+            if str(p)[9] in participants
         ]
         return [(
             Subset(dataset, train_indices),
@@ -110,11 +110,11 @@ def participant_kfold_split(dataset, n_splits=5, shuffle=True, random_state=None
         # Get sample indices
         train_indices = [
             idx for idx, p in enumerate(dataset.mat_files) 
-            if str(p)[24] in train_participants
+            if str(p)[9] in train_participants
         ]
         test_indices = [
             idx for idx, p in enumerate(dataset.mat_files) 
-            if str(p)[24] in test_participants
+            if str(p)[9] in test_participants
         ]
         
         folds.append((

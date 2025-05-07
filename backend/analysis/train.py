@@ -25,6 +25,7 @@ class model():
         b_val_ac = 0
         losses = []  # List to store average loss per epoch
         results = []
+        best_model_state = None 
         for epoch in range(self.iterations):
             epoch_loss = 0.0  # Accumulate loss for the epoch
             num_batches = 0
@@ -63,7 +64,10 @@ class model():
             print(f"Epoch {epoch+1}/{self.iterations}, Average Loss: {avg_loss:.4f}, Traning Acc: {traning_acc} Val Acc: {val_acc}")
             if patience >= 10:
                 ('No improvmenet in val acc')
-                self.m.load_state_dict(best_model_state)
+                if best_model_state:
+                    self.m.load_state_dict(best_model_state)
+                else: 
+                   self.m.load_state_dict(self.m.state_dict())
                 break
 
         return losses, all_predictions, all_labels
