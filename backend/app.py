@@ -61,7 +61,7 @@ if __name__ == '__main__':
     import os 
     print(os.getcwd())
     params = {
-        "b_size" : 4,
+        "b_size" : 32,
         "filter_size" : 5,
         "iterations" : 50,
         "k_folds" : 2,

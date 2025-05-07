@@ -1,9 +1,8 @@
 param_options = {
-    "feature_freq" : [[{'coh' : 'alpha'}, {'coh' : 'beta'}], 
-                      [{'coh' : 'alpha'}, {'coh' : 'delta'}]],
+    "feature_freq" : [[{'coh' : 'delta'}]],
                        
     "hormones" : [  
-['BDC1.11']],
+       ['BDC1.2'], ['BDC1.7']],
 
-    "sleep_stages" : [['N3_small']],
+    "sleep_stages" : [['RE_small']],
 }

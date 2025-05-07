@@ -1,0 +1,61 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.interpolate import make_interp_spline
+
+# Define epoch data
+epochs = np.arange(1, 51)
+train_acc = np.array([
+    0.5215909090909091, 0.5894886363636364, 0.6244318181818183, 0.6630681818181818, 0.6945454545454546,
+    0.7159090909090909, 0.7338474025974026, 0.7512073863636364, 0.7684974747474749, 0.7853977272727274,
+    0.8037706611570249, 0.8185606060606061, 0.8315559440559441, 0.8435876623376624, 0.8540151515151515,
+    0.8631392045454545, 0.8711898395721924, 0.8783459595959595, 0.8847488038277511, 0.8905113636363636,
+    0.8957251082251082, 0.9004648760330578, 0.904792490118577, 0.9087594696969696, 0.9124090909090908,
+    0.915777972027972, 0.9188973063973064, 0.9217938311688313, 0.9244905956112853, 0.9270075757575759,
+    0.9293621700879766, 0.9315696022727273, 0.9336432506887054, 0.9355949197860963, 0.937435064935065,
+    0.9391729797979799, 0.9408169533169534, 0.9423744019138757, 0.9438519813519815, 0.9452556818181819,
+    0.9465909090909091, 0.9478625541125542, 0.9490750528541226, 0.950232438016529, 0.9513383838383839,
+    0.9523962450592885, 0.953409090909091, 0.9543797348484849, 0.9553107606679035, 0.9562045454545455
+]) * 100  # Convert to percentage
+val_acc = np.array([
+    0.3, 0.38, 0.2866666666666667, 0.41333333333333333, 0.4066666666666667,
+    0.36666666666666664, 0.41333333333333333, 0.4, 0.44666666666666666, 0.35333333333333333,
+    0.38666666666666666, 0.38, 0.32, 0.38666666666666666, 0.37333333333333335,
+    0.35333333333333333, 0.3466666666666667, 0.36666666666666664, 0.35333333333333333, 0.35333333333333333,
+    0.37333333333333335, 0.38, 0.3466666666666667, 0.36, 0.37333333333333335,
+    0.37333333333333335, 0.36666666666666664, 0.36666666666666664, 0.36, 0.37333333333333335,
+    0.36666666666666664, 0.37333333333333335, 0.36666666666666664, 0.36, 0.38,
+    0.38, 0.36, 0.36666666666666664, 0.36666666666666664, 0.36666666666666664,
+    0.37333333333333335, 0.38, 0.37333333333333335, 0.37333333333333335, 0.37333333333333335,
+    0.37333333333333335, 0.37333333333333335, 0.37333333333333335, 0.37333333333333335, 0.37333333333333335
+]) * 100  # Convert to percentage
+
+# Create smooth curves using cubic spline interpolation
+x_smooth = np.linspace(epochs.min(), epochs.max(), 300)  # More points for smooth curve
+spl_train = make_interp_spline(epochs, train_acc, k=3)  # Cubic spline
+spl_val = make_interp_spline(epochs, val_acc, k=3)
+train_acc_smooth = spl_train(x_smooth)
+val_acc_smooth = spl_val(x_smooth)
+
+# Create figure
+plt.figure(figsize=(10, 6))
+
+# Plot smooth training and validation accuracy
+plt.plot(x_smooth, train_acc_smooth, 'b-', linewidth=2.5, label='Training Accuracy')
+plt.plot(x_smooth, val_acc_smooth, 'r-', linewidth=2.5, label='Validation Accuracy')
+
+# Plot original data points as markers
+plt.scatter(epochs, train_acc, c='blue', s=50, zorder=5, label=None)
+plt.scatter(epochs, val_acc, c='red', s=50, zorder=5, label=None)
+
+# Customize plot
+plt.xlabel('Epoch', fontsize=12, fontweight='bold')
+plt.ylabel('Accuracy (%)', fontsize=12, fontweight='bold')
+plt.title('Training vs. Validation Accuracy Over Epochs (EEG Hormonal Classification)', fontsize=14, fontweight='bold')
+plt.grid(True, linestyle='--', alpha=0.7)
+plt.legend(loc='best', fontsize=10)
+plt.xlim(1, 50)
+plt.xticks(np.arange(1, 51, 5))  # Show ticks every 5 epochs for readability
+plt.tight_layout()
+
+# Save plot as PNG
+plt.savefig('accuracy_plot_smooth.png', dpi=300, bbox_inches='tight')

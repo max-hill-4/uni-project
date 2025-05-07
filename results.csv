@@ -23,3 +23,10 @@
 "[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.7'],['N3_small'],0.45666666666666667
 "[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.8'],['N3_small'],0.43333333333333335
 "[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.9'],['N3_small'],0.38
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.2'],['N3_small'],0.5205387205387205
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.2'],['N2_small'],0.5809628008752735
+"[{'coh': 'alpha'}, {'coh': 'beta'}]",['BDC1.7'],['N2_small'],0.46936542669584247
+"[{'coh': 'alpha'}, {'coh': 'beta'}, {'coh': 'gamma'}, {'coh': 'delta'}]",['BDC1.2'],['N2_small'],0.5492341356673961
+[{'coh': 'delta'}],['BDC1.2'],['RE_small'],0.42666666666666664
+[{'coh': 'delta'}],['BDC1.7'],['RE_small'],0.4033333333333333
+[{'coh': 'delta'}],['BDC1.2'],['RE_small'],0.30666666666666664
