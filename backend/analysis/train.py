@@ -17,7 +17,7 @@ class model():
 
     def train(self):
         # Optimizer and loss function
-        optimizer = torch.optim.Adam(self.m.parameters(), lr=0.001)
+        optimizer = torch.optim.Adam(self.m.parameters(), lr=0.0001)
         criterion = nn.CrossEntropyLoss() 
         patience = 0 
         all_predictions = []
@@ -61,10 +61,10 @@ class model():
             avg_loss = epoch_loss / num_batches
             losses.append(avg_loss)
             print(f"Epoch {epoch+1}/{self.iterations}, Average Loss: {avg_loss:.4f}, Traning Acc: {traning_acc} Val Acc: {val_acc}")
-            # if patience >= 10:
-            #     ('No improvmenet in val acc')
-            #     self.m.load_state_dict(best_model_state)
-            #     break
+            if patience >= 10:
+                ('No improvmenet in val acc')
+                self.m.load_state_dict(best_model_state)
+                break
 
         return losses, all_predictions, all_labels
 
