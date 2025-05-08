@@ -73,7 +73,7 @@ if __name__ == '__main__':
     params = {
         "b_size" : 4,
         "filter_size" : 3,
-        "iterations" : 6,
+        "iterations" : 20,
         "k_folds" : 3,
         "in_channels" : 1
     }
