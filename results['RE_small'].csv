@@ -1,0 +1,44 @@
+[{'coh': 'delta'}],['BDC1'],['RE_small'],0.3904761904761905
+[{'coh': 'delta'}],['BDC1.2'],['RE_small'],0.6571428571428571
+[{'coh': 'delta'}],['BDC1.3'],['RE_small'],0.5
+[{'coh': 'delta'}],['BDC1.4'],['RE_small'],0.6190476190476191
+[{'coh': 'delta'}],['BDC1.5'],['RE_small'],0.42857142857142855
+[{'coh': 'delta'}],['BDC1.6'],['RE_small'],0.4380952380952381
+[{'coh': 'delta'}],['BDC1.7'],['RE_small'],0.5523809523809524
+[{'coh': 'delta'}],['BDC1.8'],['RE_small'],0.5555555555555556
+[{'coh': 'delta'}],['BDC1.9'],['RE_small'],0.45555555555555555
+[{'coh': 'delta'}],['BDC1.10'],['RE_small'],0.3904761904761905
+[{'coh': 'delta'}],['BDC1.11'],['RE_small'],0.3333333333333333
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1'],['RE_small'],0.3904761904761905
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.2'],['RE_small'],0.6952380952380952
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.3'],['RE_small'],0.45555555555555555
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.4'],['RE_small'],0.6777777777777778
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.5'],['RE_small'],0.41904761904761906
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.6'],['RE_small'],0.5428571428571428
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.7'],['RE_small'],0.5142857142857142
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.8'],['RE_small'],0.6
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.9'],['RE_small'],0.42857142857142855
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.10'],['RE_small'],0.3619047619047619
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.11'],['RE_small'],0.3333333333333333
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1'],['RE_small'],0.4095238095238095
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.2'],['RE_small'],0.6190476190476191
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.3'],['RE_small'],0.4777777777777778
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.4'],['RE_small'],0.7666666666666667
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.5'],['RE_small'],0.4888888888888889
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.6'],['RE_small'],0.5
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.7'],['RE_small'],0.580952380952381
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.8'],['RE_small'],0.6333333333333333
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.9'],['RE_small'],0.42857142857142855
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.10'],['RE_small'],0.3523809523809524
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.11'],['RE_small'],0.3333333333333333
+[{'coh': 'alpha'}],['BDC1'],['RE_small'],0.38095238095238093
+[{'coh': 'alpha'}],['BDC1.2'],['RE_small'],0.5428571428571428
+[{'coh': 'alpha'}],['BDC1.3'],['RE_small'],0.5
+[{'coh': 'alpha'}],['BDC1.4'],['RE_small'],0.7333333333333333
+[{'coh': 'alpha'}],['BDC1.5'],['RE_small'],0.5
+[{'coh': 'alpha'}],['BDC1.6'],['RE_small'],0.49523809523809526
+[{'coh': 'alpha'}],['BDC1.7'],['RE_small'],0.6190476190476191
+[{'coh': 'alpha'}],['BDC1.8'],['RE_small'],0.6333333333333333
+[{'coh': 'alpha'}],['BDC1.9'],['RE_small'],0.45555555555555555
+[{'coh': 'alpha'}],['BDC1.10'],['RE_small'],0.3333333333333333
+[{'coh': 'alpha'}],['BDC1.11'],['RE_small'],0.3333333333333333
