@@ -54,3 +54,22 @@ def _stack_matrices(matrices):
         if n_singles > 0:
             output[-1] = matrices[-1][0]  # Full matrix in last channel
         return output  # Shape: [total_channels, 19, 19]
+
+def compute_saliency_map(model, input_tensor, device):
+    model.eval()
+    input_tensor = input_tensor.to(device).requires_grad_(True)
+    output = model(input_tensor)  # Shape: [1, 1]
+    output.backward()  # Compute gradients w.r.t. input
+    saliency = input_tensor.grad.abs().squeeze()  # Shape: [1, 19, 19]
+    return saliency.cpu().numpy()
+
+
+def write_results(args, results):
+    """Writes results to a CSV file with dynamically generated headers."""
+    with open(f"results{args['sleep_stages']}.csv", mode="a", newline="") as file:
+        writer = csv.writer(file)
+
+
+        row = [args["feature_freq"], args["hormones"], args["sleep_stages"]] + [max(results)]
+        writer.writerow(row)
+

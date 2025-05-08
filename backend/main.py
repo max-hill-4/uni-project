@@ -4,28 +4,12 @@ import analysis
 from torch.utils.data import DataLoader
 from torch import save
 import matplotlib.pyplot as plt
-from tests import param_options
+from params import param_options
 import torch
 import numpy as np
 from itertools import product
 import csv
 
-def compute_saliency_map(model, input_tensor, device):
-    model.eval()
-    input_tensor = input_tensor.to(device).requires_grad_(True)
-    output = model(input_tensor)  # Shape: [1, 1]
-    output.backward()  # Compute gradients w.r.t. input
-    saliency = input_tensor.grad.abs().squeeze()  # Shape: [1, 19, 19]
-    return saliency.cpu().numpy()
-
-def write_results(args, results):
-    """Writes results to a CSV file with dynamically generated headers."""
-    with open(f"results{args['sleep_stages']}.csv", mode="a", newline="") as file:
-        writer = csv.writer(file)
-
-
-        row = [args["feature_freq"], args["hormones"], args["sleep_stages"]] + [max(results)]
-        writer.writerow(row)
 
 def main(**args):
 
