@@ -17,12 +17,12 @@ def participant_kfold_split(dataset, n_splits=5, shuffle=True, random_state=None
     # Get unique participants
     participants = list(dataset.labels.keys())
     num_participants = len(participants)
-    print(str(dataset.mat_files[0])[24])
+    print(str(dataset.mat_files[0])[18])
     # Shuffle participants if needed
     if n_splits == 1:
         train_indices = [
             idx for idx, p in enumerate(dataset.mat_files) 
-            if str(p)[24] in participants
+            if str(p)[18] in participants
         ]
         return [(
             torch.utils.data.Subset(dataset, train_indices),
@@ -52,11 +52,11 @@ def participant_kfold_split(dataset, n_splits=5, shuffle=True, random_state=None
         # Get sample indices
         train_indices = [
             idx for idx, p in enumerate(dataset.mat_files) 
-            if str(p)[24] in train_participants
+            if str(p)[18] in train_participants
         ]
         test_indices = [
             idx for idx, p in enumerate(dataset.mat_files) 
-            if str(p)[24] in test_participants
+            if str(p)[18] in test_participants
         ]
         
         folds.append((

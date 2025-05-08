@@ -1,8 +1,9 @@
 import analysis.models
-import data_io.dataloader
-import data_io.sampler
-import features_extract._utils
+import data_io
+
 from torch.utils.data import DataLoader
+import data_io.saliencymap
+import data_io.writeresults
 from params import param_options
 from itertools import product
 
@@ -28,11 +29,12 @@ def main(**args):
         a.train()
 
         data, predictions, truth = a.predict()
-        
-        features_extract.compute_saliency_map(m, data[0:1])
-        results.append(a.accuracy(predictions, truth))
-    
-    data_io.dataloader.write_results(args, results)
+        accuracy = a.accuracy(predictions, truth) 
+        if accuracy > 0.75:
+            data_io.saliencymap.compute_saliency_map(m, data[0:1])
+        results.append(accuracy)
+
+    data_io.writeresults.write_results(args, results)
 
 
 if __name__ == '__main__':
@@ -41,7 +43,7 @@ if __name__ == '__main__':
     params = {
         "b_size" : 16,
         "filter_size" : 5,
-        "iterations" : 50,
+        "iterations" : 1,
         "k_folds" : 3,
         "in_channels" : 1
     }

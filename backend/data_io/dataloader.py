@@ -31,7 +31,7 @@ class RawDataset(Dataset):
         
         eeg_data = self.feature_extractor.get(eeg_data) 
         
-        participant = str(file)[24]
+        participant = str(file)[18]
         if participant in self.labels:
             label_data = self.labels[participant]
         else:
