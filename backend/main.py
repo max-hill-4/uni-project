@@ -1,7 +1,7 @@
 import analysis.models
 import data_io.dataloader
 import data_io.sampler
-import data_io.writeresults
+import features_extract._utils
 from torch.utils.data import DataLoader
 from params import param_options
 from itertools import product
@@ -27,8 +27,9 @@ def main(**args):
 
         a.train()
 
-        predictions, truth = a.predict()
-
+        data, predictions, truth = a.predict()
+        
+        features_extract.compute_saliency_map(m, data[0:1])
         results.append(a.accuracy(predictions, truth))
     
     data_io.dataloader.write_results(args, results)

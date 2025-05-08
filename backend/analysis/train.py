@@ -3,7 +3,7 @@ from torch.nn.functional import mse_loss
 from torchmetrics.functional import r2_score
 import torch.nn as nn
 import copy
-
+import features_extract
 class model():
     def __init__(self, m, train_data, test_data, iterations=10):
         self.m = m
@@ -50,7 +50,8 @@ class model():
              
 
             traning_acc = sum(results) / len(results)
-            val_acc = self.accuracy(*self.predict())
+            data, predictions, truth = self.predict() 
+            val_acc = self.accuracy(predictions, truth)
 
             if val_acc > b_val_ac:
                 b_val_ac = val_acc
@@ -89,13 +90,14 @@ class model():
                 all_labels.append(labels.cpu())  # Store labels on CPU
 
         # Concatenate predictions and labels
+        
         all_predictions = torch.cat(all_predictions, dim=0)  # Shape: (n_samples, 3)
         all_labels = torch.cat(all_labels, dim=0)  # Shape: (n_samples,)
         # Apply softmax to convert logits to probabilities
         all_probabilities = torch.softmax(all_predictions, dim=1)  # Shape: (n_samples, 3)
         # Map indices to class names (optional)
         # Return data, probabilities, predicted classes, and labels
-        return all_probabilities, all_labels
+        return data, all_probabilities, all_labels
     
     def mse(self, predict, truth):
         mse = mse_loss(predict, truth)
