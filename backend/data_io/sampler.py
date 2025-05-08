@@ -1,3 +1,5 @@
+import torch
+
 def participant_kfold_split(dataset, n_splits=5, shuffle=True, random_state=None):
     """
     Returns K folds with participant-wise separation
@@ -23,8 +25,8 @@ def participant_kfold_split(dataset, n_splits=5, shuffle=True, random_state=None
             if str(p)[24] in participants
         ]
         return [(
-            Subset(dataset, train_indices),
-            Subset(dataset, []),  # Empty test set
+            torch.utils.data.Subset(dataset, train_indices),
+            torch.utils.data.Subset(dataset, []),  # Empty test set
             participants,         # All participants in train
             []                   # No test participants
         )]
@@ -58,8 +60,8 @@ def participant_kfold_split(dataset, n_splits=5, shuffle=True, random_state=None
         ]
         
         folds.append((
-            Subset(dataset, train_indices),
-            Subset(dataset, test_indices),
+            torch.utils.data.Subset(dataset, train_indices),
+            torch.utils.data.Subset(dataset, test_indices),
             train_participants,  # Optional: return participant lists
             test_participants    # for tracking
         ))

@@ -1,20 +1,15 @@
 import analysis.models
 import data_io.dataloader
-import analysis
+import data_io.sampler
+import data_io.writeresults
 from torch.utils.data import DataLoader
-from torch import save
-import matplotlib.pyplot as plt
 from params import param_options
-import torch
-import numpy as np
 from itertools import product
-import csv
-
 
 def main(**args):
 
     dataset = data_io.dataloader.RawDataset(sleep_stages=args["sleep_stages"], feature_freq=args["feature_freq"], hormones = args["hormones"]) 
-    folds = data_io.dataloader.participant_kfold_split(dataset, args["k_folds"])
+    folds = data_io.sampler.participant_kfold_split(dataset, args["k_folds"])
     results = []
     for fold in folds:
 
@@ -36,11 +31,10 @@ def main(**args):
 
         results.append(a.accuracy(predictions, truth))
     
-    write_results(args, results)
+    data_io.dataloader.write_results(args, results)
 
 
 if __name__ == '__main__':
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  # Defined here
     import os 
     print(os.getcwd())
     params = {
