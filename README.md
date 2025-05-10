@@ -1,4 +1,4 @@
-### Image Gallery
+### Final Dissertation
 
 ![Image 1](literature/26584263v2/26584263v2-01.png)
 ![Image 2](literature/26584263v2/26584263v2-02.png)
