@@ -30,8 +30,9 @@ def main(**args):
 
         data, predictions, truth = a.predict()
         accuracy = a.accuracy(predictions, truth) 
-        if accuracy > 0.75:
-            data_io.saliencymap.compute_saliency_map(m, data[0:1])
+        if accuracy > 0.:
+            s = data_io.saliencymap.compute_saliency_map(m, data[0:1])
+            data_io.saliencymap.compute_topo_map(s)
         results.append(accuracy)
 
     data_io.writeresults.write_results(args, results)
@@ -43,7 +44,7 @@ if __name__ == '__main__':
     params = {
         "b_size" : 16,
         "filter_size" : 5,
-        "iterations" : 1,
+        "iterations" : 30,
         "k_folds" : 3,
         "in_channels" : 1
     }

@@ -44,3 +44,47 @@ def compute_saliency_map(model, input_tensor):
     return saliency
 
 
+import numpy as np
+import matplotlib.pyplot as plt
+import mne
+from mne.viz import plot_topomap
+
+def compute_topo_map(saliency):
+    """
+    Compute saliency map and plot it as a topomap using MNE.
+    
+    Args:
+        model: PyTorch/TensorFlow model.
+        input_tensor: Input EEG data (shape: [n_channels, n_times] or [n_channels, n_channels] for connectivity).
+        ch_names: List of channel names (e.g., ['Fp1', 'Fp2', ...]).
+        montage: MNE montage name (default: 'standard_1020').
+    """
+    ch_names = ['Fp1', 'Fp2', 'F3', 'F4', 'F7', 'F8', 'Fz',
+                'C3', 'C4', 'Cz', 'T3', 'T4', 'T5', 'T6',
+                'P3', 'P4', 'Pz', 'O1', 'O2'] 
+
+    
+    # Create MNE info object
+    info = mne.create_info(ch_names, sfreq=500., ch_types='eeg')  # Adjust sfreq as needed
+    info.set_montage('standard_1020')
+    saliency = np.sum(saliency, axis=0) + np.sum(saliency, axis=1)[::-1]
+    # Plot topomap
+    fig, ax = plt.subplots(figsize=(8, 6))
+    im, _ = plot_topomap(
+        saliency, 
+        info, 
+        cmap='jet', 
+        sensors=True, 
+        contours=6, 
+        show=False,
+        axes=ax,
+        names = ch_names
+    )
+    fig.colorbar(im, ax=ax, shrink=0.6, label='Saliency (|∇output|)')
+    ax.set_title('EEG Saliency Map (10-20 System)')
+    
+    plt.tight_layout()
+    plt.savefig('saliency_topomap.png', dpi=300)
+    plt.close()
+    
+    return saliency
