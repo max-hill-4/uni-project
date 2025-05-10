@@ -44,12 +44,11 @@ def _se(data_input: dict, freq: str):
         raise ValueError("No epochs created. Check input data or epoching parameters.")
 
     # Filter data in the specified frequency band
-    epochs.filter(l_freq=fmin, h_freq=fmax, verbose=False)
+    epochs.filter(l_freq=fmin, h_freq=fmax, verbose=False,method='iir', phase='zero')
 
     # Downsample to 100 Hz (500 points over 5 seconds)
     target_sfreq = 100.0
     epochs.resample(sfreq=target_sfreq, verbose=False)
-
     # Initialize entropy matrix
     num_channels = 19
     entropy_matrix = np.zeros((num_channels, num_channels))

@@ -1,0 +1,52 @@
+[{'coh': 'alpha'}],['BDC1'],['N2_small'],0.421875
+[{'coh': 'alpha'}],['BDC1.1'],['N2_small'],0.325
+[{'coh': 'alpha'}],['BDC1.2'],['N2_small'],0.6125
+[{'coh': 'alpha'}],['BDC1.3'],['N2_small'],0.4200626959247649
+[{'coh': 'alpha'}],['BDC1.4'],['N2_small'],0.6618181818181819
+[{'coh': 'alpha'}],['BDC1.5'],['N2_small'],0.4290909090909091
+[{'coh': 'alpha'}],['BDC1.6'],['N2_small'],0.542319749216301
+[{'coh': 'alpha'}],['BDC1.7'],['N2_small'],0.459375
+[{'coh': 'alpha'}],['BDC1.8'],['N2_small'],0.5563636363636364
+[{'coh': 'alpha'}],['BDC1.9'],['N2_small'],0.43636363636363634
+[{'coh': 'alpha'}],['BDC1.10'],['N2_small'],0.3
+[{'coh': 'alpha'}],['BDC1.11'],['N2_small'],0.33090909090909093
+[{'coh': 'delta'}],['BDC1'],['N2_small'],0.32
+[{'coh': 'delta'}],['BDC1.1'],['N2_small'],0.39375
+[{'coh': 'delta'}],['BDC1.2'],['N2_small'],0.65
+[{'coh': 'delta'}],['BDC1.3'],['N2_small'],0.4727272727272727
+[{'coh': 'delta'}],['BDC1.4'],['N2_small'],0.7127272727272728
+[{'coh': 'delta'}],['BDC1.5'],['N2_small'],0.45625
+[{'coh': 'delta'}],['BDC1.6'],['N2_small'],0.5611285266457681
+[{'coh': 'delta'}],['BDC1.7'],['N2_small'],0.50625
+[{'coh': 'delta'}],['BDC1.8'],['N2_small'],0.509090909090909
+[{'coh': 'delta'}],['BDC1.9'],['N2_small'],0.48
+[{'coh': 'delta'}],['BDC1.10'],['N2_small'],0.30625
+[{'coh': 'delta'}],['BDC1.11'],['N2_small'],0.32
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1'],['N2_small'],0.390625
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.1'],['N2_small'],0.459375
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.2'],['N2_small'],0.734375
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.3'],['N2_small'],0.4482758620689655
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.4'],['N2_small'],0.7345454545454545
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.5'],['N2_small'],0.4
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.6'],['N2_small'],0.5391849529780565
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.7'],['N2_small'],0.4690909090909091
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.8'],['N2_small'],0.5527272727272727
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.9'],['N2_small'],0.4909090909090909
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.10'],['N2_small'],0.359375
+"[{'coh': 'delta'}, {'coh': 'beta'}]",['BDC1.11'],['N2_small'],0.3605015673981191
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1'],['N2_small'],0.365625
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.1'],['N2_small'],0.5125
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.2'],['N2_small'],0.74375
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.3'],['N2_small'],0.49216300940438873
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.4'],['N2_small'],0.6836363636363636
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.5'],['N2_small'],0.40752351097178685
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.6'],['N2_small'],0.5078369905956113
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.7'],['N2_small'],0.4690909090909091
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.8'],['N2_small'],0.5854545454545454
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.9'],['N2_small'],0.5272727272727272
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.10'],['N2_small'],0.328125
+"[{'coh': 'alpha'}, {'coh': 'theta'}]",['BDC1.11'],['N1'],0.21710526315789475
+
+
+
+

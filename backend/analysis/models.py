@@ -2,7 +2,7 @@ import torch.nn as nn
 import torchvision.models as models
 
 class EEGCNN(nn.Module):
-    def __init__(self, in_channels: int = 1, filter_size: int = 3, num_classes: int = 108):
+    def __init__(self, in_channels: int = 1, filter_size: int = 3, num_classes: int = 3):
         """
         Args:
             in_channels: Number of input channels (e.g., 1 for single-channel, 5 for multi-channel).
@@ -17,6 +17,7 @@ class EEGCNN(nn.Module):
             nn.ReLU(),
             nn.Conv2d(16, 32, kernel_size=filter_size, padding=filter_size // 2),
             nn.ReLU(),
+            nn.Dropout(0.5)
             #nn.MaxPool2d(2)
         )
         
@@ -27,7 +28,7 @@ class EEGCNN(nn.Module):
             nn.ReLU(),
             nn.Linear(256, 128),
             nn.ReLU(),
-            nn.Linear(128, num_classes)
+            nn.Linear(128, 3)
         )
 
 
@@ -38,7 +39,7 @@ class EEGCNN(nn.Module):
         return x
 
 class ResNetEEG(nn.Module):
-    def __init__(self, in_channels: int = 1, filter_size: int = 3, num_classes: int = 108):
+    def __init__(self, in_channels: int = 1, filter_size: int = 3, num_classes: int = 3):
         """
         Args:
             in_channels: Number of input channels (e.g., 1 for single-channel, 5 for multi-channel).

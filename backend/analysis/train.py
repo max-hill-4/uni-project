@@ -1,6 +1,9 @@
 import torch
 from torch.nn.functional import mse_loss
 from torchmetrics.functional import r2_score
+import torch.nn as nn
+import copy
+import features_extract
 class model():
     def __init__(self, m, train_data, test_data, iterations=10):
         self.m = m
@@ -14,52 +17,87 @@ class model():
 
     def train(self):
         # Optimizer and loss function
-        optimizer = torch.optim.Adam(self.m.parameters(), lr=0.001)
-        loss_fn = torch.nn.MSELoss()
-        
+        optimizer = torch.optim.Adam(self.m.parameters(), lr=0.0001)
+        criterion = nn.CrossEntropyLoss() 
+        patience = 0 
         all_predictions = []
         all_labels = []
-
+        b_val_ac = 0
+        losses = []  # List to store average loss per epoch
+        results = []
+        best_model_state = None 
         for epoch in range(self.iterations):
+            epoch_loss = 0.0  # Accumulate loss for the epoch
+            num_batches = 0
             
             for batch in self.train_data:
                 data, labels = batch['data'].to(self.device), batch['label'].to(self.device)
-                
+                labels = labels.squeeze(1)
                 optimizer.zero_grad()  # Zero out gradients
-
                 # Forward pass
                 predictions = self.m(data)
-                all_predictions.append(predictions.cpu())  # Store predictions for evaluation later
-                all_labels.append(labels.cpu())  # Store labels for evaluation
-                
+                all_predictions.append(predictions.cpu())  # Store predictions
+                all_labels.append(labels.cpu())  # Store labels
+     
+                results.append(self.accuracy(predictions, labels))
                 # Compute loss
-                loss = mse_loss(predictions, labels)
-                
+                loss = criterion(predictions, labels)
+                epoch_loss += loss.item()  # Accumulate loss
+                num_batches += 1
                 # Backward pass and optimization
                 loss.backward()
-                #torch.nn.utils.clip_grad_norm_(self.m.parameters(), max_norm=1.0)  # Gradient clipping
                 optimizer.step()
+             
 
-            # Step the scheduler at the end of each epoch
+            traning_acc = sum(results) / len(results)
+            data, predictions, truth = self.predict() 
+            val_acc = self.accuracy(predictions, truth)
+
+            if val_acc > b_val_ac:
+                b_val_ac = val_acc
+                best_model_state = copy.deepcopy(self.m.state_dict())
+                patience = 0
+            else :
+                patience+=1
+            # Compute average loss for the epoch
+            avg_loss = epoch_loss / num_batches
+            losses.append(avg_loss)
+            print(f"Epoch {epoch+1}/{self.iterations}, Average Loss: {avg_loss:.4f}, Traning Acc: {traning_acc} Val Acc: {val_acc}")
+            if patience >= 10:
+                ('No improvmenet in val acc')
+                if best_model_state:
+                    self.m.load_state_dict(best_model_state)
+                else: 
+                   self.m.load_state_dict(self.m.state_dict())
+                break
+
+        return losses, all_predictions, all_labels
 
 
     def predict(self):
         all_predictions = []
         all_labels = []
-        self.m.eval()        
+        self.m.eval()
         with torch.no_grad():  # Disable gradient calculations for inference
             for batch in self.test_data:
                 data, labels = batch['data'].to(self.device), batch['label'].to(self.device)  # Move data and labels to the device
 
+                labels = labels.squeeze(1)
                 # Get predictions from the model
-                predictions = self.m(data)
+                predictions = self.m(data)  # Shape: (batch_size, 3) - raw logits
                 # Store predictions and labels
-                all_predictions.append(predictions.cpu())  # Store predictions on the CPU for evaluation later
-                all_labels.append(labels.cpu())  # Store labels on the CPU
-        # After collecting predictions and labels
-        all_predictions = torch.cat(all_predictions, dim=0)  # Ensure proper concatenation along the batch dimension
-        all_labels = torch.cat(all_labels, dim=0)
-        return data, all_predictions, all_labels
+                all_predictions.append(predictions.cpu())  # Store logits on CPU
+                all_labels.append(labels.cpu())  # Store labels on CPU
+
+        # Concatenate predictions and labels
+        
+        all_predictions = torch.cat(all_predictions, dim=0)  # Shape: (n_samples, 3)
+        all_labels = torch.cat(all_labels, dim=0)  # Shape: (n_samples,)
+        # Apply softmax to convert logits to probabilities
+        all_probabilities = torch.softmax(all_predictions, dim=1)  # Shape: (n_samples, 3)
+        # Map indices to class names (optional)
+        # Return data, probabilities, predicted classes, and labels
+        return data, all_probabilities, all_labels
     
     def mse(self, predict, truth):
         mse = mse_loss(predict, truth)
@@ -90,3 +128,8 @@ class model():
         r2_values = r2_score(predictions, labels, multioutput='raw_values')
         return {i: r2_values[i].item() for i in range(num_classes)} 
     
+    def accuracy(self, predictions: torch.Tensor, labels: torch.Tensor):
+        predicted_classes = torch.argmax(predictions, dim=1)
+        correct = (predicted_classes == labels).sum().item()
+        accuracy = correct / len(labels)
+        return accuracy
