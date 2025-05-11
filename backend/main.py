@@ -9,7 +9,7 @@ def main(**args):
 
     dataset = data_io.dataloader.RawDataset(sleep_stages=args["sleep_stages"], feature_freq=args["feature_freq"], hormones = args["hormones"]) 
     folds = data_io.sampler.participant_kfold_split(dataset, args["k_folds"])
-    results = []
+    results = [-1]
     for fold in folds:
 
         train_dataset, test_dataset, tr_parps, te_parps = fold
@@ -23,7 +23,7 @@ def main(**args):
         data, predictions, truth = a.predict()
         accuracy = a.accuracy(predictions, truth) 
         if accuracy > max(results):
-           save(m.state_dict(), f'/trained_models/classification/{args[feature_freq]}{args[hormone]}.pth') 
+           save(m.state_dict(), f'backend/trained_models/classification/{args['feature_freq']} + {args['hormones']}.pth') 
         results.append(accuracy)
 
     data_io.writeresults.write_results(args, results)
