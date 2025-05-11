@@ -41,6 +41,7 @@ class RawDataset(Dataset):
             'data': torch.tensor(eeg_data, dtype=torch.float32),
             'label': torch.tensor(label_data, dtype=torch.long),
         }
+        print(sample['data'])
         return sample
 
     def _load_labels(self, scaler = 'minmax'):
