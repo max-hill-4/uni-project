@@ -2,7 +2,7 @@ import torch.nn as nn
 import torchvision.models as models
 
 class EEGCNN(nn.Module):
-    def __init__(self, in_channels: int = 1, filter_size: int = 3, num_classes: int = 3):
+    def __init__(self, in_channels: int = 1, filter_size: int = 5, num_classes: int = 3):
         """
         Args:
             in_channels: Number of input channels (e.g., 1 for single-channel, 5 for multi-channel).

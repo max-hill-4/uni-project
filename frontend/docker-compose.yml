@@ -30,6 +30,7 @@ services:
     working_dir: /predict
     volumes:
       - ../backend:/predict
+      - /mnt/eeg/classification:/models
     command: >
       sh -c "pip install --no-cache-dir -r requirements.txt &&
              gunicorn server:server --bind 0.0.0.0:6000"

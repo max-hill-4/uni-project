@@ -18,6 +18,7 @@ class FeatureExtractor:
         matrices = []
         
         for pair in self.feature_freq:
+            print(f"creating first matrix of {pair}")
             feature, freq = next(iter(pair.items()))
             if feature == 'coh':
                 matrices.append(_coh(data, freq))
