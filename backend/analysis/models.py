@@ -28,7 +28,7 @@ class EEGCNN(nn.Module):
             nn.ReLU(),
             nn.Linear(256, 128),
             nn.ReLU(),
-            nn.Linear(128, 3)
+            nn.Linear(128, 1)
         )
 
 

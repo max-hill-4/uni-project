@@ -3,7 +3,7 @@ import torch
 from analysis.models import EEGCNN
 from features_extract import FeatureExtractor
 from flask import Flask, request
-from app import compute_saliency_map
+import data_io
 import matplotlib.pyplot as plt
 import io 
 import base64
@@ -17,7 +17,6 @@ def handle_send_data():
     hormone = request.form.get('hormone')
     print(f'my feature before jsonloda is {feature}')
     feature = json.loads(f'[{feature}]') if feature else []
-    print(feature)
     print(f'type of feature is {type(feature)}')
     print(f"Received: {data}")
     hormone_map = {
@@ -48,12 +47,22 @@ def handle_send_data():
         with torch.no_grad():  # Disable gradient computation for inference
             prediction = m(input_tensor)  # Forward pass
 
-        device = torch.device('cpu')
-        sm = compute_saliency_map(m, input_tensor, device)
-        buffered = io.BytesIO()
-        plt.imsave(buffered, sm, cmap="jet", format="png")
-        saliency_map_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
-        response = {'prediction' : str(prediction.item()), 'sm' : f"data:image/png;base64,{saliency_map_base64}"}
+        sm, saliency = data_io.saliencymap.compute_saliency_map(m, input_tensor)
+        print('sm computed') 
+        topmap = data_io.saliencymap.compute_topo_map(saliency)
+        
+        print('tm computed')
+
+        sm_buffer = io.BytesIO()
+        tm_buffer = io.BytesIO() 
+        
+        topmap.savefig(tm_buffer, format="png")
+        sm.savefig(sm_buffer, format="png")
+        
+        sm= base64.b64encode(sm_buffer.getvalue()).decode('utf-8')
+        topmap = base64.b64encode(tm_buffer.getvalue()).decode('utf-8')
+
+        response = {'prediction' : str(prediction.item()), 'sm' : f"data:image/png;base64,{sm}", 'tm' : f"data:image/png;base64,{topmap}"}
     
     except Exception as e:
         print(f"Error loading .mat file: {e}")
@@ -64,4 +73,4 @@ def handle_send_data():
 
     
 if __name__ == '__main__':
-	server.run(debug=True, port=6000)
+	server.run(debug=True, port=6668)

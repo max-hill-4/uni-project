@@ -45,7 +45,7 @@
         </div>
         <div class="md:w-2/3 flex flex-col items-center">
             <img id="saliency-map" src="" alt="Saliency Map" class="w-full max-w-md mb-6 rounded-md hidden" style="image-rendering: pixelated; image-rendering: crisp-edges;">
-            <img id="placeholder-image" src="" alt="Placeholder Image" class="w-full max-w-md mb-6 rounded-md bg-gray-600 hidden">
+            <img id="top-map" src="" alt="top-map Image" class="w-full max-w-md mb-6 rounded-md bg-gray-600 hidden">
         </div>
     </div>
 
@@ -53,7 +53,7 @@
         document.addEventListener("DOMContentLoaded", () => {
             const feedbackElement = document.getElementById("upload-feedback");
             const saliencyMapImg = document.getElementById("saliency-map");
-            const placeholderImg = document.getElementById("placeholder-image");
+            const topMapImg = document.getElementById("top-map");
             const hormoneSelect = document.getElementById("hormone-select");
             const featureOptions = document.querySelectorAll('input[name="feature"]');
             const storedPrediction = localStorage.getItem('prediction');
@@ -65,7 +65,12 @@
                     if (data.sm) {
                         saliencyMapImg.src = data.sm;
                         saliencyMapImg.classList.remove("hidden");
-                    } else {
+                    } 
+                    if (data.tm) {
+                        topMapImg.src = data.tm;
+                        topMapImg.classList.remove("hidden");
+                    } 
+                    else {
                         saliencyMapImg.classList.add("hidden");
                         feedbackElement.textContent += " No saliency map available.";
                     }
@@ -100,7 +105,7 @@
 
                 const matFileBase64 = localStorage.getItem('matFile');
                 if (!matFileBase64) {
-                    feedbackElement.textContent = "No .mat file found. Please upload a file.";
+                    feedbackElement.textContent = "No .mat file found. Please a combatible file.";
                     return;
                 }
 
@@ -125,8 +130,9 @@
                             if (data.prediction && data.sm) {
                                 localStorage.setItem('prediction', data.prediction);
                                 localStorage.setItem('sm', data.sm);
+                                localStorage.setItem('tm', data.tm);
                                 updateUI(data);
-                                feedbackElement.textContent = `Results for ${hormone} (${selectedFeature}): ${data.prediction}`;
+                                feedbackElement.textContent = `Results for ${hormone} : ${data.prediction}`;
                             } else {
                                 throw new Error("Invalid response format.");
                             }

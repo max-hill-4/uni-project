@@ -2,8 +2,7 @@ import analysis.models
 import data_io
 
 from torch.utils.data import DataLoader
-import data_io.saliencymap
-import data_io.writeresults
+import data_io
 from params import param_options
 from itertools import product
 
@@ -30,7 +29,7 @@ def main(**args):
 
         data, predictions, truth = a.predict()
         accuracy = a.accuracy(predictions, truth) 
-        if accuracy > 0.:
+        if accuracy > max(results):
             s = data_io.saliencymap.compute_saliency_map(m, data[0:1])
             data_io.saliencymap.compute_topo_map(s)
         results.append(accuracy)

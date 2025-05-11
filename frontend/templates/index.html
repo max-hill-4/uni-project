@@ -40,43 +40,12 @@
             reader.onload = () => {
                 const base64String = reader.result.split(',')[1]; // Remove data:image/*;base64, prefix
                 localStorage.setItem('matFile', base64String);
-
-                // Proceed with upload
-                const formData = new FormData();
-                formData.append("file", file);
-                formData.append("hormone", "TAC mmol/L");
-                formData.append("feature", '{"coh" : "alpha"}');
-                fetch("/upload", {
-                    method: "POST",
-                    body: formData
-                })
-                    .then(response => {
-                        if (!response.ok) throw new Error("Network response was not ok");
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.prediction) {
-                            localStorage.setItem('prediction', JSON.stringify(data.prediction));
-                            localStorage.setItem('sm', JSON.stringify(data.sm));
-                            feedbackElement.textContent = "Upload successful!";
-                            progressBar.style.width = "100%";
-                            window.location.href = "/results";
-
-                        } else {
-                            throw new Error("No prediction in response");
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Upload failed:", error);
-                        feedbackElement.textContent = "Upload failed. Please try again.";
-                    });
-            };
-            reader.onerror = () => {
-                console.error("Failed to read file");
-                feedbackElement.textContent = "Error reading file.";
-            };
+                feedbackElement.textContent = "Upload successful!";
+                progressBar.style.width = "100%";
+                window.location.href = "/results";
+                }
             reader.readAsDataURL(file);
-        });
+            });
     </script>
 </body>
 </html>
