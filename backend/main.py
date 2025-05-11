@@ -1,11 +1,10 @@
 import analysis.models
 import data_io
-
 from torch.utils.data import DataLoader
 import data_io
 from params import param_options
 from itertools import product
-
+from torch import save 
 def main(**args):
 
     dataset = data_io.dataloader.RawDataset(sleep_stages=args["sleep_stages"], feature_freq=args["feature_freq"], hormones = args["hormones"]) 
@@ -14,14 +13,8 @@ def main(**args):
     for fold in folds:
 
         train_dataset, test_dataset, tr_parps, te_parps = fold
-        print(len(train_dataset))
-        print(len(test_dataset))
-        print(f'TRANING PARSP{tr_parps}')
-        print(f'TESTING PARPS{te_parps}')
         train_data = DataLoader(train_dataset, batch_size=args["b_size"], shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)    
         test_data = DataLoader(test_dataset, batch_size=args["b_size"], shuffle=True, num_workers=4, collate_fn=data_io.dataloader.collate_fn)
-        print(len(train_data))
-        print(len(test_data))
         m = analysis.models.EEGCNN(filter_size=args["filter_size"], num_classes=len(args['hormones']), in_channels=args["in_channels"])
         a = analysis.train.model(m, train_data, test_data, iterations=args[ "iterations" ])
 
@@ -30,8 +23,7 @@ def main(**args):
         data, predictions, truth = a.predict()
         accuracy = a.accuracy(predictions, truth) 
         if accuracy > max(results):
-            s = data_io.saliencymap.compute_saliency_map(m, data[0:1])
-            data_io.saliencymap.compute_topo_map(s)
+           save(m.state_dict(), f'/trained_models/classification/{args[feature_freq]}{args[hormone]}.pth') 
         results.append(accuracy)
 
     data_io.writeresults.write_results(args, results)

@@ -6,15 +6,20 @@ import shutil
 import os
 
 # Define the root directory
-root_dir = Path(r'/mnt/eeg/N3')
+sleep_stages = ['N1', 'N2' , 'N3' , 'REM']
+root_dir = Path(r'/mnt/eeg')
+mat_files = [
+    mat_file
+    for stage in sleep_stages
+    for mat_file in (root_dir / stage).glob('*.mat')
+]
 
-# Collect all .mat files
-mat_files = [mat_file for mat_file in root_dir.glob('*.mat')]
 
 # Extract participant IDs from filenames (e.g., N2 from bdc14_N2_0106.mat)
 # Alternative: use f.name[6] for letter (e.g., N, J) if 18th char meant letter
-participant_ids = [str(f)[18] for f in mat_files]
-
+participant_ids = [str(f)[24] for f in mat_files]
+print(str(mat_files[0])[22])
+print(participant_ids)
 # Group files by participant
 files_by_participant = {}
 for f, pid in zip(mat_files, participant_ids):
@@ -31,7 +36,7 @@ for participant, count in sorted(participant_counts.items()):
     print(f"{participant}: {count}")
 
 # Find the minimum number of epochs
-min_epochs = 5 
+min_epochs = 10
 print(f"Minimum number of epochs: {min_epochs}")
 
 # Create N2_small: select min_epochs files per participant
@@ -50,7 +55,7 @@ for participant, count in sorted(N2_small_counts.items()):
     print(f"{participant}: {count}")
 
 # Save N2_small files to a new directory
-N2_small_dir = Path('/mnt/eeg/L9_small')
+N2_small_dir = Path('/mnt/eeg/SS_small')
 N2_small_dir.mkdir(exist_ok=True)
 for f in N2_small_files:
     shutil.copy(f, N2_small_dir / f.name)

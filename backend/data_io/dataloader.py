@@ -57,6 +57,7 @@ class RawDataset(Dataset):
                 hormone_value = participant_df[h].values[0]
                 values.append(hormone_value)
             labels[participant] = values
+        print(labels)
         return labels
 
 

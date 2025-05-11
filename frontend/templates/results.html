@@ -139,7 +139,7 @@
                         })
                         .catch(error => {
                             console.error("Fetch error:", error);
-                            feedbackElement.textContent = `Error loading results for ${hormone} (${selectedFeature}).`;
+                            feedbackElement.textContent = `Error loading results for ${hormone} `;
                         });
                 } catch (e) {
                     console.error("Error processing .mat file:", e);
