@@ -23,7 +23,7 @@
     <br />
     <a href="https://github.com/max-hill-4/uni-twitter-analysis/tree/main/docs"><strong>Explore the docs »</strong></a>
     <br />
-    [![youtube][youtube]][youtube-url]
+    <a [![youtube][youtube]][youtube-url] </a>
     <br />
     <a href="https://eeg.maxh.work/">View Demo</a>
     ·
