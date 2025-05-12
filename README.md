@@ -23,8 +23,9 @@
   <br />
   <a href="https://github.com/max-hill-4/uni-twitter-analysis/tree/main/docs"><strong>Explore the docs »</strong></a>
   <br />
+  <br />
   <a href="https://www.youtube.com/watch?v=PVqSx_kzTzU" target="_blank">
-    <img src="https://img.shields.io/badge/YouTube-Video-red?logo=youtube" alt="YouTube">
+    <img src="https://img.shields.io/badge/View%20Demo-red?style=for-the-badge&logo=Youtube&logoColor=White" alt="YouTube">
   </a>
   <br />
   <a href="https://eeg.maxh.work/">View Demo</a>
