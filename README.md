@@ -12,7 +12,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/max-hill-4/uni-project">
-    <img src="https://images.seeklogo.com/logo-png/30/2/github-logo-png_seeklogo-304612.png" alt="Logo" width="80" height="80">
+    <img src="https://images.seeklogo.com/logo-png/30/2/github-logo-png_seeklogo-304612.png/" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Final Dissertation</h3>
