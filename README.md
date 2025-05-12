@@ -23,6 +23,7 @@
     <br />
     <a href="https://github.com/max-hill-4/uni-twitter-analysis/tree/main/docs"><strong>Explore the docs »</strong></a>
     <br />
+    [![youtube][youtube]][youtube-url]
     <br />
     <a href="https://eeg.maxh.work/">View Demo</a>
     ·
@@ -34,8 +35,6 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![Project][Project]][Project-url]
 
 A web-accessible application, that allows users to query a tweet. The query will calculate a
 sentiment analysis for the data from our trained ML model and display it in an appropriate
@@ -137,6 +136,9 @@ Project Link: [Here](https://github.com/max-hill-4/sentiment-tweet-analysis)
 [Javascript-url]: https://www.javascript.com/
 [Flask]: https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white
 [Flask-url]: https://flask.palletsprojects.com/en/3.0.x/
+
+[youtube]: https://img.shields.io/badge/View%20Demo-red?style=for-the-badge&logo=Youtube&logoColor=White
+[youtube-url]: https://www.youtube.com/watch?v=PVqSx_kzTzU
 
 
 ![Image 1](literature/26584263v2/26584263v2-01.png)
