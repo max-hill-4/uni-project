@@ -18,17 +18,20 @@
 
   <h3 align="center">Final Dissertation</h3>
 
-  <p align="center">
-    EEG Based Biomarker prediction using Deep Learning
-    <br />
-    <a href="https://github.com/max-hill-4/uni-twitter-analysis/tree/main/docs"><strong>Explore the docs »</strong></a>
-    <br />
-    <a [![youtube][youtube]][youtube-url] </a>
-    <br />
-    <a href="https://eeg.maxh.work/">View Demo</a>
-    ·
-    <a href="https://github.com/max-hill-4/uni-project/issues">Report Bug</a>
-  </p>
+<p align="center">
+  EEG Based Biomarker prediction using Deep Learning
+  <br />
+  <a href="https://github.com/max-hill-4/uni-twitter-analysis/tree/main/docs"><strong>Explore the docs »</strong></a>
+  <br />
+  <a href="https://www.youtube.com/watch?v=PVqSx_kzTzU" target="_blank">
+    <img src="https://img.shields.io/badge/YouTube-Video-red?logo=youtube" alt="YouTube">
+  </a>
+  <br />
+  <a href="https://eeg.maxh.work/">View Demo</a>
+  ·
+  <a href="https://github.com/max-hill-4/uni-project/issues">Report Bug</a>
+</p>
+
 </div>
 
 
