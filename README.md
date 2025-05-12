@@ -11,23 +11,21 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/max-hill-4/uni-twitter-analysis">
-    <img src="https://seeklogo.com/images/T/twitter-icon-square-logo-108D17D373-seeklogo.com.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/max-hill-4/uni-project">
+    <img src="https://images.seeklogo.com/logo-png/30/2/github-logo-png_seeklogo-304612.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">2023 Team Software Project</h3>
+  <h3 align="center">Final Dissertation</h3>
 
   <p align="center">
-    A Twitter Sentiment Analysis website!
+    EEG Based Biomarker prediction using Deep Learning
     <br />
     <a href="https://github.com/max-hill-4/uni-twitter-analysis/tree/main/docs"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="http://teamsoftware.max-hill-4.xyz/">View Demo</a>
+    <a href="https://eeg.maxh.work/">View Demo</a>
     ·
-    <a href="https://github.com/max-hill-4/uni-twitter-analysis/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/max-hill-4/uni-twitter-analysis/issues">Request Feature</a>
+    <a href="https://github.com/max-hill-4/uni-project/issues">Report Bug</a>
   </p>
 </div>
 
