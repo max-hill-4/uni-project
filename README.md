@@ -80,7 +80,7 @@ expand on this key pairing with further frequency analysis, to improve performan
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+Major frameworks/libraries
 
 * [![Python][Python]][Python-url]
 * [![Javascript][Javascript]][Javascript-url]
@@ -127,15 +127,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <!-- CONTACT -->
 ## Contact
-
-Zak - 26577836
 Max - 26584263
-Jackson - 26580601
-Hubert - 26505141
-Alfie - 26584784
-Dan - 26569011
 
-Project Link: [Here](https://github.com/max-hill-4/sentiment-tweet-analysis)
+Project Link: [Here](https://github.com/max-hill-4/uni-project)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -162,7 +156,8 @@ Project Link: [Here](https://github.com/max-hill-4/sentiment-tweet-analysis)
 [Javascript-url]: https://www.javascript.com/
 [Flask]: https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white
 [Flask-url]: https://flask.palletsprojects.com/en/3.0.x/
-
+[Torch]:https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white
+[Torch-url]:https://pytorch.org/
 [youtube]: https://img.shields.io/badge/View%20Demo-red?style=for-the-badge&logo=Youtube&logoColor=White
 [youtube-url]: https://www.youtube.com/watch?v=PVqSx_kzTzU
 
