@@ -85,6 +85,7 @@ Major frameworks/libraries
 * [![Python][Python]][Python-url]
 * [![Javascript][Javascript]][Javascript-url]
 * [![Flask][Flask]][Flask-url]
+* [![Torch][Torch]][Torch-url]
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
