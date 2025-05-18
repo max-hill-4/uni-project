@@ -40,18 +40,40 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-A web-accessible application, that allows users to query a tweet. The query will calculate a
-sentiment analysis for the data from our trained ML model and display it in an appropriate
-format. The sentiment analysis will be a score from 1-5 determining the emotion of the tweet.
-Extensions for the project could be:
-- Allowing user input on the sentiment to further train our ML model and comparing it to
-third-party ML models.
-- Adding the ability to analyse Twitter’s ‘Timelines’, trending Hashtags, individual users
-and comment threads.
-- Performance optimization, testing for latency and improvements.
-- Caching data/session handling with cookies
-- Allowing for personal profile analysis
+This study aims to predict sleep-related hormone levels utilizing electroencephalogram (EEG)
+data. This could be an effective alternative, as it would provide a less invasive means of capturing
+vital biomarkers than blood sampling methods. Deep learning has proven to be very useful in
+means of EEG analysis, specifically by utilizing Convolutional Neural Networks (CNNs) we could
+correlate key hormones such as cortisol and testosterone. This approach eliminates the need for
+frequent blood draws as model prediction could be done in real-time, allowing for continuous
+hormonal sampling. Significant findings could have a meaningful effect for endocrine research.
+Hormone Regression in Sleep The first iteration of the model included all four sleep stages
+in its traning set, and a single output layer to predict regression values for all 12 hormones
+(TAC mmol/L, ADA U/L, ADA2 U/L, %ADA2, GLU mg/Dl, PHOS mg/Dl, CA mg/Dl,
+CHOL mg/Dl, TRI mg/Dl, HDL mg/dL, LDL-C mg/Dl, CPK U/L) at once. This was very
+challenging, as the model struggled to converge on all 12 labels at the same time. The model’s
+input being a 19x19 square matrix, originally it seemed that the model could not successfully
+optimise all of the hormones hormones due to the diverse scale of the hormone levels. This was
+resolved by normalising the values to 0-1. This change improved the models convergence during
+training, but still could not generalise well to the unseen data, with the best performance a mere:
+0.175 r2. Due to the challenges in the regression task, the modelling approach was adapted to
+suit a classification approach, where hormone levels were categorised into three discrete groups
+to enhance generalisation. Sleep stages were also separated during training to remove possibility
+of frequency sensitive hormonal fluctuations. These changes are further demonstrated using the
+regression performance as outlined below.
 
+Hormone Classification in N1 Sleep The N1 sleep stage is characterised by light sleep,
+only lasting for around 5 minutes; there is not much data available, so training is completed
+on the entire dataset. This is particularly noticeable in comparison to the other sleep stages,
+demonstrating a much larger amount of variance between feature extraction methodology. This
+does not seem to prevent results in N1 however, as notable findings include 0.8816 for ADA2
+U/L (alpha) and 0.7829 for TAC mmol/L (alpha), it is to be expected that the delta wavelength
+appears to perform the worse, as the N1 sleep stage has very little delta wave activity. Low
+performing hormones such as CHOL, TRI and LDL-C may indicate limitations for EEG-based
+correlations in lipid biomarkers. Topographic visualisations reveal critical electrode channels
+Fp3 and Fp4 driving N1’s high performance. These frontal channels reveal coherence patterns
+relevant to early sleep. Future work that have access to larger computation and datasets could
+expand on this key pairing with further frequency analysis, to improve performance.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
