@@ -94,25 +94,14 @@ Major frameworks/libraries
 
 <!-- GETTING STARTED -->
 ## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-
-### Installation
-
-_Below will be an example of how we want users to interact / begin using our project.
+Docker compose is as located inside of /frontend/docker_compose.yaml. Deployment based upon mounted Caddyfile.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
 <!-- USAGE EXAMPLES -->
 ## Usage
-
-Use this space to show useful examples of how a project can be used. 
-
-_For more examples, please refer to the [Documentation](https://github.com/max-hill-4/uni-twitter-analysis/tree/main/docs)_
+Infrence models are deployed on eeg.maxh.work, where .MAT files are currently supported.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
