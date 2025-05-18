@@ -123,7 +123,7 @@ Project Link: [Here](https://github.com/max-hill-4/sentiment-tweet-analysis)
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/badge/Contributors-5-blue?style=for-the-badge
-[contributors-url]: https://github.com/max-hill-4/sentiment-tweet-analysis/graphs/contributors
+[contributors-url]: https://github.com/max-hill-4/uni-project/graphs/contributors
 [Project]: https://cdn.discordapp.com/attachments/615310886512492706/1183782261963894824/image.png?ex=65899624&is=65772124&hm=ca567283f8298578d5fa1e06007803d2015be8c212670f519a3a33657abae419&
 [Project-url]: http://teamsoftware.max-hill-4.xyz/
 
