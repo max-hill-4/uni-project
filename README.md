@@ -75,7 +75,7 @@ Fp3 and Fp4 driving N1’s high performance. These frontal channels reveal coher
 relevant to early sleep. Future work that have access to larger computation and datasets could
 expand on this key pairing with further frequency analysis, to improve performance.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+https://pytorch.org/
 
 
 ### Built With
@@ -128,7 +128,7 @@ Project Link: [Here](https://github.com/max-hill-4/uni-project)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/badge/Contributors-5-blue?style=for-the-badge
+[contributors-shield]: https://img.shields.io/badge/Contributors-1-blue?style=for-the-badge
 [contributors-url]: https://github.com/max-hill-4/uni-project/graphs/contributors
 [Project]: https://cdn.discordapp.com/attachments/615310886512492706/1183782261963894824/image.png?ex=65899624&is=65772124&hm=ca567283f8298578d5fa1e06007803d2015be8c212670f519a3a33657abae419&
 [Project-url]: http://teamsoftware.max-hill-4.xyz/
